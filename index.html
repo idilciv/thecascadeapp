@@ -7,8 +7,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <!-- Favicon: waterfall emoji -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏔️</text></svg>" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Remove default blue link color everywhere */
+    a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
 
     :root {
       --bg: #06060a;
@@ -412,13 +417,27 @@
     }
 
     @media (max-width: 700px) {
-      nav { padding: 0 1.5rem; }
+      nav { padding: 0 1.25rem; }
       .nav-r a:not(.nav-btn) { display: none; }
-      .feat-grid { grid-template-columns: 1fr 1fr; }
+      .feat-grid { grid-template-columns: 1fr; }
+      .hero-content {
+        grid-template-columns: 1fr;
+        padding: 0 1.5rem;
+        gap: 2rem;
+        text-align: center;
+      }
+      .hero-left { display: flex; flex-direction: column; align-items: center; }
+      .hero-desc { margin: 0 auto 2rem; }
+      .hero-right { display: none; }
+      .section { padding: 5rem 1.5rem; }
+      .steps { padding: 0; }
       footer { flex-direction: column; gap: 1.25rem; text-align: center; padding: 1.75rem; }
+      h1 { font-size: 2.4rem; }
+      h2 { font-size: 2rem; }
     }
     @media (max-width: 480px) {
-      .feat-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 2rem; }
+      .hero-cta { width: 100%; justify-content: center; }
     }
   </style>
 </head>
