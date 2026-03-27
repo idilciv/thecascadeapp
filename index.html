@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -256,6 +257,7 @@
     <div class="nav-r">
       <a href="#features">Features</a>
       <a href="#about">About</a>
+      <a href="#feedback">Feedback</a>
       <button onclick="openWaitlist()" class="nav-btn" style="cursor:pointer;font-family:inherit;">Join Waitlist</button>
     </div>
   </nav>
@@ -502,13 +504,26 @@
 
     async function loadFeedback() {
       const list = document.getElementById('feedback-list');
+      list.innerHTML = '<div class="feedback-loading">Loading...</div>';
+      
+      const timeout = new Promise((_, reject) => setTimeout(() => reject('timeout'), 5000));
+      
       try {
-        const res = await fetch(SCRIPT_URL, { method: 'GET' });
+        const res = await Promise.race([
+          fetch(SCRIPT_URL, { method: 'GET' }),
+          timeout
+        ]);
         const items = await res.json();
         renderFeedback(items);
       } catch {
-        // CORS fallback: JSONP
-        window._feedbackCallback = function(items) { renderFeedback(items); };
+        // JSONP fallback
+        const timer = setTimeout(() => {
+          renderFeedback([]);
+        }, 5000);
+        window._feedbackCallback = function(items) {
+          clearTimeout(timer);
+          renderFeedback(items);
+        };
         const s = document.createElement('script');
         s.src = SCRIPT_URL + '?callback=_feedbackCallback';
         document.head.appendChild(s);
@@ -573,7 +588,15 @@
       return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
 
-    loadFeedback();
+    // Feedback'i sayfa açılışında değil, bölüm görününce yükle
+    const feedbackSection = document.getElementById('feedback');
+    const feedbackObs = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        loadFeedback();
+        feedbackObs.disconnect();
+      }
+    }, { threshold: 0.1 });
+    if (feedbackSection) feedbackObs.observe(feedbackSection);
   </script>
 </body>
 </html>
