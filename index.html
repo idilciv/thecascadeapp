@@ -144,6 +144,26 @@
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
+    /* ── FEEDBACK ── */
+    .feedback-section { position: relative; overflow: hidden; padding: 8rem 2rem; display: flex; align-items: center; justify-content: center; }
+    .feedback-inner { position: relative; z-index: 1; width: 100%; max-width: 680px; text-align: center; }
+    .feedback-form-wrap { display: flex; gap: 0.75rem; margin-bottom: 3rem; }
+    .feedback-input { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 16px; color: var(--fg); font-family: inherit; font-size: 0.92rem; padding: 1rem 1.25rem; outline: none; resize: none; transition: border-color 0.2s; line-height: 1.6; }
+    .feedback-input::placeholder { color: var(--muted); }
+    .feedback-input:focus { border-color: rgba(255,255,255,0.2); }
+    .feedback-btn { background: var(--fg); color: var(--bg); border: none; border-radius: 16px; font-family: inherit; font-size: 0.9rem; font-weight: 500; padding: 0 1.5rem; cursor: pointer; transition: opacity 0.2s; white-space: nowrap; align-self: flex-end; height: 48px; }
+    .feedback-btn:hover { opacity: 0.88; }
+    .feedback-loading { color: var(--muted); font-size: 0.85rem; padding: 2rem 0; }
+    .feedback-item { display: flex; align-items: flex-start; gap: 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px; padding: 1.25rem 1.5rem; margin-bottom: 0.75rem; text-align: left; transition: border-color 0.2s; }
+    .feedback-item:hover { border-color: rgba(255,255,255,0.12); }
+    .upvote-btn { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; background: rgba(184,232,200,0.05); border: 1px solid rgba(184,232,200,0.12); border-radius: 10px; padding: 0.5rem 0.75rem; cursor: pointer; transition: all 0.2s; min-width: 48px; flex-shrink: 0; }
+    .upvote-btn:hover { background: rgba(184,232,200,0.1); border-color: rgba(184,232,200,0.25); }
+    .upvote-btn.voted { background: rgba(184,232,200,0.12); border-color: rgba(184,232,200,0.3); }
+    .upvote-arrow { font-size: 0.75rem; color: var(--accent); opacity: 0.7; line-height: 1; }
+    .upvote-count { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--accent); font-weight: 500; }
+    .feedback-text { font-size: 0.9rem; color: rgba(240,238,236,0.7); line-height: 1.65; padding-top: 0.35rem; }
+    .feedback-empty { color: var(--muted); font-size: 0.85rem; padding: 2rem 0; text-align: center; }
+
     /* ══════════════════════════════
        MOBILE — tüm breakpoint'ler
     ══════════════════════════════ */
@@ -215,6 +235,9 @@
 
       /* Footer */
       footer { flex-direction: column; gap: 1.25rem; text-align: center; padding: 1.75rem; }
+      /* Feedback mobile */
+      .feedback-form-wrap { flex-direction: column; }
+      .feedback-btn { width: 100%; }
     }
 
     /* Küçük telefon */
@@ -385,6 +408,30 @@
     </div>
   </div>
 
+  <!-- FEEDBACK -->
+  <section class="feedback-section" id="feedback">
+    <div style="position:absolute;inset:0;z-index:0;">
+      <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;filter:saturate(0.2) brightness(0.3);opacity:0.5;" />
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 20%,rgba(6,6,10,0.95) 80%);"></div>
+    </div>
+    <div class="feedback-inner fade-in">
+      <span class="s-label">Feedback</span>
+      <h2>Shape <em>the app.</em></h2>
+      <p class="s-sub" style="margin-bottom:3rem;">Have a feature request or suggestion? Share it — and vote on what matters most.</p>
+
+      <!-- Submit -->
+      <div class="feedback-form-wrap">
+        <textarea id="feedback-input" class="feedback-input" placeholder="Share your idea or suggestion..." rows="3"></textarea>
+        <button onclick="submitFeedback()" class="feedback-btn">Submit</button>
+      </div>
+
+      <!-- List -->
+      <div class="feedback-list" id="feedback-list">
+        <div class="feedback-loading">Loading suggestions...</div>
+      </div>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer>
     <a href="#" class="logo">Cascade</a>
@@ -441,6 +488,83 @@
         body: JSON.stringify({ email })
       }).catch(() => {});
     }
+
+    // ── FEEDBACK ──
+    const VOTED_KEY = 'cascade_voted';
+
+    function getVoted() {
+      try { return JSON.parse(localStorage.getItem(VOTED_KEY) || '[]'); } catch { return []; }
+    }
+    function addVoted(id) {
+      const v = getVoted(); v.push(id);
+      localStorage.setItem(VOTED_KEY, JSON.stringify(v));
+    }
+
+    async function loadFeedback() {
+      const list = document.getElementById('feedback-list');
+      try {
+        const res = await fetch(SCRIPT_URL, { method: 'GET', mode: 'cors' });
+        const items = await res.json();
+        const voted = getVoted();
+        if (!items.length) {
+          list.innerHTML = '<div class="feedback-empty">No suggestions yet. Be the first!</div>';
+          return;
+        }
+        list.innerHTML = items.map(item => `
+          <div class="feedback-item" id="item-${item.id}">
+            <button class="upvote-btn ${voted.includes(item.id) ? 'voted' : ''}"
+              onclick="upvote('${item.id}')" ${voted.includes(item.id) ? 'disabled' : ''}>
+              <span class="upvote-arrow">▲</span>
+              <span class="upvote-count" id="votes-${item.id}">${item.upvotes}</span>
+            </button>
+            <p class="feedback-text">${escHtml(item.text)}</p>
+          </div>
+        `).join('');
+      } catch {
+        list.innerHTML = '<div class="feedback-empty">Could not load suggestions.</div>';
+      }
+    }
+
+    async function submitFeedback() {
+      const input = document.getElementById('feedback-input');
+      const text = input.value.trim();
+      if (!text) return;
+      const btn = document.querySelector('.feedback-btn');
+      btn.disabled = true; btn.textContent = 'Submitting...';
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST', mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'feedback', text })
+        });
+        input.value = '';
+        btn.textContent = 'Submitted!';
+        setTimeout(() => { btn.disabled = false; btn.textContent = 'Submit'; loadFeedback(); }, 1500);
+      } catch {
+        btn.disabled = false; btn.textContent = 'Submit';
+      }
+    }
+
+    async function upvote(id) {
+      const voted = getVoted();
+      if (voted.includes(id)) return;
+      addVoted(id);
+      const btn = document.querySelector(`#item-${id} .upvote-btn`);
+      const countEl = document.getElementById(`votes-${id}`);
+      if (btn) { btn.classList.add('voted'); btn.disabled = true; }
+      if (countEl) countEl.textContent = parseInt(countEl.textContent) + 1;
+      await fetch(SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'upvote', id })
+      });
+    }
+
+    function escHtml(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    loadFeedback();
   </script>
 </body>
 </html>
