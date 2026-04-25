@@ -1,602 +1,753 @@
-
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cascade — Reclaim Your Attention</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏔️</text></svg>" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cascade — Reclaim Your Attention</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏔️</text></svg>" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
 
-    :root {
-      --bg: #06060a;
-      --fg: #f0eeec;
-      --muted: #4a4a52;
-      --accent: #b8e8c8;
-      --border: rgba(255,255,255,0.07);
-    }
+:root {
+  --bg:      #064e3b;
+  --bg2:     #c4e0d0;
+  --fg:      #18171a;
+  --muted:   #5a7868;
+  --border:  rgba(0,0,0,0.1);
 
-    ::selection { background: transparent; }
+  --zen:     #0ea861;
+  --hc:      #d45a20;
+  --vault:   #6644cc;
+}
 
-    body {
-      background: var(--bg);
-      color: var(--fg);
-      font-family: 'DM Sans', system-ui, sans-serif;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
+html {
+  background: #3d5a5e;
+  overscroll-behavior: none;
+}
 
-    /* ── WAITLIST MODAL ── */
-    .modal-overlay {
-      position: fixed; inset: 0; z-index: 1000;
-      background: rgba(6,6,10,0.85); backdrop-filter: blur(12px);
-      display: flex; align-items: center; justify-content: center;
-      padding: 1.5rem; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-    }
-    .modal-overlay.open { opacity: 1; pointer-events: all; }
-    .modal { background: #0e0e14; border: 1px solid var(--border); border-radius: 24px; padding: 2rem; max-width: 420px; width: 100%; transform: translateY(20px); transition: transform 0.3s ease; position: relative; }
-    .modal-overlay.open .modal { transform: translateY(0); }
-    .modal-close { position: absolute; top: 1.25rem; right: 1.25rem; background: none; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; line-height: 1; padding: 0.25rem; transition: color 0.2s; }
-    .modal-close:hover { color: var(--fg); }
-    .modal-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); opacity: 0.7; margin-bottom: 1rem; }
-    .modal h3 { font-family: 'Instrument Serif', serif; font-size: 1.8rem; font-weight: 400; line-height: 1.15; margin-bottom: 0.6rem; }
-    .modal h3 em { font-style: italic; color: rgba(240,238,236,0.4); }
-    .modal p { font-size: 0.88rem; color: var(--muted); line-height: 1.65; margin-bottom: 1.75rem; }
-    .modal-form { display: flex; flex-direction: column; gap: 0.75rem; }
-    .modal-input { width: 100%; height: 48px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 12px; color: var(--fg); font-family: inherit; font-size: 0.9rem; padding: 0 1rem; outline: none; transition: border-color 0.2s; }
-    .modal-input::placeholder { color: var(--muted); }
-    .modal-input:focus { border-color: rgba(255,255,255,0.2); }
-    .modal-submit { width: 100%; height: 48px; background: var(--fg); color: var(--bg); border: none; border-radius: 12px; font-family: inherit; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
-    .modal-submit:hover { opacity: 0.88; }
-    .modal-success { display: none; text-align: center; padding: 1rem 0; }
-    .modal-success .check { font-size: 2.5rem; margin-bottom: 0.75rem; }
-    .modal-success h4 { font-family: 'Instrument Serif', serif; font-size: 1.4rem; font-weight: 400; margin-bottom: 0.4rem; }
-    .modal-success p { font-size: 0.85rem; color: var(--muted); margin: 0; }
+body {
+  background: radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%);
+  color: var(--fg);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+  background-attachment: fixed;
+}
+body[data-mode="zen"]   { background: radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%) fixed !important; }
+body[data-mode="hc"]    { background: radial-gradient(ellipse at 50% 30%, #8b2818 0%, #6b1d12 60%, #3d0e08 100%) fixed !important; }
+body[data-mode="vault"] { background: radial-gradient(ellipse at 50% 30%, #4f3aa8 0%, #382680 60%, #1f1450 100%) fixed !important; }
 
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 3rem; height: 62px;
-    }
-    .logo { font-family: 'Instrument Serif', serif; font-size: 1.2rem; color: var(--fg); }
-    .nav-r { display: flex; align-items: center; gap: 2.5rem; }
-    .nav-r a { color: rgba(240,238,236,0.45); font-size: 0.85rem; transition: color 0.2s; }
-    .nav-r a:hover { color: var(--fg); }
-    .nav-btn { background: rgba(240,238,236,0.08) !important; border: 1px solid rgba(240,238,236,0.12) !important; color: var(--fg) !important; padding: 0.45rem 1.2rem !important; border-radius: 100px !important; font-size: 0.82rem !important; transition: background 0.2s !important; }
-    .nav-btn:hover { background: rgba(240,238,236,0.14) !important; }
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 3rem; height: 62px;
+  background: transparent;
+  transition: background 0.8s ease;
+}
+.logo {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.85rem; font-weight: 400; color: #f5f5f0;
+  letter-spacing: -0.01em;
+}
+.nav-r { display: flex; align-items: center; gap: 2.5rem; }
+.nav-r a { color: rgba(245,245,240,0.7); font-size: 0.85rem; font-weight: 400; transition: color 0.2s; }
+.nav-r a:hover { color: #f5f5f0; }
+.nav-btn {
+  background: #f5f5f0; color: #18171a;
+  padding: 0.45rem 1.2rem; border-radius: 100px;
+  font-size: 0.82rem; font-weight: 500; font-family: inherit;
+  border: none; cursor: pointer; transition: opacity 0.2s;
+}
+.nav-btn:hover { opacity: 0.82; }
 
-    /* ── HERO ── */
-    .hero { position: relative; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .hero-bg { position: absolute; inset: 0; z-index: 0; }
-    .hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center 45%; filter: saturate(0.25) brightness(0.55); }
-    .hero-bg::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to bottom, rgba(6,6,10,0.55) 0%, rgba(6,6,10,0.1) 35%, rgba(6,6,10,0.1) 65%, rgba(6,6,10,0.85) 100%); }
-    .hero-bg::after { content: ''; position: absolute; inset: 0; z-index: 2; background: radial-gradient(ellipse at center, transparent 40%, rgba(6,6,10,0.5) 100%); }
-    .hero-content { position: relative; z-index: 10; width: 100%; max-width: 1100px; padding: 0 4rem; display: flex; align-items: center; text-align: left; }
-    .hero-left { position: relative; z-index: 2; max-width: 520px; }
-    .hero-right { position: absolute; right: -350px; top: 50%; transform: translateY(-50%); z-index: 1; opacity: 0.9; }
-    .hero-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(240,238,236,0.4); margin-bottom: 1.5rem; opacity: 0; animation: fadeIn 1s 0.3s ease forwards; }
-    h1 { font-family: 'Instrument Serif', serif; font-size: clamp(2.8rem, 5vw, 5rem); font-weight: 400; line-height: 1.05; letter-spacing: -0.025em; margin-bottom: 1.5rem; opacity: 0; animation: fadeIn 1s 0.5s ease forwards; }
-    h1 em { font-style: italic; color: rgba(240,238,236,0.38); }
-    .hero-desc { font-size: clamp(0.9rem, 1.2vw, 1rem); color: rgba(240,238,236,0.42); line-height: 1.75; max-width: 360px; margin: 0 0 2.5rem; opacity: 0; animation: fadeIn 1s 0.7s ease forwards; }
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 10rem 2rem 6rem;
+  position: relative;
+}
 
-    /* ── FEATURES ── */
-    .features-section { position: relative; overflow: hidden; }
-    .features-bg { position: absolute; inset: 0; z-index: 0; }
-    .features-bg img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.2) brightness(0.4); opacity: 0.6; }
-    .features-bg::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 20%, rgba(6,6,10,0.9) 80%); }
-    .features-inner { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 8rem 4rem; }
-    .features-header { text-align: center; margin-bottom: 7rem; }
+.hero-tag {
+  display: inline-flex; align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted); border: 1px solid var(--border);
+  padding: 0.3rem 0.9rem; border-radius: 100px;
+  margin-bottom: 2.5rem;
+  opacity: 0; animation: fadeUp 0.7s 0.2s ease forwards;
+}
 
-    .s-label { font-family: 'JetBrains Mono', monospace; font-size: 0.67rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); opacity: 0.65; margin-bottom: 1rem; display: block; }
-    h2 { font-family: 'Instrument Serif', serif; font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 400; line-height: 1.12; letter-spacing: -0.02em; margin-bottom: 1rem; }
-    h2 em { font-style: italic; color: rgba(240,238,236,0.35); }
-    .s-sub { color: var(--muted); font-size: 1rem; line-height: 1.75; max-width: 420px; margin: 0 auto; }
+h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(3rem, 6vw, 6rem); font-weight: 400;
+  line-height: 1.05; letter-spacing: -0.025em;
+  margin-bottom: 1.75rem; max-width: 800px;
+  opacity: 0; animation: fadeUp 0.7s 0.4s ease forwards;
+}
+h1 em { font-style: italic; color: var(--muted); }
 
-    .feature-row { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; margin-bottom: 10rem; }
-    .feature-row:last-child { margin-bottom: 0; }
-    .feature-row.reverse { direction: rtl; }
-    .feature-row.reverse > * { direction: ltr; }
-    .feature-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.16em; color: var(--accent); opacity: 0.6; display: block; margin-bottom: 0.75rem; }
-    .feature-title { font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 400; line-height: 1.1; margin-bottom: 1.25rem; letter-spacing: -0.02em; }
-    .feature-desc { font-size: 1rem; color: rgba(240,238,236,0.45); line-height: 1.8; }
-    .feature-mockup { display: flex; justify-content: center; align-items: center; }
-    .feature-mockup img { width: 100%; max-width: 520px; height: auto; filter: drop-shadow(0 40px 80px rgba(0,0,0,0.85)); transition: transform 0.5s ease; }
-    .feature-mockup img:hover { transform: translateY(-8px) scale(1.02); }
+.hero-sub {
+  font-size: clamp(0.95rem, 1.3vw, 1.05rem); font-weight: 300;
+  color: var(--muted); line-height: 1.8;
+  max-width: 380px; margin: 0 auto 3rem;
+  opacity: 0; animation: fadeUp 0.7s 0.6s ease forwards;
+}
 
-    /* ── ABOUT ── */
-    .about-section { position: relative; overflow: hidden; min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 8rem 2rem; }
-    .about-bg { position: absolute; inset: 0; z-index: 0; }
-    .about-bg img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.2) brightness(0.35); opacity: 0.7; }
-    .about-bg::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 20%, rgba(6,6,10,0.92) 80%); }
-    .about-inner { position: relative; z-index: 1; }
-    .steps { display: flex; flex-direction: column; gap: 2rem; max-width: 480px; width: 100%; text-align: left; margin: 0 auto; }
-    .step { display: flex; gap: 1.25rem; }
-    .step-n { min-width: 32px; height: 32px; background: rgba(184,232,200,0.05); border: 1px solid rgba(184,232,200,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--accent); margin-top: 1px; }
-    .step h4 { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.25rem; }
-    .step p { font-size: 0.82rem; color: var(--muted); line-height: 1.65; }
+.hero-actions {
+  display: flex; align-items: center; gap: 1rem;
+  justify-content: center; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp 0.7s 0.8s ease forwards;
+}
 
-    /* ── CTA ── */
-    .cta-section { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 6rem 2rem; position: relative; overflow: hidden; }
-    .cta-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 700px; height: 400px; background: radial-gradient(ellipse, rgba(184,232,200,0.035) 0%, transparent 65%); pointer-events: none; }
-    .cta-inner { position: relative; z-index: 1; max-width: 520px; }
-    .cta-inner h2 { margin-bottom: 1rem; }
-    .cta-inner p { color: var(--muted); font-size: 1rem; line-height: 1.75; margin-bottom: 2.5rem; }
-    .soon { margin-top: 0.9rem; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--muted); opacity: 0.4; }
-    .hero-cta { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--fg); color: var(--bg); padding: 0.9rem 2.2rem; border-radius: 100px; font-family: inherit; font-size: 0.95rem; font-weight: 500; border: none; cursor: pointer; transition: opacity 0.2s, transform 0.2s; }
-    .hero-cta:hover { opacity: 0.88; transform: translateY(-2px); }
+.btn-primary {
+  background: var(--fg); color: var(--bg);
+  padding: 0.85rem 2.2rem; border-radius: 100px;
+  font-family: inherit; font-size: 0.9rem; font-weight: 500;
+  border: none; cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.btn-primary:hover { opacity: 0.82; transform: translateY(-1px); }
 
-    /* ── FOOTER ── */
-    footer { border-top: 1px solid var(--border); padding: 2rem 3rem; display: flex; align-items: center; justify-content: space-between; }
-    footer .logo { opacity: 0.4; font-size: 1rem; }
-    .f-links { display: flex; gap: 2rem; list-style: none; }
-    .f-links a { font-size: 0.78rem; color: var(--muted); }
-    .f-links a:hover { color: var(--fg); }
-    footer small { font-size: 0.75rem; color: var(--muted); opacity: 0.4; }
+.btn-ghost {
+  background: none; color: var(--muted);
+  padding: 0.85rem 1.75rem; border-radius: 100px;
+  font-family: inherit; font-size: 0.9rem; font-weight: 400;
+  border: 1px solid var(--border); cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-ghost:hover { color: var(--fg); border-color: rgba(0,0,0,0.2); }
 
-    /* ── SCROLL FADE ── */
-    .fade-in { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
+/* ── SECTION LABEL ── */
+.s-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 1rem;
+}
 
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+/* ── FEATURES ── */
+.features-section {
+  padding-top: 4rem;
+}
 
-    /* ── FEEDBACK ── */
-    .feedback-section { position: relative; overflow: hidden; padding: 8rem 2rem; display: flex; align-items: center; justify-content: center; }
-    .feedback-inner { position: relative; z-index: 1; width: 100%; max-width: 680px; text-align: center; }
-    .feedback-form-wrap { display: flex; gap: 0.75rem; margin-bottom: 3rem; }
-    .feedback-input { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 16px; color: var(--fg); font-family: inherit; font-size: 0.92rem; padding: 1rem 1.25rem; outline: none; resize: none; transition: border-color 0.2s; line-height: 1.6; }
-    .feedback-input::placeholder { color: var(--muted); }
-    .feedback-input:focus { border-color: rgba(255,255,255,0.2); }
-    .feedback-btn { background: var(--fg); color: var(--bg); border: none; border-radius: 16px; font-family: inherit; font-size: 0.9rem; font-weight: 500; padding: 0 1.5rem; cursor: pointer; transition: opacity 0.2s; white-space: nowrap; align-self: flex-end; height: 48px; }
-    .feedback-btn:hover { opacity: 0.88; }
-    .feedback-loading { color: var(--muted); font-size: 0.85rem; padding: 2rem 0; }
-    .feedback-item { display: flex; align-items: flex-start; gap: 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px; padding: 1.25rem 1.5rem; margin-bottom: 0.75rem; text-align: left; transition: border-color 0.2s; }
-    .feedback-item:hover { border-color: rgba(255,255,255,0.12); }
-    .upvote-btn { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; background: rgba(184,232,200,0.05); border: 1px solid rgba(184,232,200,0.12); border-radius: 10px; padding: 0.5rem 0.75rem; cursor: pointer; transition: all 0.2s; min-width: 48px; flex-shrink: 0; }
-    .upvote-btn:hover { background: rgba(184,232,200,0.1); border-color: rgba(184,232,200,0.25); }
-    .upvote-btn.voted { background: rgba(184,232,200,0.12); border-color: rgba(184,232,200,0.3); }
-    .upvote-arrow { font-size: 0.75rem; color: var(--accent); opacity: 0.7; line-height: 1; }
-    .upvote-count { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--accent); font-weight: 500; }
-    .feedback-text { font-size: 0.9rem; color: rgba(240,238,236,0.7); line-height: 1.65; padding-top: 0.35rem; }
-    .feedback-empty { color: var(--muted); font-size: 0.85rem; padding: 2rem 0; text-align: center; }
+.features-header {
+  text-align: center; padding: 6rem 2rem 3rem;
+}
 
-    /* ══════════════════════════════
-       MOBILE — tüm breakpoint'ler
-    ══════════════════════════════ */
+h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 400;
+  line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 0.75rem;
+  color: #f5f5f0;
+}
+h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
+.s-sub { color: rgba(245,245,240,0.7); font-size: 0.95rem; line-height: 1.75; }
 
-    /* Tablet */
-    @media (max-width: 900px) {
-      .features-inner { padding: 6rem 2.5rem; }
-      .feature-row { gap: 3rem; margin-bottom: 7rem; }
-      .feature-mockup img { max-width: 400px; }
-    }
+/* ── STICKY SCROLL ── */
+.sticky-wrap {
+  display: flex;
+  max-width: 1900px;
+  margin: 0 auto;
+  padding: 0 2rem 8rem;
+  gap: 2rem;
+  align-items: flex-start;
+}
 
-    /* Mobil */
-    @media (max-width: 768px) {
-      /* Nav */
-      nav { padding: 0 1.25rem; height: 56px; }
-      .nav-r a:not(.nav-btn) { display: none; }
+/* Sol: paneller */
+.panels-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
 
-      /* Hero */
-      .hero-content {
-        padding: 0 1.5rem;
-        flex-direction: column;
-        justify-content: center;
-        text-align: center;
-      }
-      .hero-left {
-        display: flex; flex-direction: column; align-items: center;
-        max-width: 100%;
-      }
-      .hero-right { display: none; }
-      h1 { font-size: 2.6rem; }
-      .hero-desc { margin: 0 auto 2rem; max-width: 320px; }
+.feat-panel {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5rem 0;
+  border-bottom: 1px solid var(--border);
+  opacity: 0.3;
+  transition: opacity 0.4s ease;
+}
+.feat-panel:last-child { border-bottom: none; }
+.feat-panel.active { opacity: 1; }
 
-      /* Features */
-      .features-inner { padding: 5rem 1.5rem; }
-      .features-header { margin-bottom: 4rem; }
-      h2 { font-size: 2rem; }
+.feat-mode-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase;
+  padding: 0.28rem 0.8rem; border-radius: 100px;
+  display: inline-flex; align-items: center;
+  margin-bottom: 1.75rem; width: fit-content;
+  font-weight: 400;
+}
+.feat-mode-tag.zen   { color: #6ee7b7;   background: rgba(110,231,183,0.12);  border: 1px solid rgba(110,231,183,0.3); }
+.feat-mode-tag.hc    { color: #fed7aa;   background: rgba(254,215,170,0.12);  border: 1px solid rgba(254,215,170,0.3); }
+.feat-mode-tag.vault { color: #ddd6fe;   background: rgba(221,214,254,0.12);  border: 1px solid rgba(221,214,254,0.3); }
 
-      /* Feature rows: mockup üstte, metin altta */
-      .feature-row,
-      .feature-row.reverse {
-        grid-template-columns: 1fr;
-        direction: ltr;
-        gap: 2rem;
-        margin-bottom: 6rem;
-        text-align: center;
-      }
+.feat-title {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  font-size: clamp(2rem, 3vw, 2.8rem); font-weight: 700;
+  line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 1.25rem;
+  color: #f5f5f0;
+}
+.feat-title em { font-style: normal; color: rgba(245,245,240,0.55); font-weight: 700; }
 
-      /* Mockup her zaman üstte */
-      .feature-row .feature-mockup,
-      .feature-row.reverse .feature-mockup { order: -1; }
+.feat-desc {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  font-size: 0.95rem; color: rgba(245,245,240,0.75);
+  line-height: 1.7; max-width: 340px; font-weight: 400;
+}
 
-      .feature-row .feature-text,
-      .feature-row.reverse .feature-text { order: 1; }
+/* Sol: sticky telefon */
+.phone-col {
+  width: 1100px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 50px;
+  align-self: flex-start;
+  height: fit-content;
+}
 
-      .feature-mockup img {
-        max-width: 260px;
-        margin: 0 auto;
-      }
+.phone-frame {
+  width: 1100px;
+  height: auto;
+  position: relative;
+  transition: filter 0.5s ease;
+}
+.phone-frame.zen-active   { filter: drop-shadow(0 24px 50px rgba(14,168,97,0.15)); }
+.phone-frame.hc-active    { filter: drop-shadow(0 24px 50px rgba(212,90,32,0.15)); }
+.phone-frame.vault-active { filter: drop-shadow(0 24px 50px rgba(102,68,204,0.15)); }
 
-      .feature-desc { font-size: 0.92rem; }
+.phone-screen {
+  position: relative;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.phone-screen:not(.active) {
+  position: absolute; inset: 0;
+}
+.phone-screen.active { opacity: 1; }
+.phone-screen img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
 
-      /* About */
-      .about-section { padding: 6rem 1.5rem; min-height: auto; }
-      .steps { max-width: 100%; }
+/* placeholder — görsel yokken */
+.phone-placeholder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 0.5rem;
+}
+.phone-placeholder-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+}
+.phone-placeholder span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase;
+  text-align: center; opacity: 0.35; padding: 0 1rem;
+}
 
-      /* CTA */
-      .cta-section { padding: 5rem 1.5rem; min-height: auto; }
-      .hero-cta { width: 100%; justify-content: center; }
+/* ── HOW IT WORKS ── */
+.how-section {
+  background: transparent;
+  padding: 8rem 2rem;
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  border: none;
+}
+.how-inner { max-width: 520px; width: 100%; }
+.how-inner h2 { margin-bottom: 0.75rem; color: #f5f5f0; }
+.how-inner h2 em { color: rgba(245,245,240,0.5); }
+.how-inner .s-sub { margin-bottom: 4rem; color: rgba(245,245,240,0.7); }
+.how-inner .s-label { color: rgba(245,245,240,0.5); }
 
-      /* Footer */
-      footer { flex-direction: column; gap: 1.25rem; text-align: center; padding: 1.75rem; }
-      /* Feedback mobile */
-      .feedback-form-wrap { flex-direction: column; }
-      .feedback-btn { width: 100%; }
-    }
+.steps { display: flex; flex-direction: column; width: 100%; text-align: left; }
+.step {
+  display: flex; gap: 1.5rem;
+  padding: 1.75rem 0;
+  border-bottom: 1px solid rgba(245,245,240,0.12);
+}
+.step:first-child { border-top: 1px solid rgba(245,245,240,0.12); }
+.step-n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem; color: rgba(245,245,240,0.5);
+  min-width: 22px; padding-top: 3px;
+}
+.step h4 { font-size: 0.93rem; font-weight: 500; margin-bottom: 0.3rem; color: #f5f5f0; }
+.step p { font-size: 0.83rem; color: rgba(245,245,240,0.6); line-height: 1.7; }
 
-    /* Küçük telefon */
-    @media (max-width: 400px) {
-      h1 { font-size: 2rem; }
-      .feature-mockup img { max-width: 220px; }
-      .features-inner { padding: 4rem 1.25rem; }
-    }
-  </style>
+/* ── CTA ── */
+.cta-section {
+  background: transparent;
+  padding: 8rem 2rem;
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+}
+.cta-section h2 { color: #f5f5f0; }
+.cta-section h2 em { color: rgba(245,245,240,0.4); }
+.cta-section .s-label { color: rgba(245,245,240,0.4); }
+.cta-section p { color: rgba(245,245,240,0.55); font-size: 0.95rem; line-height: 1.75; margin: 0.75rem 0 2.5rem; max-width: 400px; }
+.btn-cta {
+  background: #f5f5f0; color: #18171a;
+  padding: 0.9rem 2.2rem; border-radius: 100px;
+  font-family: inherit; font-size: 0.95rem; font-weight: 500;
+  border: none; cursor: pointer; transition: opacity 0.2s;
+}
+.btn-cta:hover { opacity: 0.88; }
+.cta-soon {
+  margin-top: 1rem; font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem; color: rgba(245,245,240,0.25); letter-spacing: 0.06em;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: transparent;
+  padding: 2rem 3rem;
+  display: flex; align-items: center; justify-content: space-between;
+  border: none;
+}
+.f-logo { font-family: 'Instrument Serif', serif; font-size: 1rem; color: rgba(245,245,240,0.5); }
+.f-links { display: flex; gap: 2rem; list-style: none; }
+.f-links a { font-size: 0.78rem; color: rgba(245,245,240,0.55); transition: color 0.2s; }
+.f-links a:hover { color: #f5f5f0; }
+footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(24,23,26,0.6); backdrop-filter: blur(12px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 2rem; opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px; padding: 2.5rem; max-width: 400px; width: 100%;
+  transform: translateY(18px) scale(0.98); transition: transform 0.25s ease; position: relative;
+  color: #f5f5f0;
+}
+.modal-overlay.open .modal { transform: translateY(0) scale(1); }
+.modal-close {
+  position: absolute; top: 1.25rem; right: 1.25rem;
+  background: none; border: none; color: rgba(245,245,240,0.5);
+  font-size: 1rem; cursor: pointer; padding: 0.25rem; transition: color 0.2s; font-family: inherit;
+}
+.modal-close:hover { color: #f5f5f0; }
+.modal-badge {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(245,245,240,0.5); margin-bottom: 1.25rem;
+}
+.modal h3 {
+  font-family: 'Instrument Serif', serif; font-weight: 400;
+  font-size: 1.65rem; line-height: 1.15; margin-bottom: 0.5rem;
+  color: #f5f5f0;
+}
+.modal h3 em { font-style: italic; color: rgba(245,245,240,0.5); }
+.modal > div > p { font-size: 0.85rem; color: rgba(245,245,240,0.6); line-height: 1.7; margin-bottom: 1.5rem; }
+.modal-input {
+  width: 100%; height: 46px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px; color: #f5f5f0;
+  font-family: inherit; font-size: 0.88rem; font-weight: 300;
+  padding: 0 1rem; outline: none; margin-bottom: 0.75rem; transition: border-color 0.2s;
+}
+.modal-input::placeholder { color: rgba(245,245,240,0.4); }
+.modal-input:focus { border-color: rgba(255,255,255,0.25); }
+.modal-submit {
+  width: 100%; height: 46px; background: #f5f5f0; color: #0a0a0a;
+  border: none; border-radius: 10px;
+  font-family: inherit; font-size: 0.9rem; font-weight: 500;
+  cursor: pointer; transition: opacity 0.2s;
+}
+.modal-submit:hover { opacity: 0.82; }
+.modal-success { display: none; text-align: center; padding: 1rem 0; }
+.modal-success h4 {
+  font-family: 'Instrument Serif', serif; font-weight: 400;
+  font-size: 1.5rem; margin-bottom: 0.4rem;
+  color: #f5f5f0;
+}
+.modal-success p { font-size: 0.83rem; color: rgba(245,245,240,0.6); }
+
+/* FADE UP */
+.fade-up { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-up.in { opacity: 1; transform: translateY(0); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 860px) {
+  nav { padding: 0 1.25rem; }
+  .nav-r a:not(.nav-btn) { display: none; }
+  .sticky-wrap { flex-direction: column; padding: 0 1.5rem 5rem; gap: 0; }
+  .phone-col { display: none; }
+  .feat-panel { min-height: auto; padding: 3rem 0; opacity: 1; }
+  footer { flex-direction: column; gap: 1rem; text-align: center; padding: 1.5rem; }
+}
+</style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
-    <a href="#" class="logo">Cascade</a>
-    <div class="nav-r">
-      <a href="#features">Features</a>
-      <a href="#about">About</a>
-      <a href="#feedback">Feedback</a>
-      <button onclick="openWaitlist()" class="nav-btn" style="cursor:pointer;font-family:inherit;">Join Waitlist</button>
+<!-- NAV -->
+<nav>
+  <span class="logo">Cascade</span>
+  <div class="nav-r">
+    <a href="#features">Features</a>
+    <a href="#about">About</a>
+    <a href="#feedback">Feedback</a>
+    <button onclick="openWaitlist()" class="nav-btn">Join Waitlist</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:0;text-align:left;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;z-index:0;background:linear-gradient(135deg, #5d8a6e 0%, #6a9d8a 25%, #7eb4a0 45%, #5d8a8e 65%, #3d5a5e 85%, #1a2a30 100%);">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%, rgba(180,210,180,0.25) 0%, transparent 60%);"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 70% 70%, rgba(40,80,90,0.4) 0%, transparent 70%);"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(20,40,40,0.2) 0%,transparent 30%,transparent 70%,rgba(15,25,30,0.6) 100%);"></div>
+  </div>
+  <div style="position:relative;z-index:10;width:100%;max-width:1100px;padding:0 4rem;display:flex;align-items:center;" id="hero-content">
+    <div style="max-width:520px;">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(240,238,236,0.55);margin-bottom:1.5rem;opacity:0;animation:fadeUp 1s 0.3s ease forwards;">Coming to iOS</p>
+      <h1 style="font-family:'Instrument Serif',serif;font-size:clamp(2.8rem,5vw,5rem);font-weight:400;line-height:1.05;letter-spacing:-0.025em;margin-bottom:1.5rem;color:#f5f5f0;opacity:0;animation:fadeUp 1s 0.5s ease forwards;text-shadow:0 2px 20px rgba(0,0,0,0.3);">A screen time app <em style="font-style:italic;color:rgba(245,245,240,0.55);">you'll love using.</em></h1>
+      <p style="font-size:clamp(0.9rem,1.2vw,1rem);color:rgba(245,245,240,0.7);line-height:1.75;max-width:360px;margin:0 0 2.5rem;opacity:0;animation:fadeUp 1s 0.7s ease forwards;">Easy to use, designed to help you take back your time. Block what distracts. Keep what matters.</p>
+      <button onclick="openWaitlist()" style="background:rgba(245,245,240,0.1);border:1px solid rgba(245,245,240,0.3);color:rgba(245,245,240,0.9);padding:0.7rem 1.75rem;border-radius:100px;font-family:inherit;font-size:0.88rem;cursor:pointer;transition:all 0.2s;opacity:0;animation:fadeUp 1s 0.9s ease forwards;backdrop-filter:blur(8px);" onmouseover="this.style.background='rgba(245,245,240,0.18)';this.style.borderColor='rgba(245,245,240,0.5)'" onmouseout="this.style.background='rgba(245,245,240,0.1)';this.style.borderColor='rgba(245,245,240,0.3)'">Join the Waitlist</button>
     </div>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg">
-      <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=85&auto=format&fit=crop" alt="" />
+    <div style="position:absolute;right:-400px;top:57%;transform:translateY(-50%);opacity:0.95;">
+      <img src="anasayfa.png" alt="Cascade app" style="width:1100px;height:auto;filter:drop-shadow(0 40px 80px rgba(0,0,0,0.5));" />
     </div>
-    <div class="hero-content">
-      <div class="hero-left">
-        <p class="hero-eyebrow">Coming to iOS</p>
-        <h1>A screen time app <em>you'll love using.</em></h1>
-        <p class="hero-desc">Easy to use, designed to help you take back your time.</p>
-        <button onclick="openWaitlist()" style="margin-top:0.75rem;background:none;border:1px solid rgba(240,238,236,0.2);color:rgba(240,238,236,0.6);padding:0.7rem 1.75rem;border-radius:100px;font-family:inherit;font-size:0.88rem;cursor:pointer;transition:all 0.2s;display:block;" onmouseover="this.style.borderColor='rgba(240,238,236,0.5)';this.style.color='rgba(240,238,236,0.9)'" onmouseout="this.style.borderColor='rgba(240,238,236,0.2)';this.style.color='rgba(240,238,236,0.6)'">
-          Join the Waitlist
-        </button>
-      </div>
-      <div class="hero-right">
-        <img src="798_1x_shots_so.png" alt="Cascade app" style="width:900px;height:auto;filter:drop-shadow(0 40px 80px rgba(0,0,0,0.8));" />
-      </div>
-    </div>
-  </section>
+  </div>
+</section>
 
-  <!-- FEATURES -->
-  <section class="features-section" id="features">
-    <div class="features-bg">
-      <img src="https://images.unsplash.com/photo-1511497584788-876760111969?w=1920&q=80&auto=format&fit=crop" alt="" />
-    </div>
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="features-header fade-up">
+    <p class="s-label">Features</p>
+    <h2>Built to <em>make things easy.</em></h2>
+    <p class="s-sub">Every tool you need to cut through the noise and get back to what matters.</p>
+  </div>
 
-    <div class="features-inner">
+  <div class="sticky-wrap">
 
-      <div class="features-header fade-in">
-        <span class="s-label">Features</span>
-        <h2>Built to <em>make things easy.</em></h2>
-        <p class="s-sub">Every tool you need to cut through the noise and get back to what matters.</p>
-      </div>
+    <!-- Sol sticky telefon -->
+    <div class="phone-col">
+      <div class="phone-frame zen-active" id="phone-frame">
 
-      <!-- 1. Zen Mode -->
-      <div class="feature-row fade-in">
-        <div class="feature-text">
-          <span class="feature-tag">01</span>
-          <h3 class="feature-title">Zen Mode</h3>
-          <p class="feature-desc">Apps blocked on schedule.</p>
+        <div class="phone-screen active" id="feat-screen-0">
+          <img src="anasayfa.png" alt="Choose your path" />
         </div>
-        <div class="feature-mockup">
-          <img src="zenmock.png" alt="Zen Mode" />
-        </div>
-      </div>
 
-      <!-- 2. Hardcore Mode -->
-      <div class="feature-row reverse fade-in">
-        <div class="feature-text">
-          <span class="feature-tag">02</span>
-          <h3 class="feature-title">Hardcore Mode</h3>
-          <p class="feature-desc">Block apps without pause using the credit system.</p>
+        <div class="phone-screen" id="feat-screen-1">
+          <img src="zenmodemockup.png" alt="Zen Mode" />
         </div>
-        <div class="feature-mockup">
-          <img src="HARDOCRELATEST.png" alt="Hardcore Mode" />
-        </div>
-      </div>
 
-      <!-- 3. Set Schedule -->
-      <div class="feature-row fade-in">
-        <div class="feature-text">
-          <span class="feature-tag">03</span>
-          <h3 class="feature-title">Set Schedule</h3>
-          <p class="feature-desc">Set recurring blocks for any day and time. Cascade starts your session automatically.</p>
+        <div class="phone-screen" id="feat-screen-2">
+          <img src="zenmoderutin.png" alt="Routine Schedule" />
         </div>
-        <div class="feature-mockup">
-          <img src="schedulezenmockup.png" alt="Set Schedule" />
-        </div>
-      </div>
 
-      <!-- 4. Credits System -->
-      <div class="feature-row reverse fade-in">
-        <div class="feature-text">
-          <span class="feature-tag">04</span>
-          <h3 class="feature-title">Credits System</h3>
-          <p class="feature-desc">In Hardcore mode, you have a daily credit limit to briefly open blocked apps when needed. If you run out of credits, you can't open them until your session ends.</p>
+        <div class="phone-screen" id="feat-screen-3">
+          <img src="hardcoremode.png" alt="Hardcore Mode" />
         </div>
-        <div class="feature-mockup">
-          <img src="creditsmock.png" alt="Credits System" />
-        </div>
-      </div>
 
-    </div>
-  </section>
+        <div class="phone-screen" id="feat-screen-4">
+          <img src="unlockwindowhardcore.png" alt="Unlock Window" />
+        </div>
 
-  <!-- ABOUT -->
-  <section class="about-section" id="about">
-    <div class="about-bg">
-      <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&q=80&auto=format&fit=crop" alt="" />
-    </div>
-    <div class="about-inner fade-in">
-      <span class="s-label">How it works</span>
-      <h2 style="margin-bottom:1rem;">Simple to start.<br><em>Hard to quit.</em></h2>
-      <p class="s-sub" style="margin-bottom:3rem;">Cascade is built to get out of your way. Easy to set up. Easy to use.</p>
-      <div class="steps">
-        <div class="step">
-          <div class="step-n">01</div>
-          <div><h4>Choose your mode</h4><p>Zen — block apps on a schedule with timed sessions. Hardcore — once you start, it's almost impossible to unblock.</p></div>
+        <div class="phone-screen" id="feat-screen-5">
+          <img src="hardcorerutinayar.png" alt="Hardcore Routine" />
         </div>
-        <div class="step">
-          <div class="step-n">02</div>
-          <div><h4>Pick your blocklist</h4><p>Choose which distracting apps get restricted during your session.</p></div>
+
+        <div class="phone-screen" id="feat-screen-6">
+          <img src="vaultmode.png" alt="Vault Mode" />
         </div>
-        <div class="step">
-          <div class="step-n">03</div>
-          <div><h4>Start your session</h4><p>Begin and let Cascade handle the rest. Take back your time.</p></div>
+
+        <div class="phone-screen" id="feat-screen-7">
+          <img src="518shots_so-Photoroom.png" alt="No Way Out" />
         </div>
+
+        <div class="phone-screen" id="feat-screen-8">
+          <img src="vaultrutin.png" alt="Vault Routine" />
+        </div>
+
       </div>
     </div>
-  </section>
 
-  <!-- CTA -->
-  <section class="cta-section" id="download" style="position:relative;overflow:hidden;">
-    <div style="position:absolute;inset:0;z-index:0;">
-      <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;filter:saturate(0.2) brightness(0.35);opacity:0.65;" />
-      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 10%,rgba(6,6,10,0.93) 75%);"></div>
-    </div>
-    <div class="cta-glow"></div>
-    <div class="cta-inner fade-in">
-      <span class="s-label">Get the app</span>
-      <h2>Ready to take back <em>your time?</em></h2>
-      <p>Join the waitlist and be the first to know when Cascade launches on the App Store.</p>
-      <button onclick="openWaitlist()" class="hero-cta">Join the Waitlist</button>
-      <p class="soon">// coming soon to the App Store</p>
-    </div>
-  </section>
+    <!-- Sağ paneller -->
+    <div class="panels-col">
 
-  <!-- WAITLIST MODAL -->
-  <div class="modal-overlay" id="waitlist-modal" onclick="handleOverlayClick(event)">
-    <div class="modal">
-      <button class="modal-close" onclick="closeWaitlist()">✕</button>
-      <div id="modal-form-wrap">
-        <div class="modal-badge">Early Access</div>
-        <h3>Get early access <em>to Cascade.</em></h3>
-        <p>Be the first to know when we launch.</p>
-        <div class="modal-form">
-          <input type="email" id="waitlist-email" class="modal-input" placeholder="Your email address" required />
-          <button class="modal-submit" onclick="submitWaitlist()">Join the Waitlist</button>
-        </div>
+      <div class="feat-panel active" data-feat="0" data-mode="zen">
+        <span class="feat-mode-tag zen">Choose your path</span>
+        <h3 class="feat-title">How will <em>you resist?</em></h3>
+        <p class="feat-desc">Three modes to fit your day. Zen for gentle focus. Hardcore for serious commitment. Vault for the strictest protection.</p>
       </div>
-      <div class="modal-success" id="modal-success">
-        <div class="check">🎉</div>
-        <h4>You're on the list!</h4>
-        <p>We'll reach out when Cascade is ready. Thanks for your interest!</p>
+
+      <div class="feat-panel" data-feat="1" data-mode="zen">
+        <span class="feat-mode-tag zen">Zen Mode</span>
+        <h3 class="feat-title">Gentle blocking.</h3>
+        <p class="feat-desc">Pick the apps you want to block and the session length, then start. If you need to stop, you can stop the session and use the apps you need.</p>
+      </div>
+
+      <div class="feat-panel" data-feat="2" data-mode="zen">
+        <span class="feat-mode-tag zen">Zen Mode</span>
+        <h3 class="feat-title">Set a <em>routine.</em></h3>
+        <p class="feat-desc">Schedule recurring blocks for any day and time. Cascade starts your session automatically.</p>
+      </div>
+
+      <div class="feat-panel" data-feat="3" data-mode="hc">
+        <span class="feat-mode-tag hc">Hardcore Mode</span>
+        <h3 class="feat-title">Customizable blocking.</h3>
+        <p class="feat-desc">You block the apps you choose, but you also give yourself a few unlock passes. For example, you can let a blocked app open 3 times for 10 minutes. When they're gone, the app stays blocked until the session ends.</p>
+      </div>
+
+      <div class="feat-panel" data-feat="4" data-mode="hc">
+        <span class="feat-mode-tag hc">Hardcore Mode</span>
+        <h3 class="feat-title">Your rules. <em>Your limits.</em></h3>
+        <p class="feat-desc">Before you start, you set the blocking duration, how many times you can temporarily unlock apps, and how long each unlock window lasts.</p>
+      </div>
+
+      <div class="feat-panel" data-feat="5" data-mode="hc">
+        <span class="feat-mode-tag hc">Hardcore Mode</span>
+        <h3 class="feat-title">Routine on <em>autopilot.</em></h3>
+        <p class="feat-desc">Set recurring Hardcore sessions for the days and times you want. Cascade locks you in automatically when the schedule begins.</p>
+      </div>
+
+      <div class="feat-panel" data-feat="6" data-mode="vault">
+        <span class="feat-mode-tag vault">Vault Mode</span>
+        <h3 class="feat-title">Strict blocking.</h3>
+        <p class="feat-desc">You block the apps you choose and you can't stop the session early. The only way in is a limited number of weekly unlock passes that you set yourself beforehand.</p>
+      </div>
+
+      <div class="feat-panel" data-feat="7" data-mode="vault">
+        <span class="feat-mode-tag vault">Vault Mode</span>
+        <h3 class="feat-title">No way <em>out.</em></h3>
+        <p class="feat-desc">Vault sessions cannot be stopped early. The session ends automatically when the time is up. This is the strongest commitment you can make to yourself.</p>
+      </div>
+
+      <div class="feat-panel" data-feat="8" data-mode="vault">
+        <span class="feat-mode-tag vault">Vault Mode</span>
+        <h3 class="feat-title">Lock it in <em>on schedule.</em></h3>
+        <p class="feat-desc">Set recurring Vault sessions for the days and times you choose. Once the schedule kicks in, there's no early exit until the session ends.</p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="how-inner fade-up">
+    <p class="s-label">How it works</p>
+    <h2>Simple to start.<br><em>Hard to quit.</em></h2>
+    <p class="s-sub">Cascade is built to get out of your way.</p>
+    <div class="steps">
+      <div class="step">
+        <span class="step-n">01</span>
+        <div><h4>Choose your mode</h4><p>Zen, Hardcore, or Vault — pick what fits your day.</p></div>
+      </div>
+      <div class="step">
+        <span class="step-n">02</span>
+        <div><h4>Pick your blocklist</h4><p>Choose which apps get restricted during your session.</p></div>
+      </div>
+      <div class="step">
+        <span class="step-n">03</span>
+        <div><h4>Start your session</h4><p>Let Cascade handle the rest.</p></div>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- FEEDBACK -->
-  <section class="feedback-section" id="feedback">
-    <div style="position:absolute;inset:0;z-index:0;">
-      <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;filter:saturate(0.2) brightness(0.3);opacity:0.5;" />
-      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 20%,rgba(6,6,10,0.95) 80%);"></div>
+<!-- CTA -->
+<section class="cta-section" id="waitlist">
+  <p class="s-label">Get the app</p>
+  <h2>Ready to take back <em>your time?</em></h2>
+  <p>Join the waitlist and be the first to know when Cascade launches on the App Store.</p>
+  <button class="btn-cta" onclick="openWaitlist()">Join the Waitlist</button>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="f-logo">Cascade</span>
+  <ul class="f-links">
+    <li><a href="#">Privacy</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <small>© 2026 Cascade</small>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="waitlist-modal" onclick="handleOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeWaitlist()">✕</button>
+    <div id="modal-form-wrap">
+      <div class="modal-badge">Early Access</div>
+      <h3>Get early access <em>to Cascade.</em></h3>
+      <p>Be the first to know when we launch.</p>
+      <input type="email" id="waitlist-email" class="modal-input" placeholder="your@email.com" />
+      <button class="modal-submit" onclick="submitWaitlist()">Join the Waitlist</button>
     </div>
-    <div class="feedback-inner fade-in">
-      <span class="s-label">Feedback</span>
-      <h2>Shape <em>the app.</em></h2>
-      <p class="s-sub" style="margin-bottom:3rem;">Have a feature request or suggestion? Share it — and vote on what matters most.</p>
-
-      <!-- Submit -->
-      <div class="feedback-form-wrap">
-        <textarea id="feedback-input" class="feedback-input" placeholder="Share your idea or suggestion..." rows="3"></textarea>
-        <button onclick="submitFeedback()" class="feedback-btn">Submit</button>
-      </div>
-
-      <!-- List -->
-      <div class="feedback-list" id="feedback-list">
-        <div class="feedback-loading">Loading suggestions...</div>
-      </div>
+    <div class="modal-success" id="modal-success">
+      <h4>You're on the list.</h4>
+      <p>We'll reach out when Cascade is ready.</p>
     </div>
-  </section>
+  </div>
+</div>
 
-  <!-- FOOTER -->
-  <footer>
-    <a href="#" class="logo">Cascade</a>
-    <ul class="f-links">
-      <li><a href="#">Privacy Policy</a></li>
-      <li><a href="#">Contact</a></li>
-    </ul>
-    <small>© 2026 Cascade</small>
-  </footer>
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBhh2U4MeLqd5BMvt2wjTXAsWFJ_ZwF9zxNxEQBErTWwRJjr7xpqHYt_7zKx0VxYMu/exec";
 
-  <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyRGSIIaYmKBazm5KqA1umHM_83O5G3-Sc1FKZZydwHTDNv0MhHA7LeN8v-5F1d_sUi/exec";
+const navColors = {
+  zen:   'rgba(212,237,224,0.92)',
+  hc:    'rgba(236,216,212,0.92)',
+  vault: 'rgba(219,212,237,0.92)',
+};
 
-    const fades = document.querySelectorAll('.fade-in');
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
-    fades.forEach(el => obs.observe(el));
+const modeColors = {
+  zen:   'radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%) fixed',
+  hc:    'radial-gradient(ellipse at 50% 30%, #8b2818 0%, #6b1d12 60%, #3d0e08 100%) fixed',
+  vault: 'radial-gradient(ellipse at 50% 30%, #4f3aa8 0%, #382680 60%, #1f1450 100%) fixed',
+};
 
-    const heroContent = document.querySelector('.hero-content');
-    const hero = document.querySelector('.hero');
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      const heroH = hero.offsetHeight;
-      const progress = Math.min(y / (heroH * 0.55), 1);
-      const op = Math.max(1 - progress * 1.6, 0);
-      const ty = -progress * 55;
-      if (heroContent) { heroContent.style.opacity = op; heroContent.style.transform = `translateY(${ty}px)`; }
-    }, { passive: true });
+const phoneFrame = document.getElementById('phone-frame');
+const featPanels  = document.querySelectorAll('.feat-panel');
+const featScreens = document.querySelectorAll('.phone-screen');
+const navEl = document.querySelector('nav');
 
-    function openWaitlist() {
-      document.getElementById('waitlist-modal').classList.add('open');
-      document.body.style.overflow = 'hidden';
-      setTimeout(() => document.getElementById('waitlist-email').focus(), 300);
+const modeFrameClass = { zen: 'zen-active', hc: 'hc-active', vault: 'vault-active' };
+
+// Dinamik style tag ile arka plan rengi
+const dynStyle = document.createElement('style');
+document.head.appendChild(dynStyle);
+
+let _lastBg = '';
+let _ticking = false;
+
+function setBgColor(bg) {
+  if (bg === _lastBg) return;
+  _lastBg = bg;
+  dynStyle.textContent = `body { background: ${bg} !important; }`;
+}
+
+// İki rgb arasında interpolasyon
+function lerpColor(a, b, t) {
+  return [
+    Math.round(a[0] + (b[0] - a[0]) * t),
+    Math.round(a[1] + (b[1] - a[1]) * t),
+    Math.round(a[2] + (b[2] - a[2]) * t),
+  ].join(',');
+}
+
+function setActive(i) {
+  featPanels.forEach((p, j) => p.classList.toggle('active', j === i));
+  featScreens.forEach((s, j) => s.classList.toggle('active', j === i));
+  const mode = featPanels[i].dataset.mode;
+  phoneFrame.className = 'phone-frame ' + modeFrameClass[mode];
+  setBgColor(modeColors[mode]);
+}
+
+// Scroll ile panel takibi
+function updateActivePanel() {
+  const winMid = window.innerHeight / 2;
+  const featSection = document.querySelector('.features-section');
+  const featRect = featSection.getBoundingClientRect();
+
+  // Features bölümü ÜSTÜNDE (henüz girmedik)
+  if (featRect.top > window.innerHeight) {
+    setBgColor('radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%) fixed');
+    return;
+  }
+
+  // Features bölümü ALTINDA (çıktık - vault'tan sonra) — smooth gradient akış
+  if (featRect.bottom < 0) {
+    const featBottomAbs = window.scrollY + featRect.bottom;
+    const docEnd = document.documentElement.scrollHeight - window.innerHeight;
+    const range  = Math.max(docEnd - featBottomAbs, 1);
+    const t = Math.min(Math.max((window.scrollY - featBottomAbs) / range, 0), 1);
+
+    const c1 = lerpColor([79, 58, 168], [106, 157, 138], t);
+    const c2 = lerpColor([56, 38, 128], [93, 138, 110], t);
+    const c3 = lerpColor([31, 20, 80], [61, 90, 94], t);
+
+    setBgColor(`radial-gradient(ellipse at 50% 30%, rgb(${c1}) 0%, rgb(${c2}) 60%, rgb(${c3}) 100%) fixed`);
+    return;
+  }
+
+  let found = false;
+  featPanels.forEach((panel, i) => {
+    const rect = panel.getBoundingClientRect();
+    if (!found && rect.top <= winMid && rect.bottom >= winMid) {
+      found = true;
+      setActive(i);
     }
-    function closeWaitlist() {
-      document.getElementById('waitlist-modal').classList.remove('open');
-      document.body.style.overflow = '';
-    }
-    function handleOverlayClick(e) {
-      if (e.target === document.getElementById('waitlist-modal')) closeWaitlist();
-    }
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeWaitlist(); });
+  });
 
-    function submitWaitlist() {
-      const email = document.getElementById('waitlist-email').value.trim();
-      if (!email || !email.includes('@')) return;
-      document.getElementById('modal-form-wrap').style.display = 'none';
-      document.getElementById('modal-success').style.display = 'block';
-      setTimeout(closeWaitlist, 2500);
-      fetch(SCRIPT_URL, {
-        method: 'POST', mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      }).catch(() => {});
-    }
+  if (!found) {
+    let minDist = Infinity, bestIdx = 0;
+    featPanels.forEach((panel, i) => {
+      const rect = panel.getBoundingClientRect();
+      const center = (rect.top + rect.bottom) / 2;
+      const dist = Math.abs(center - winMid);
+      if (dist < minDist) { minDist = dist; bestIdx = i; }
+    });
+    setActive(bestIdx);
+  }
+}
 
-    // ── FEEDBACK ──
-    const VOTED_KEY = 'cascade_voted';
+function onScroll() {
+  if (_ticking) return;
+  _ticking = true;
+  requestAnimationFrame(() => {
+    updateActivePanel();
+    _ticking = false;
+  });
+}
 
-    function getVoted() {
-      try { return JSON.parse(localStorage.getItem(VOTED_KEY) || '[]'); } catch { return []; }
-    }
-    function addVoted(id) {
-      const v = getVoted(); v.push(id);
-      localStorage.setItem(VOTED_KEY, JSON.stringify(v));
-    }
+window.addEventListener('scroll', onScroll, { passive: true });
+updateActivePanel();
 
-    async function loadFeedback() {
-      const list = document.getElementById('feedback-list');
-      list.innerHTML = '<div class="feedback-loading">Loading...</div>';
-      
-      const timeout = new Promise((_, reject) => setTimeout(() => reject('timeout'), 5000));
-      
-      try {
-        const res = await Promise.race([
-          fetch(SCRIPT_URL, { method: 'GET' }),
-          timeout
-        ]);
-        const items = await res.json();
-        renderFeedback(items);
-      } catch {
-        // JSONP fallback
-        const timer = setTimeout(() => {
-          renderFeedback([]);
-        }, 5000);
-        window._feedbackCallback = function(items) {
-          clearTimeout(timer);
-          renderFeedback(items);
-        };
-        const s = document.createElement('script');
-        s.src = SCRIPT_URL + '?callback=_feedbackCallback';
-        document.head.appendChild(s);
-      }
-    }
+const fadeObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => fadeObs.observe(el));
 
-    function renderFeedback(items) {
-      const list = document.getElementById('feedback-list');
-      const voted = getVoted();
-      if (!items || !items.length) {
-        list.innerHTML = '<div class="feedback-empty">No suggestions yet. Be the first!</div>';
-        return;
-      }
-      list.innerHTML = items.map(item => `
-        <div class="feedback-item" id="item-${item.id}">
-          <button class="upvote-btn ${voted.includes(item.id) ? 'voted' : ''}"
-            onclick="upvote('${item.id}')" ${voted.includes(item.id) ? 'disabled' : ''}>
-            <span class="upvote-arrow">▲</span>
-            <span class="upvote-count" id="votes-${item.id}">${item.upvotes}</span>
-          </button>
-          <p class="feedback-text">${escHtml(item.text)}</p>
-        </div>
-      `).join('');
-    }
-
-    async function submitFeedback() {
-      const input = document.getElementById('feedback-input');
-      const text = input.value.trim();
-      if (!text) return;
-      const btn = document.querySelector('.feedback-btn');
-      btn.disabled = true; btn.textContent = 'Submitting...';
-      try {
-        await fetch(SCRIPT_URL, {
-          method: 'POST', mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'feedback', text })
-        });
-        input.value = '';
-        btn.textContent = 'Submitted!';
-        setTimeout(() => { btn.disabled = false; btn.textContent = 'Submit'; loadFeedback(); }, 1500);
-      } catch {
-        btn.disabled = false; btn.textContent = 'Submit';
-      }
-    }
-
-    async function upvote(id) {
-      const voted = getVoted();
-      if (voted.includes(id)) return;
-      addVoted(id);
-      const btn = document.querySelector(`#item-${id} .upvote-btn`);
-      const countEl = document.getElementById(`votes-${id}`);
-      if (btn) { btn.classList.add('voted'); btn.disabled = true; }
-      if (countEl) countEl.textContent = parseInt(countEl.textContent) + 1;
-      await fetch(SCRIPT_URL, {
-        method: 'POST', mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'upvote', id })
-      });
-    }
-
-    function escHtml(str) {
-      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    }
-
-    // Feedback'i sayfa açılışında değil, bölüm görününce yükle
-    const feedbackSection = document.getElementById('feedback');
-    const feedbackObs = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        loadFeedback();
-        feedbackObs.disconnect();
-      }
-    }, { threshold: 0.1 });
-    if (feedbackSection) feedbackObs.observe(feedbackSection);
-  </script>
+function openWaitlist() {
+  document.getElementById('waitlist-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('waitlist-email').focus(), 280);
+}
+function closeWaitlist() {
+  document.getElementById('waitlist-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function handleOverlay(e) {
+  if (e.target === document.getElementById('waitlist-modal')) closeWaitlist();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeWaitlist(); });
+function submitWaitlist() {
+  const email = document.getElementById('waitlist-email').value.trim();
+  if (!email || !email.includes('@')) return;
+  document.getElementById('modal-form-wrap').style.display = 'none';
+  document.getElementById('modal-success').style.display = 'block';
+  setTimeout(closeWaitlist, 2500);
+  fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email}) }).catch(()=>{});
+}
+</script>
 </body>
 </html>
+
