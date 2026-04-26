@@ -18,15 +18,9 @@ a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transpar
   --fg:      #18171a;
   --muted:   #5a7868;
   --border:  rgba(0,0,0,0.1);
-  --zen:     #0ea861;
-  --hc:      #d45a20;
-  --vault:   #6644cc;
 }
 
-html {
-  background: #3d5a5e;
-  overscroll-behavior: none;
-}
+html { background: #3d5a5e; overscroll-behavior: none; }
 
 body {
   background: radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%);
@@ -34,8 +28,6 @@ body {
   font-family: 'DM Sans', system-ui, sans-serif;
   font-weight: 300;
   overflow-x: hidden;
-  overscroll-behavior: none;
-  -webkit-font-smoothing: antialiased;
   background-attachment: fixed;
 }
 
@@ -44,175 +36,87 @@ nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 3rem; height: 62px;
-  background: transparent;
-  transition: background 0.8s ease;
 }
-.logo {
-  font-family: 'Instrument Serif', serif;
-  font-size: 1.85rem; font-weight: 400; color: #f5f5f0;
-  letter-spacing: -0.01em;
-}
-.nav-r { display: flex; align-items: center; gap: 2.5rem; }
-.nav-r a { color: rgba(245,245,240,0.7); font-size: 0.85rem; font-weight: 400; transition: color 0.2s; }
-.nav-r a:hover { color: #f5f5f0; }
-.nav-btn {
-  background: #f5f5f0; color: #18171a;
-  padding: 0.45rem 1.2rem; border-radius: 100px;
-  font-size: 0.82rem; font-weight: 500; font-family: inherit;
-  border: none; cursor: pointer; transition: opacity 0.2s;
-}
-.nav-btn:hover { opacity: 0.82; }
+.logo { font-family: 'Instrument Serif', serif; font-size: 1.85rem; color: #f5f5f0; }
+.nav-btn { background: #f5f5f0; color: #18171a; padding: 0.45rem 1.2rem; border-radius: 100px; font-weight: 500; cursor: pointer; border: none; }
 
 /* ── HERO ── */
-.hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center;
-  padding: 10rem 2rem 6rem;
-  position: relative;
-}
-
-h1 {
-  font-family: 'Instrument Serif', serif;
-  font-size: clamp(3rem, 6vw, 6rem); font-weight: 400;
-  line-height: 1.05; letter-spacing: -0.025em;
-  margin-bottom: 1.75rem; max-width: 800px;
-  opacity: 0; animation: fadeUp 0.7s 0.4s ease forwards;
-}
-h1 em { font-style: italic; color: var(--muted); }
+.hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding: 0 2rem; }
+.hero-content { position: relative; z-index: 10; width: 100%; max-width: 1100px; display: flex; align-items: center; }
 
 /* ── FEATURES ── */
-.features-section { padding-top: 4rem; }
-.features-header { text-align: center; padding: 6rem 2rem 3rem; }
-h2 {
-  font-family: 'Instrument Serif', serif;
-  font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 400;
-  line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 0.75rem;
-  color: #f5f5f0;
-}
-h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
-.s-label { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
-.s-sub { color: rgba(245,245,240,0.7); font-size: 0.95rem; line-height: 1.75; }
+.features-header { text-align: center; padding: 120px 2rem 40px; }
+h2 { font-family: 'Instrument Serif', serif; font-size: clamp(2.2rem, 4vw, 3.5rem); color: #f5f5f0; font-weight: 400; }
 
-/* ── STICKY SCROLL (DESKTOP) ── */
-.sticky-wrap {
-  display: flex;
-  max-width: 1900px;
-  margin: 0 auto;
-  padding: 0 2rem 8rem;
-  gap: 2rem;
-  align-items: flex-start;
-}
+/* ── STICKY WRAP (DESKTOP) ── */
+.sticky-wrap { display: flex; max-width: 1900px; margin: 0 auto; padding: 0 2rem 8rem; gap: 2rem; align-items: flex-start; }
 .panels-col { flex: 1; display: flex; flex-direction: column; }
-.feat-panel {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 5rem 0;
-  opacity: 0.3;
-  transition: opacity 0.4s ease;
-}
+.feat-panel { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; opacity: 0.3; transition: opacity 0.4s ease; }
 .feat-panel.active { opacity: 1; }
-.feat-mode-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; padding: 0.28rem 0.8rem; border-radius: 100px; display: inline-flex; align-items: center; margin-bottom: 1.75rem; width: fit-content; }
-.feat-mode-tag.zen   { color: #6ee7b7; background: rgba(110,231,183,0.12); border: 1px solid rgba(110,231,183,0.3); }
-.feat-mode-tag.hc    { color: #fed7aa; background: rgba(254,215,170,0.12); border: 1px solid rgba(254,215,170,0.3); }
-.feat-mode-tag.vault { color: #ddd6fe; background: rgba(221,214,254,0.12); border: 1px solid rgba(221,214,254,0.3); }
-.feat-title { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif; font-size: clamp(2rem, 3vw, 2.8rem); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 1.25rem; color: #f5f5f0; }
-.feat-desc { font-size: 0.95rem; color: rgba(245,245,240,0.75); line-height: 1.7; max-width: 340px; }
 
-.phone-col { width: 1100px; flex-shrink: 0; position: sticky; top: 50px; align-self: flex-start; height: fit-content; }
-.phone-frame { width: 1100px; height: auto; position: relative; transition: filter 0.5s ease; }
+.phone-col { width: 1100px; flex-shrink: 0; position: sticky; top: 50px; align-self: flex-start; }
+.phone-frame { width: 100%; position: relative; }
 .phone-screen { position: relative; width: 100%; opacity: 0; transition: opacity 0.5s ease; }
 .phone-screen:not(.active) { position: absolute; inset: 0; }
 .phone-screen.active { opacity: 1; }
-.phone-screen img { width: 100%; height: auto; display: block; }
+.phone-screen img { width: 100%; display: block; }
 
-/* ── HOW IT WORKS ── */
-.how-section { padding: 8rem 2rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
-.how-inner { max-width: 520px; width: 100%; }
-.steps { display: flex; flex-direction: column; width: 100%; text-align: left; }
-.step { display: flex; gap: 1.5rem; padding: 1.75rem 0; border-bottom: 1px solid rgba(245,245,240,0.12); }
-.step h4 { font-size: 0.93rem; font-weight: 500; margin-bottom: 0.3rem; color: #f5f5f0; }
-.step p { font-size: 0.83rem; color: rgba(245,245,240,0.6); line-height: 1.7; }
-
-/* ── CTA ── */
-.cta-section { padding: 8rem 2rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
-.btn-cta { background: #f5f5f0; color: #18171a; padding: 0.9rem 2.2rem; border-radius: 100px; font-weight: 500; cursor: pointer; border:none; }
-
-/* ── FOOTER ── */
-footer { padding: 2rem 3rem; display: flex; align-items: center; justify-content: space-between; }
-.f-links { display: flex; gap: 2rem; list-style: none; }
-.f-links a { font-size: 0.78rem; color: rgba(245,245,240,0.55); }
-
-/* ── MODAL ── */
-.modal-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(24,23,26,0.6); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
-.modal-overlay.open { opacity: 1; pointer-events: all; }
-.modal { background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 2.5rem; max-width: 400px; width: 100%; color: #f5f5f0; position: relative; }
-.modal-close { position: absolute; top: 1.25rem; right: 1.25rem; background: none; border: none; color: rgba(245,245,240,0.5); cursor: pointer; }
-.modal-input { width: 100%; height: 46px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #f5f5f0; padding: 0 1rem; margin-bottom: 0.75rem; outline: none; }
-.modal-submit { width: 100%; height: 46px; background: #f5f5f0; color: #0a0a0a; border: none; border-radius: 10px; font-weight: 500; cursor: pointer; }
-
-/* FADE UP ANIMATION */
-.fade-up { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
-.fade-up.in { opacity: 1; transform: translateY(0); }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
-
-/* ── MOBILE RESPONSIVE (LUNA STYLE) ── */
+/* ── MOBILE RESPONSIVE (CRITICAL FIX) ── */
 @media (max-width: 860px) {
-  nav { padding: 0 1.25rem; height: 58px; }
-  .logo { font-size: 1.5rem; }
+  nav { padding: 0 1.25rem; }
   .nav-r a:not(.nav-btn) { display: none; }
-  
-  .hero { padding: 6rem 1.5rem 4rem; }
-  .hero h1 { font-size: 2.8rem; }
-  .hero img { width: 140% !important; right: -20% !important; position: relative !important; top: 20px !important; transform: none !important; }
-
-  /* Feature Bölümü Mobil Düzenleme */
-  .sticky-wrap { flex-direction: column; padding: 0; gap: 0; }
-  .phone-col { display: none; } /* Desktop sticky telefonu gizle */
+  .sticky-wrap { flex-direction: column; padding: 0; }
+  .phone-col { display: none; }
 
   .feat-panel {
-    min-height: auto;
-    padding: 4rem 1.5rem;
+    min-height: 100vh;
+    padding: 0;
     opacity: 1;
-    text-align: center;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: flex-start; /* Üste yasla */
     align-items: center;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    position: relative;
   }
 
-  /* Lunabudgeting tarzı mockup ekleme */
+  /* Mockup Alanı */
   .feat-panel::before {
     content: "";
     display: block;
     width: 100%;
-    max-width: 320px; /* Büyük mockup boyutu */
-    aspect-ratio: 9 / 19;
+    height: 65vh; /* Ekranın %65'ini kaplasın */
+    background-image: var(--mobile-img);
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: center;
-    margin-bottom: 2rem;
-    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.3));
+    background-position: center bottom; /* Görseli kutunun dibine dayayarak boşluğu bitir */
+    margin-bottom: 0;
   }
 
-  /* Her panel için özel mockup görseli (CSS variable üzerinden) */
-  .feat-panel[data-feat="0"]::before { background-image: url('anasayfa.png'); }
-  .feat-panel[data-feat="1"]::before { background-image: url('zenmodemockup.png'); }
-  .feat-panel[data-feat="2"]::before { background-image: url('zenmoderutin.png'); }
-  .feat-panel[data-feat="3"]::before { background-image: url('hardcoremode.png'); }
-  .feat-panel[data-feat="4"]::before { background-image: url('unlockwindowhardcore.png'); }
-  .feat-panel[data-feat="5"]::before { background-image: url('hardcorerutinayar.png'); }
-  .feat-panel[data-feat="6"]::before { background-image: url('vaultmode.png'); }
-  .feat-panel[data-feat="7"]::before { background-image: url('518shots_so-Photoroom.png'); }
-  .feat-panel[data-feat="8"]::before { background-image: url('vaultrutin.png'); }
+  /* Yazı Alanı - Görselin bittiği yerden başlar */
+  .feat-text-wrap {
+    padding: 20px 1.5rem 60px;
+    text-align: center;
+    width: 100%;
+    background: transparent;
+  }
 
-  .feat-title { font-size: 1.8rem; margin-bottom: 1rem; max-width: 100%; }
-  .feat-desc { font-size: 0.9rem; max-width: 100%; margin: 0 auto; }
-  .feat-mode-tag { margin-bottom: 1rem; }
+  .feat-mode-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+    padding: 0.3rem 0.8rem; border-radius: 100px;
+    text-transform: uppercase; margin-bottom: 1rem; display: inline-block;
+  }
+  .feat-mode-tag.zen { color: #6ee7b7; background: rgba(110,231,183,0.12); border: 1px solid rgba(110,231,183,0.3); }
+  .feat-mode-tag.hc { color: #fed7aa; background: rgba(254,215,170,0.12); border: 1px solid rgba(254,215,170,0.3); }
+  .feat-mode-tag.vault { color: #ddd6fe; background: rgba(221,214,254,0.12); border: 1px solid rgba(221,214,254,0.3); }
 
-  footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+  .feat-title { font-size: 1.85rem !important; margin-bottom: 0.75rem !important; width: 100% !important; max-width: 100% !important; }
+  .feat-desc { font-size: 0.95rem !important; line-height: 1.6 !important; color: rgba(245,245,240,0.7) !important; width: 100% !important; max-width: 100% !important; }
 }
+
+/* Modal vs. Diğer Standart Ayarlar */
+.modal-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(24,23,26,0.6); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal { background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 2.5rem; max-width: 400px; width: 100%; color: #f5f5f0; }
 </style>
 </head>
 <body>
@@ -220,41 +124,20 @@ footer { padding: 2rem 3rem; display: flex; align-items: center; justify-content
 <nav>
   <span class="logo">Cascade</span>
   <div class="nav-r">
-    <a href="#features">Features</a>
-    <a href="#about">About</a>
-    <a href="#feedback">Feedback</a>
     <button onclick="openWaitlist()" class="nav-btn">Join Waitlist</button>
   </div>
 </nav>
 
-<section class="hero">
-  <div style="position:absolute;inset:0;z-index:0;background:linear-gradient(135deg, #5d8a6e 0%, #6a9d8a 25%, #7eb4a0 45%, #5d8a8e 65%, #3d5a5e 85%, #1a2a30 100%);">
-    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%, rgba(180,210,180,0.25) 0%, transparent 60%);"></div>
-  </div>
-  <div style="position:relative;z-index:10;width:100%;max-width:1100px;padding:0 4rem;display:flex;align-items:center;" id="hero-content">
-    <div style="max-width:520px;">
-      <p style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(240,238,236,0.55);margin-bottom:1.5rem;opacity:0;animation:fadeUp 1s 0.3s ease forwards;">Coming to iOS</p>
-      <h1 style="color:#f5f5f0;opacity:0;animation:fadeUp 1s 0.5s ease forwards;text-shadow:0 2px 20px rgba(0,0,0,0.3);">A screen time app <em style="font-style:italic;color:rgba(245,245,240,0.55);">you'll love using.</em></h1>
-      <p style="font-size:1rem;color:rgba(245,245,240,0.7);line-height:1.75;max-width:360px;margin:0 0 2.5rem;opacity:0;animation:fadeUp 1s 0.7s ease forwards;">Easy to use, designed to help you take back your time. Block what distracts. Keep what matters.</p>
-      <button onclick="openWaitlist()" class="nav-btn" style="opacity:0;animation:fadeUp 1s 0.9s ease forwards;">Join the Waitlist</button>
-    </div>
-    <div style="position:absolute;right:-400px;top:57%;transform:translateY(-50%);opacity:0.95;">
-      <img src="anasayfa.png" alt="Cascade app" style="width:1100px;height:auto;filter:drop-shadow(0 40px 80px rgba(0,0,0,0.5));" />
-    </div>
-  </div>
-</section>
-
 <section class="features-section" id="features">
-  <div class="features-header fade-up">
+  <div class="features-header">
     <p class="s-label">Features</p>
     <h2>Built to <em>make things easy.</em></h2>
-    <p class="s-sub">Every tool you need to cut through the noise.</p>
   </div>
 
   <div class="sticky-wrap">
     <div class="phone-col">
-      <div class="phone-frame zen-active" id="phone-frame">
-        <div class="phone-screen active"><img src="anasayfa.png" alt="Path" /></div>
+      <div class="phone-frame" id="phone-frame">
+        <div class="phone-screen active"><img src="anasayfa.png" /></div>
         <div class="phone-screen"><img src="zenmodemockup.png" /></div>
         <div class="phone-screen"><img src="zenmoderutin.png" /></div>
         <div class="phone-screen"><img src="hardcoremode.png" /></div>
@@ -267,149 +150,120 @@ footer { padding: 2rem 3rem; display: flex; align-items: center; justify-content
     </div>
 
     <div class="panels-col">
-      <div class="feat-panel active" data-feat="0" data-mode="zen">
-        <span class="feat-mode-tag zen">Choose your path</span>
-        <h3 class="feat-title">How will <em>you resist?</em></h3>
-        <p class="feat-desc">Three modes to fit your day. Zen for gentle focus. Hardcore for serious commitment. Vault for protection.</p>
+      <div class="feat-panel active" data-feat="0" data-mode="zen" style="--mobile-img: url('anasayfa.png')">
+        <div class="feat-text-wrap">
+          <span class="feat-mode-tag zen">Choose your path</span>
+          <h3 class="feat-title">How will <em>you resist?</em></h3>
+          <p class="feat-desc">Three modes to fit your day. Zen for gentle focus. Hardcore for serious commitment. Vault for protection.</p>
+        </div>
       </div>
-
-      <div class="feat-panel" data-feat="1" data-mode="zen">
-        <span class="feat-mode-tag zen">Zen Mode</span>
-        <h3 class="feat-title">Gentle blocking.</h3>
-        <p class="feat-desc">Pick the apps you want to block and the session length, then start. If you need to stop, you can.</p>
+      <div class="feat-panel" data-feat="1" data-mode="zen" style="--mobile-img: url('zenmodemockup.png')">
+        <div class="feat-text-wrap">
+          <span class="feat-mode-tag zen">Zen Mode</span>
+          <h3 class="feat-title">Gentle blocking.</h3>
+          <p class="feat-desc">Pick the apps you want to block and the session length, then start. If you need to stop, you can.</p>
+        </div>
       </div>
-
-      <div class="feat-panel" data-feat="2" data-mode="zen">
-        <span class="feat-mode-tag zen">Zen Mode</span>
-        <h3 class="feat-title">Set a <em>routine.</em></h3>
-        <p class="feat-desc">Schedule recurring blocks for any day and time. Cascade starts your session automatically.</p>
+      <div class="feat-panel" data-feat="2" data-mode="zen" style="--mobile-img: url('zenmoderutin.png')">
+        <div class="feat-text-wrap">
+          <span class="feat-mode-tag zen">Zen Mode</span>
+          <h3 class="feat-title">Set a <em>routine.</em></h3>
+          <p class="feat-desc">Schedule recurring blocks for any day and time. Cascade starts your session automatically.</p>
+        </div>
       </div>
-
-      <div class="feat-panel" data-feat="3" data-mode="hc">
-        <span class="feat-mode-tag hc">Hardcore Mode</span>
-        <h3 class="feat-title">Customizable blocking.</h3>
-        <p class="feat-desc">You block the apps you choose, but you also give yourself a few unlock passes.</p>
+      <div class="feat-panel" data-feat="3" data-mode="hc" style="--mobile-img: url('hardcoremode.png')">
+        <div class="feat-text-wrap">
+          <span class="feat-mode-tag hc">Hardcore Mode</span>
+          <h3 class="feat-title">Customizable blocking.</h3>
+          <p class="feat-desc">You block the apps you choose, but you also give yourself a few unlock passes.</p>
+        </div>
       </div>
-
-      <div class="feat-panel" data-feat="4" data-mode="hc">
-        <span class="feat-mode-tag hc">Hardcore Mode</span>
-        <h3 class="feat-title">Your rules. <em>Your limits.</em></h3>
-        <p class="feat-desc">Set blocking duration and temporary unlock windows before you start.</p>
+      <div class="feat-panel" data-feat="4" data-mode="hc" style="--mobile-img: url('unlockwindowhardcore.png')">
+        <div class="feat-text-wrap">
+          <span class="feat-mode-tag hc">Hardcore Mode</span>
+          <h3 class="feat-title">Your rules. <em>Your limits.</em></h3>
+          <p class="feat-desc">Set blocking duration and temporary unlock windows before you start.</p>
+        </div>
       </div>
-
-      <div class="feat-panel" data-feat="5" data-mode="hc">
-        <span class="feat-mode-tag hc">Hardcore Mode</span>
-        <h3 class="feat-title">Routine on <em>autopilot.</em></h3>
-        <p class="feat-desc">Set recurring Hardcore sessions. Cascade locks you in automatically.</p>
+      <div class="feat-panel" data-feat="5" data-mode="hc" style="--mobile-img: url('hardcorerutinayar.png')">
+        <div class="feat-text-wrap">
+          <span class="feat-mode-tag hc">Hardcore Mode</span>
+          <h3 class="feat-title">Routine on <em>autopilot.</em></h3>
+          <p class="feat-desc">Set recurring Hardcore sessions. Cascade locks you in automatically.</p>
+        </div>
       </div>
-
-      <div class="feat-panel" data-feat="6" data-mode="vault">
-        <span class="feat-mode-tag vault">Vault Mode</span>
-        <h3 class="feat-title">Strict blocking.</h3>
-        <p class="feat-desc">No early stop. The only way in is a limited number of weekly unlock passes.</p>
+      <div class="feat-panel" data-feat="6" data-mode="vault" style="--mobile-img: url('vaultmode.png')">
+        <div class="feat-text-wrap">
+          <span class="feat-mode-tag vault">Vault Mode</span>
+          <h3 class="feat-title">Strict blocking.</h3>
+          <p class="feat-desc">No early stop. The only way in is a limited number of weekly unlock passes.</p>
+        </div>
       </div>
-
-      <div class="feat-panel" data-feat="7" data-mode="vault">
-        <span class="feat-mode-tag vault">Vault Mode</span>
-        <h3 class="feat-title">No way <em>out.</em></h3>
-        <p class="feat-desc">Vault sessions cannot be stopped early. The strongest commitment you can make.</p>
+      <div class="feat-panel" data-feat="7" data-mode="vault" style="--mobile-img: url('518shots_so-Photoroom.png')">
+        <div class="feat-text-wrap">
+          <span class="feat-mode-tag vault">Vault Mode</span>
+          <h3 class="feat-title">No way <em>out.</em></h3>
+          <p class="feat-desc">Vault sessions cannot be stopped early. The strongest commitment you can make.</p>
+        </div>
       </div>
-
-      <div class="feat-panel" data-feat="8" data-mode="vault">
-        <span class="feat-mode-tag vault">Vault Mode</span>
-        <h3 class="feat-title">Lock it in <em>on schedule.</em></h3>
-        <p class="feat-desc">Set recurring Vault sessions. Once the schedule kicks in, there's no early exit.</p>
+      <div class="feat-panel" data-feat="8" data-mode="vault" style="--mobile-img: url('vaultrutin.png')">
+        <div class="feat-text-wrap">
+          <span class="feat-mode-tag vault">Vault Mode</span>
+          <h3 class="feat-title">Lock it in <em>on schedule.</em></h3>
+          <p class="feat-desc">Set recurring Vault sessions. Once the schedule kicks in, there's no early exit.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
-
-<section class="how-section">
-  <div class="how-inner fade-up">
-    <p class="s-label">How it works</p>
-    <h2>Simple to start.</h2>
-    <div class="steps">
-      <div class="step"><div><h4>Choose your mode</h4><p>Zen, Hardcore, or Vault.</p></div></div>
-      <div class="step"><div><h4>Pick your blocklist</h4><p>Choose which apps get restricted.</p></div></div>
-      <div class="step"><div><h4>Start your session</h4><p>Let Cascade handle the rest.</p></div></div>
-    </div>
-  </div>
-</section>
-
-<section class="cta-section" id="waitlist">
-  <h2>Ready to take back <em>your time?</em></h2>
-  <button class="btn-cta" onclick="openWaitlist()">Join the Waitlist</button>
-</section>
-
-<footer>
-  <span class="f-logo">Cascade</span>
-  <ul class="f-links"><li><a href="#">Privacy</a></li><li><a href="#">Contact</a></li></ul>
-  <small>© 2026 Cascade</small>
-</footer>
-
-<div class="modal-overlay" id="waitlist-modal" onclick="handleOverlay(event)">
-  <div class="modal">
-    <button class="modal-close" onclick="closeWaitlist()">✕</button>
-    <h3>Get early access.</h3>
-    <input type="email" id="waitlist-email" class="modal-input" placeholder="your@email.com" />
-    <button class="modal-submit" onclick="submitWaitlist()">Join the Waitlist</button>
-    <div id="modal-success" style="display:none; text-align:center; margin-top:1rem;"><h4>Success!</h4></div>
-  </div>
-</div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBhh2U4MeLqd5BMvt2wjTXAsWFJ_ZwF9zxNxEQBErTWwRJjr7xpqHYt_7zKx0VxYMu/exec";
 const modeColors = {
   zen: 'radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%) fixed',
   hc: 'radial-gradient(ellipse at 50% 30%, #8b2818 0%, #6b1d12 60%, #3d0e08 100%) fixed',
   vault: 'radial-gradient(ellipse at 50% 30%, #4f3aa8 0%, #382680 60%, #1f1450 100%) fixed',
 };
 
-const phoneFrame = document.getElementById('phone-frame');
-const featPanels = document.querySelectorAll('.feat-panel');
-const featScreens = document.querySelectorAll('.phone-screen');
 const dynStyle = document.createElement('style');
 document.head.appendChild(dynStyle);
 
 function setBgColor(bg) { dynStyle.textContent = `body { background: ${bg} !important; }`; }
 
-function setActive(i) {
-  featPanels.forEach((p, j) => p.classList.toggle('active', j === i));
-  featScreens.forEach((s, j) => s.classList.toggle('active', j === i));
-  const mode = featPanels[i].dataset.mode;
-  if(phoneFrame) phoneFrame.className = 'phone-frame ' + mode + '-active';
-  setBgColor(modeColors[mode]);
-}
+const featPanels = document.querySelectorAll('.feat-panel');
+const featScreens = document.querySelectorAll('.phone-screen');
 
 function updateActivePanel() {
-  if(window.innerWidth <= 860) return; // Mobilde sticky efektini devre dışı bırak
   const winMid = window.innerHeight / 2;
-  let found = false;
+  
   featPanels.forEach((panel, i) => {
     const rect = panel.getBoundingClientRect();
-    if (!found && rect.top <= winMid && rect.bottom >= winMid) {
-      found = true; setActive(i);
+    if (rect.top <= winMid && rect.bottom >= winMid) {
+      panel.classList.add('active');
+      if (featScreens[i]) featScreens[i].classList.add('active');
+      setBgColor(modeColors[panel.dataset.mode]);
+    } else {
+      panel.classList.remove('active');
+      if (featScreens[i]) featScreens[i].classList.remove('active');
     }
   });
 }
 
-window.addEventListener('scroll', updateActivePanel, { passive: true });
+window.addEventListener('scroll', updateActivePanel);
 updateActivePanel();
-
-const fadeObs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-}, { threshold: 0.1 });
-document.querySelectorAll('.fade-up').forEach(el => fadeObs.observe(el));
 
 function openWaitlist() { document.getElementById('waitlist-modal').classList.add('open'); }
 function closeWaitlist() { document.getElementById('waitlist-modal').classList.remove('open'); }
 function handleOverlay(e) { if (e.target.id === 'waitlist-modal') closeWaitlist(); }
-function submitWaitlist() {
-  const email = document.getElementById('waitlist-email').value;
-  if(!email.includes('@')) return;
-  document.getElementById('modal-success').style.display = 'block';
-  setTimeout(closeWaitlist, 2000);
-}
 </script>
+
+<div class="modal-overlay" id="waitlist-modal" onclick="handleOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeWaitlist()">✕</button>
+    <h3>Join the list.</h3>
+    <input type="email" class="modal-input" placeholder="your@email.com" />
+    <button class="modal-submit">Join the Waitlist</button>
+  </div>
+</div>
+
 </body>
 </html>
