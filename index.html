@@ -86,7 +86,6 @@ h1 {
 }
 h1 em { font-style: italic; color: var(--muted); }
 
-/* ── SECTION LABEL ── */
 .s-label {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
@@ -116,22 +115,20 @@ h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
   align-items: flex-start;
 }
 
-.panels-col {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
+.panels-col { flex: 1; display: flex; flex-direction: column; }
 
 .feat-panel {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: flex; flex-direction: column; justify-content: center;
   padding: 5rem 0;
   border-bottom: 1px solid var(--border);
-  opacity: 0.3;
-  transition: opacity 0.4s ease;
+  opacity: 0.3; transition: opacity 0.4s ease;
 }
+.feat-panel:last-child { border-bottom: none; }
+.feat-panel.active { opacity: 1; }
+
+/* Desktop'ta mob-img gizli */
+.mob-img-wrap { display: none; }
 .feat-panel img.mob-img { display: none; }
 
 .feat-mode-tag {
@@ -139,8 +136,7 @@ h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
   font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase;
   padding: 0.28rem 0.8rem; border-radius: 100px;
   display: inline-flex; align-items: center;
-  margin-bottom: 1.75rem; width: fit-content;
-  font-weight: 400;
+  margin-bottom: 1.75rem; width: fit-content; font-weight: 400;
 }
 .feat-mode-tag.zen   { color: #6ee7b7; background: rgba(110,231,183,0.12); border: 1px solid rgba(110,231,183,0.3); }
 .feat-mode-tag.hc    { color: #fed7aa; background: rgba(254,215,170,0.12); border: 1px solid rgba(254,215,170,0.3); }
@@ -149,8 +145,7 @@ h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
 .feat-title {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
   font-size: clamp(2rem, 3vw, 2.8rem); font-weight: 700;
-  line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 1.25rem;
-  color: #f5f5f0;
+  line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 1.25rem; color: #f5f5f0;
 }
 .feat-title em { font-style: normal; color: rgba(245,245,240,0.55); font-weight: 700; }
 
@@ -196,8 +191,7 @@ h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
 /* ── CTA ── */
 .cta-section {
   background: transparent; padding: 8rem 2rem;
-  display: flex; flex-direction: column;
-  align-items: center; text-align: center;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
 }
 .cta-section h2 { color: #f5f5f0; }
 .cta-section h2 em { color: rgba(245,245,240,0.4); }
@@ -266,7 +260,6 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
 .modal-success h4 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.5rem; margin-bottom: 0.4rem; color: #f5f5f0; }
 .modal-success p { font-size: 0.83rem; color: rgba(245,245,240,0.6); }
 
-/* FADE UP */
 .fade-up { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
 .fade-up.in { opacity: 1; transform: translateY(0); }
 
@@ -355,13 +348,24 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
 
   .feat-panel::before { display: none !important; }
 
+  /* Mockup wrapper — landscape PNG'yi portrait crop eder */
+  .mob-img-wrap {
+    display: block !important;
+    width: 65vw !important;
+    max-width: 300px !important;
+    aspect-ratio: 9 / 17 !important;
+    overflow: hidden !important;
+    margin: 0 auto 1.5rem !important;
+  }
+
   .feat-panel img.mob-img {
     display: block !important;
-    width: 80vw !important;
-    max-width: 360px !important;
-    height: auto !important;
-    margin: 0 auto 1rem !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center center !important;
     filter: drop-shadow(0 16px 40px rgba(0,0,0,0.5));
+    margin: 0 !important;
   }
 
   .feat-mode-tag { margin-left: auto !important; margin-right: auto !important; margin-bottom: 0.6rem !important; }
@@ -437,63 +441,63 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
     <div class="panels-col">
 
       <div class="feat-panel active" data-feat="0" data-mode="zen" style="--mobile-img:url('anasayfa.png')">
-        <img class="mob-img" src="anasayfa.png" alt="" />
+        <div class="mob-img-wrap"><img class="mob-img" src="anasayfa.png" alt="" /></div>
         <span class="feat-mode-tag zen">Choose your path</span>
         <h3 class="feat-title">How will <em>you resist?</em></h3>
         <p class="feat-desc">Three modes to fit your day. Zen for gentle focus. Hardcore for serious commitment. Vault for the strictest protection.</p>
       </div>
 
       <div class="feat-panel" data-feat="1" data-mode="zen" style="--mobile-img:url('zenmodemockup.png')">
-        <img class="mob-img" src="zenmodemockup.png" alt="" />
+        <div class="mob-img-wrap"><img class="mob-img" src="zenmodemockup.png" alt="" /></div>
         <span class="feat-mode-tag zen">Zen Mode</span>
         <h3 class="feat-title">Gentle blocking.</h3>
         <p class="feat-desc">Pick the apps you want to block and the session length, then start. If you need to stop, you can stop the session and use the apps you need.</p>
       </div>
 
       <div class="feat-panel" data-feat="2" data-mode="zen" style="--mobile-img:url('zenmoderutin.png')">
-        <img class="mob-img" src="zenmoderutin.png" alt="" />
+        <div class="mob-img-wrap"><img class="mob-img" src="zenmoderutin.png" alt="" /></div>
         <span class="feat-mode-tag zen">Zen Mode</span>
         <h3 class="feat-title">Set a <em>routine.</em></h3>
         <p class="feat-desc">Schedule recurring blocks for any day and time. Cascade starts your session automatically.</p>
       </div>
 
       <div class="feat-panel" data-feat="3" data-mode="hc" style="--mobile-img:url('hardcoremode.png')">
-        <img class="mob-img" src="hardcoremode.png" alt="" />
+        <div class="mob-img-wrap"><img class="mob-img" src="hardcoremode.png" alt="" /></div>
         <span class="feat-mode-tag hc">Hardcore Mode</span>
         <h3 class="feat-title">Customizable blocking.</h3>
         <p class="feat-desc">You block the apps you choose, but you also give yourself a few unlock passes. For example, you can let a blocked app open 3 times for 10 minutes. When they're gone, the app stays blocked until the session ends.</p>
       </div>
 
       <div class="feat-panel" data-feat="4" data-mode="hc" style="--mobile-img:url('unlockwindowhardcore.png')">
-        <img class="mob-img" src="unlockwindowhardcore.png" alt="" />
+        <div class="mob-img-wrap"><img class="mob-img" src="unlockwindowhardcore.png" alt="" /></div>
         <span class="feat-mode-tag hc">Hardcore Mode</span>
         <h3 class="feat-title">Your rules. <em>Your limits.</em></h3>
         <p class="feat-desc">Before you start, you set the blocking duration, how many times you can temporarily unlock apps, and how long each unlock window lasts.</p>
       </div>
 
       <div class="feat-panel" data-feat="5" data-mode="hc" style="--mobile-img:url('hardcorerutinayar.png')">
-        <img class="mob-img" src="hardcorerutinayar.png" alt="" />
+        <div class="mob-img-wrap"><img class="mob-img" src="hardcorerutinayar.png" alt="" /></div>
         <span class="feat-mode-tag hc">Hardcore Mode</span>
         <h3 class="feat-title">Routine on <em>autopilot.</em></h3>
         <p class="feat-desc">Set recurring Hardcore sessions for the days and times you want. Cascade locks you in automatically when the schedule begins.</p>
       </div>
 
       <div class="feat-panel" data-feat="6" data-mode="vault" style="--mobile-img:url('vaultmode.png')">
-        <img class="mob-img" src="vaultmode.png" alt="" />
+        <div class="mob-img-wrap"><img class="mob-img" src="vaultmode.png" alt="" /></div>
         <span class="feat-mode-tag vault">Vault Mode</span>
         <h3 class="feat-title">Strict blocking.</h3>
         <p class="feat-desc">You block the apps you choose and you can't stop the session early. The only way in is a limited number of weekly unlock passes that you set yourself beforehand.</p>
       </div>
 
       <div class="feat-panel" data-feat="7" data-mode="vault" style="--mobile-img:url('518shots_so-Photoroom.png')">
-        <img class="mob-img" src="518shots_so-Photoroom.png" alt="" />
+        <div class="mob-img-wrap"><img class="mob-img" src="518shots_so-Photoroom.png" alt="" /></div>
         <span class="feat-mode-tag vault">Vault Mode</span>
         <h3 class="feat-title">No way <em>out.</em></h3>
         <p class="feat-desc">Vault sessions cannot be stopped early. The session ends automatically when the time is up. This is the strongest commitment you can make to yourself.</p>
       </div>
 
       <div class="feat-panel" data-feat="8" data-mode="vault" style="--mobile-img:url('vaultrutin.png')">
-        <img class="mob-img" src="vaultrutin.png" alt="" />
+        <div class="mob-img-wrap"><img class="mob-img" src="vaultrutin.png" alt="" /></div>
         <span class="feat-mode-tag vault">Vault Mode</span>
         <h3 class="feat-title">Lock it in <em>on schedule.</em></h3>
         <p class="feat-desc">Set recurring Vault sessions for the days and times you choose. Once the schedule kicks in, there's no early exit until the session ends.</p>
