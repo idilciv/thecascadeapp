@@ -163,6 +163,7 @@ h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
   align-items: flex-start;
 }
 
+/* Sol: paneller */
 .panels-col {
   flex: 1;
   display: flex;
@@ -208,6 +209,7 @@ h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
   line-height: 1.7; max-width: 340px; font-weight: 400;
 }
 
+/* Sol: sticky telefon */
 .phone-col {
   width: 1100px;
   flex-shrink: 0;
@@ -243,6 +245,7 @@ h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
   display: block;
 }
 
+/* placeholder — görsel yokken */
 .phone-placeholder {
   width: 100%; height: 100%;
   display: flex; flex-direction: column;
@@ -418,7 +421,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
   .feat-desc { font-size: 0.92rem; }
 }
 
-/* MOBILE (iPhone ~ <768px) — Luna tarzı dev mockuplar */
+/* MOBILE (iPhone ~ <768px) */
 @media (max-width: 768px) {
   nav { padding: 0 1.25rem; height: 56px; }
   .logo { font-size: 1.4rem; }
@@ -426,147 +429,107 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
   .nav-r a:not(.nav-btn) { display: none; }
   .nav-btn { padding: 0.4rem 1rem; font-size: 0.78rem; }
 
-  /* HERO — dev telefon, metin üstte */
+  /* ── HERO ── */
   .hero {
-    padding: 5rem 1.25rem 3rem !important;
     min-height: 100vh !important;
-    display: flex !important;
-    align-items: center !important;
+    padding: 5rem 1.5rem 3rem !important;
     justify-content: center !important;
+    align-items: center !important;
   }
   .hero > div[id="hero-content"] {
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
     padding: 0 !important;
     flex-direction: column !important;
     align-items: center !important;
-    justify-content: center !important;
     text-align: center !important;
     gap: 0 !important;
-    max-width: 100% !important;
-    position: relative !important;
   }
   .hero > div[id="hero-content"] > div:first-child {
     max-width: 100% !important;
-    text-align: center !important;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .hero > div[id="hero-content"] h1 {
-    font-size: clamp(2rem, 8vw, 2.6rem) !important;
-    margin-bottom: 1rem !important;
-    text-align: center !important;
-  }
-  .hero > div[id="hero-content"] p {
-    font-size: 0.88rem !important;
-    margin: 0 auto 1.5rem !important;
-    max-width: 320px !important;
-    text-align: center !important;
-  }
-  .hero > div[id="hero-content"] button {
-    padding: 0.7rem 1.6rem !important;
-    font-size: 0.85rem !important;
-    margin-bottom: 2.5rem;
-  }
-  .hero > div[id="hero-content"] > div:last-child {
-    position: static !important;
-    right: auto !important;
-    top: auto !important;
-    transform: none !important;
     width: 100% !important;
     display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    opacity: 1 !important;
-    margin: 0 auto !important;
-  }
-  .hero > div[id="hero-content"] > div:last-child img {
-    width: 100% !important;
-    max-width: 480px !important;
-    height: auto !important;
-    display: block !important;
-    margin: 0 auto !important;
-    filter: drop-shadow(0 30px 60px rgba(0,0,0,0.5)) !important;
-  }
-
-  /* Features */
-  .features-header { padding: 4rem 1.25rem 2rem; }
-  h2 { font-size: clamp(1.8rem, 7vw, 2.4rem); }
-
-  /* MOBILE: Sticky scroll yerine her panel ayrı ayrı, dev telefon üstte */
-  .sticky-wrap {
     flex-direction: column !important;
-    padding: 0 0.5rem 4rem !important;
-    gap: 0 !important;
-    align-items: stretch !important;
+    align-items: center !important;
+    text-align: center !important;
   }
-
-  .phone-col {
+  .hero > div[id="hero-content"] h1 {
+    font-size: clamp(2rem, 8vw, 2.8rem) !important;
+    margin-bottom: 1rem !important;
+    text-align: center !important;
+    color: #f5f5f0 !important;
+    opacity: 1 !important;
+    animation: none !important;
+  }
+  .hero > div[id="hero-content"] p {
+    font-size: 0.9rem !important;
+    margin: 0 auto 2rem !important;
+    max-width: 300px !important;
+    text-align: center !important;
+    opacity: 1 !important;
+    animation: none !important;
+  }
+  .hero > div[id="hero-content"] button {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+  .hero > div[id="hero-content"] > div:last-child {
     display: none !important;
   }
 
-  .panels-col {
-    width: 100% !important;
-    flex: none !important;
+  /* ── FEATURES ── */
+  .features-header { padding: 4rem 1.25rem 2rem; }
+  h2 { font-size: clamp(1.8rem, 7vw, 2.4rem); }
+
+  .sticky-wrap {
+    flex-direction: column !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    align-items: stretch !important;
   }
+  .phone-col { display: none !important; }
+  .panels-col { width: 100% !important; flex: none !important; }
 
   .feat-panel {
     min-height: auto !important;
-    padding: 3rem 0 !important;
+    padding: 2rem 1.5rem 3rem !important;
     opacity: 1 !important;
     text-align: center !important;
     align-items: center !important;
     border-bottom: 1px solid rgba(245,245,240,0.08);
+    overflow: hidden;
   }
 
-  /* Luna tarzı dev mockup — parent'a sığacak şekilde */
   .feat-panel::before {
     content: '';
     display: block;
-    width: 100%;
-    max-width: 480px;
-    aspect-ratio: 1 / 2.05;
+    width: 85vw;
+    max-width: 360px;
+    aspect-ratio: 9 / 19.5;
     background-image: var(--mobile-img);
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: center;
-    margin: 0 auto 2.5rem;
-    filter: drop-shadow(0 30px 60px rgba(0,0,0,0.5));
+    background-position: center top;
+    margin: 0 auto 2rem;
+    filter: drop-shadow(0 20px 50px rgba(0,0,0,0.5));
   }
 
-  .feat-mode-tag {
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-  .feat-title {
-    font-size: clamp(1.6rem, 6.5vw, 2.2rem) !important;
-    text-align: center !important;
-    margin-bottom: 0.85rem;
-  }
-  .feat-desc {
-    font-size: 0.88rem;
-    max-width: 100%;
-    text-align: center !important;
-    margin: 0 auto !important;
-    line-height: 1.65;
-  }
+  .feat-mode-tag { margin-left: auto !important; margin-right: auto !important; }
+  .feat-title { font-size: clamp(1.6rem, 6.5vw, 2.2rem) !important; text-align: center !important; margin-bottom: 0.85rem; }
+  .feat-desc { font-size: 0.88rem; max-width: 100%; text-align: center !important; margin: 0 auto !important; line-height: 1.65; }
 
-  /* How it works */
+  /* ── HOW IT WORKS ── */
   .how-section { padding: 5rem 1.5rem; }
   .how-inner h2 { font-size: clamp(1.8rem, 7vw, 2.4rem); }
 
-  /* CTA */
+  /* ── CTA ── */
   .cta-section { padding: 5rem 1.5rem; }
 
-  /* Footer */
-  footer {
-    flex-direction: column;
-    gap: 1rem;
-    text-align: center;
-    padding: 1.5rem;
-  }
+  /* ── FOOTER ── */
+  footer { flex-direction: column; gap: 1rem; text-align: center; padding: 1.5rem; }
 
-  /* Modal */
+  /* ── MODAL ── */
   .modal { padding: 2rem 1.5rem; }
   .modal h3 { font-size: 1.4rem; }
 }
@@ -615,6 +578,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
 
   <div class="sticky-wrap">
 
+    <!-- Sol sticky telefon -->
     <div class="phone-col">
       <div class="phone-frame zen-active" id="phone-frame">
 
@@ -657,6 +621,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
       </div>
     </div>
 
+    <!-- Sağ paneller -->
     <div class="panels-col">
 
       <div class="feat-panel active" data-feat="0" data-mode="zen" style="--mobile-img:url('anasayfa.png')">
@@ -823,7 +788,7 @@ function setActive(i) {
   featPanels.forEach((p, j) => p.classList.toggle('active', j === i));
   featScreens.forEach((s, j) => s.classList.toggle('active', j === i));
   const mode = featPanels[i].dataset.mode;
-  if (phoneFrame) phoneFrame.className = 'phone-frame ' + modeFrameClass[mode];
+  phoneFrame.className = 'phone-frame ' + modeFrameClass[mode];
   setBgColor(modeColors[mode]);
 }
 
