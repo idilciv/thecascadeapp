@@ -2,51 +2,49 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Cascade — Reclaim Your Attention</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏔️</text></svg>" />
 <style>
+/* TEMEL SIFIRLAMA - TAŞMAYI ÖNLEME */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { 
+  width: 100%; 
+  overflow-x: hidden; /* Sağdaki boşluğu ve kaymayı bitirir */
+  position: relative;
+}
 a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
 
 :root {
   --bg:      #064e3b;
-  --bg2:     #c4e0d0;
   --fg:      #18171a;
   --muted:   #5a7868;
-  --border:  rgba(0,0,0,0.1);
 }
-
-html { background: #3d5a5e; overscroll-behavior: none; }
 
 body {
   background: radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%);
   color: var(--fg);
   font-family: 'DM Sans', system-ui, sans-serif;
   font-weight: 300;
-  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
   background-attachment: fixed;
 }
 
 /* ── NAV ── */
 nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 3rem; height: 62px;
 }
 .logo { font-family: 'Instrument Serif', serif; font-size: 1.85rem; color: #f5f5f0; }
-.nav-btn { background: #f5f5f0; color: #18171a; padding: 0.45rem 1.2rem; border-radius: 100px; font-weight: 500; cursor: pointer; border: none; }
+.nav-r { display: flex; align-items: center; gap: 2.5rem; }
+.nav-btn { background: #f5f5f0; color: #18171a; padding: 0.45rem 1.2rem; border-radius: 100px; font-weight: 500; border: none; cursor: pointer; }
 
 /* ── HERO ── */
-.hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding: 0 2rem; }
-.hero-content { position: relative; z-index: 10; width: 100%; max-width: 1100px; display: flex; align-items: center; }
-
-/* ── FEATURES ── */
-.features-header { text-align: center; padding: 120px 2rem 40px; }
-h2 { font-family: 'Instrument Serif', serif; font-size: clamp(2.2rem, 4vw, 3.5rem); color: #f5f5f0; font-weight: 400; }
+.hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
 
 /* ── STICKY WRAP (DESKTOP) ── */
 .sticky-wrap { display: flex; max-width: 1900px; margin: 0 auto; padding: 0 2rem 8rem; gap: 2rem; align-items: flex-start; }
@@ -61,62 +59,82 @@ h2 { font-family: 'Instrument Serif', serif; font-size: clamp(2.2rem, 4vw, 3.5re
 .phone-screen.active { opacity: 1; }
 .phone-screen img { width: 100%; display: block; }
 
-/* ── MOBILE RESPONSIVE (CRITICAL FIX) ── */
+/* ── MOBILE FIX (TAŞMA VE BOŞLUK ÇÖZÜMÜ) ── */
 @media (max-width: 860px) {
   nav { padding: 0 1.25rem; }
   .nav-r a:not(.nav-btn) { display: none; }
-  .sticky-wrap { flex-direction: column; padding: 0; }
-  .phone-col { display: none; }
-
+  
+  .sticky-wrap { 
+    display: block !important; 
+    padding: 0 !important; 
+    margin: 0 !important;
+    width: 100% !important;
+  }
+  
+  .phone-col { display: none !important; }
+  
   .feat-panel {
-    min-height: 100vh;
-    padding: 0;
-    opacity: 1;
+    min-height: 100vh !important;
+    width: 100vw !important;
+    padding: 0 !important;
+    margin: 0 !important;
     display: flex !important;
-    flex-direction: column;
-    justify-content: flex-start; /* Üste yasla */
-    align-items: center;
-    position: relative;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    opacity: 1 !important;
   }
 
-  /* Mockup Alanı */
+  /* Mockup Görseli */
   .feat-panel::before {
     content: "";
     display: block;
-    width: 100%;
-    height: 65vh; /* Ekranın %65'ini kaplasın */
+    width: 100% !important;
+    height: 60vh !important; 
     background-image: var(--mobile-img);
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: center bottom; /* Görseli kutunun dibine dayayarak boşluğu bitir */
-    margin-bottom: 0;
+    background-position: center bottom;
+    margin-bottom: 0 !important;
   }
 
-  /* Yazı Alanı - Görselin bittiği yerden başlar */
+  /* Yazı Kapsayıcısı */
   .feat-text-wrap {
-    padding: 20px 1.5rem 60px;
-    text-align: center;
-    width: 100%;
-    background: transparent;
+    width: 100% !important;
+    padding: 2rem 1.5rem 5rem !important;
+    text-align: center !important;
   }
 
+  .feat-title { 
+    font-size: 1.8rem !important; 
+    width: 100% !important; 
+    margin-bottom: 0.8rem !important; 
+    color: #f5f5f0 !important;
+  }
+  
+  .feat-desc { 
+    font-size: 0.95rem !important; 
+    width: 100% !important; 
+    color: rgba(245,245,240,0.7) !important;
+    margin: 0 auto !important;
+  }
+  
   .feat-mode-tag {
     font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
     padding: 0.3rem 0.8rem; border-radius: 100px;
-    text-transform: uppercase; margin-bottom: 1rem; display: inline-block;
+    margin-bottom: 1rem; display: inline-block;
   }
   .feat-mode-tag.zen { color: #6ee7b7; background: rgba(110,231,183,0.12); border: 1px solid rgba(110,231,183,0.3); }
   .feat-mode-tag.hc { color: #fed7aa; background: rgba(254,215,170,0.12); border: 1px solid rgba(254,215,170,0.3); }
   .feat-mode-tag.vault { color: #ddd6fe; background: rgba(221,214,254,0.12); border: 1px solid rgba(221,214,254,0.3); }
-
-  .feat-title { font-size: 1.85rem !important; margin-bottom: 0.75rem !important; width: 100% !important; max-width: 100% !important; }
-  .feat-desc { font-size: 0.95rem !important; line-height: 1.6 !important; color: rgba(245,245,240,0.7) !important; width: 100% !important; max-width: 100% !important; }
 }
 
-/* Modal vs. Diğer Standart Ayarlar */
 .modal-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(24,23,26,0.6); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
 .modal-overlay.open { opacity: 1; pointer-events: all; }
 .modal { background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 2.5rem; max-width: 400px; width: 100%; color: #f5f5f0; }
+
+.fade-up { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-up.in { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
@@ -128,9 +146,22 @@ h2 { font-family: 'Instrument Serif', serif; font-size: clamp(2.2rem, 4vw, 3.5re
   </div>
 </nav>
 
+<section class="hero" style="background:transparent; padding:0;">
+  <div style="position:absolute;inset:0;z-index:0;background:linear-gradient(135deg, #5d8a6e 0%, #6a9d8a 25%, #7eb4a0 45%, #5d8a8e 65%, #3d5a5e 85%, #1a2a30 100%);"></div>
+  <div style="position:relative;z-index:10;width:100%;max-width:1100px;padding:0 4rem;display:flex;align-items:center;" id="hero-content">
+    <div style="max-width:520px;">
+      <h1 style="font-family:'Instrument Serif',serif; font-size:clamp(2.8rem,5vw,5rem); color:#f5f5f0;">A screen time app <em style="font-style:italic;color:rgba(245,245,240,0.55);">you'll love using.</em></h1>
+      <p style="font-size:1rem;color:rgba(245,245,240,0.7);margin:1.5rem 0 2.5rem;">Easy to use, designed to help you take back your time.</p>
+      <button onclick="openWaitlist()" class="nav-btn">Join the Waitlist</button>
+    </div>
+    <div style="position:absolute;right:-400px;top:57%;transform:translateY(-50%);">
+      <img src="anasayfa.png" style="width:1100px;height:auto;filter:drop-shadow(0 40px 80px rgba(0,0,0,0.5));" />
+    </div>
+  </div>
+</section>
+
 <section class="features-section" id="features">
-  <div class="features-header">
-    <p class="s-label">Features</p>
+  <div class="features-header fade-up">
     <h2>Built to <em>make things easy.</em></h2>
   </div>
 
@@ -150,67 +181,67 @@ h2 { font-family: 'Instrument Serif', serif; font-size: clamp(2.2rem, 4vw, 3.5re
     </div>
 
     <div class="panels-col">
-      <div class="feat-panel active" data-feat="0" data-mode="zen" style="--mobile-img: url('anasayfa.png')">
+      <div class="feat-panel active" data-feat="0" data-mode="zen" style="--mobile-img:url('anasayfa.png')">
         <div class="feat-text-wrap">
           <span class="feat-mode-tag zen">Choose your path</span>
           <h3 class="feat-title">How will <em>you resist?</em></h3>
-          <p class="feat-desc">Three modes to fit your day. Zen for gentle focus. Hardcore for serious commitment. Vault for protection.</p>
+          <p class="feat-desc">Three modes to fit your day. Zen, Hardcore, and Vault.</p>
         </div>
       </div>
-      <div class="feat-panel" data-feat="1" data-mode="zen" style="--mobile-img: url('zenmodemockup.png')">
+      <div class="feat-panel" data-feat="1" data-mode="zen" style="--mobile-img:url('zenmodemockup.png')">
         <div class="feat-text-wrap">
           <span class="feat-mode-tag zen">Zen Mode</span>
           <h3 class="feat-title">Gentle blocking.</h3>
-          <p class="feat-desc">Pick the apps you want to block and the session length, then start. If you need to stop, you can.</p>
+          <p class="feat-desc">Pick the apps you want to block and the session length.</p>
         </div>
       </div>
-      <div class="feat-panel" data-feat="2" data-mode="zen" style="--mobile-img: url('zenmoderutin.png')">
+      <div class="feat-panel" data-feat="2" data-mode="zen" style="--mobile-img:url('zenmoderutin.png')">
         <div class="feat-text-wrap">
           <span class="feat-mode-tag zen">Zen Mode</span>
           <h3 class="feat-title">Set a <em>routine.</em></h3>
-          <p class="feat-desc">Schedule recurring blocks for any day and time. Cascade starts your session automatically.</p>
+          <p class="feat-desc">Schedule recurring blocks for any day and time.</p>
         </div>
       </div>
-      <div class="feat-panel" data-feat="3" data-mode="hc" style="--mobile-img: url('hardcoremode.png')">
+      <div class="feat-panel" data-feat="3" data-mode="hc" style="--mobile-img:url('hardcoremode.png')">
         <div class="feat-text-wrap">
           <span class="feat-mode-tag hc">Hardcore Mode</span>
           <h3 class="feat-title">Customizable blocking.</h3>
-          <p class="feat-desc">You block the apps you choose, but you also give yourself a few unlock passes.</p>
+          <p class="feat-desc">Give yourself a few unlock passes.</p>
         </div>
       </div>
-      <div class="feat-panel" data-feat="4" data-mode="hc" style="--mobile-img: url('unlockwindowhardcore.png')">
+      <div class="feat-panel" data-feat="4" data-mode="hc" style="--mobile-img:url('unlockwindowhardcore.png')">
         <div class="feat-text-wrap">
           <span class="feat-mode-tag hc">Hardcore Mode</span>
           <h3 class="feat-title">Your rules. <em>Your limits.</em></h3>
-          <p class="feat-desc">Set blocking duration and temporary unlock windows before you start.</p>
+          <p class="feat-desc">Set temporary unlock windows before you start.</p>
         </div>
       </div>
-      <div class="feat-panel" data-feat="5" data-mode="hc" style="--mobile-img: url('hardcorerutinayar.png')">
+      <div class="feat-panel" data-feat="5" data-mode="hc" style="--mobile-img:url('hardcorerutinayar.png')">
         <div class="feat-text-wrap">
           <span class="feat-mode-tag hc">Hardcore Mode</span>
           <h3 class="feat-title">Routine on <em>autopilot.</em></h3>
-          <p class="feat-desc">Set recurring Hardcore sessions. Cascade locks you in automatically.</p>
+          <p class="feat-desc">Set recurring Hardcore sessions automatically.</p>
         </div>
       </div>
-      <div class="feat-panel" data-feat="6" data-mode="vault" style="--mobile-img: url('vaultmode.png')">
+      <div class="feat-panel" data-feat="6" data-mode="vault" style="--mobile-img:url('vaultmode.png')">
         <div class="feat-text-wrap">
           <span class="feat-mode-tag vault">Vault Mode</span>
           <h3 class="feat-title">Strict blocking.</h3>
-          <p class="feat-desc">No early stop. The only way in is a limited number of weekly unlock passes.</p>
+          <p class="feat-desc">Limited weekly unlock passes only.</p>
         </div>
       </div>
-      <div class="feat-panel" data-feat="7" data-mode="vault" style="--mobile-img: url('518shots_so-Photoroom.png')">
+      <div class="feat-panel" data-feat="7" data-mode="vault" style="--mobile-img:url('518shots_so-Photoroom.png')">
         <div class="feat-text-wrap">
           <span class="feat-mode-tag vault">Vault Mode</span>
           <h3 class="feat-title">No way <em>out.</em></h3>
-          <p class="feat-desc">Vault sessions cannot be stopped early. The strongest commitment you can make.</p>
+          <p class="feat-desc">Vault sessions cannot be stopped early.</p>
         </div>
       </div>
-      <div class="feat-panel" data-feat="8" data-mode="vault" style="--mobile-img: url('vaultrutin.png')">
+      <div class="feat-panel" data-feat="8" data-mode="vault" style="--mobile-img:url('vaultrutin.png')">
         <div class="feat-text-wrap">
           <span class="feat-mode-tag vault">Vault Mode</span>
           <h3 class="feat-title">Lock it in <em>on schedule.</em></h3>
-          <p class="feat-desc">Set recurring Vault sessions. Once the schedule kicks in, there's no early exit.</p>
+          <p class="feat-desc">Once the schedule kicks in, there's no early exit.</p>
         </div>
       </div>
     </div>
@@ -219,33 +250,59 @@ h2 { font-family: 'Instrument Serif', serif; font-size: clamp(2.2rem, 4vw, 3.5re
 
 <script>
 const modeColors = {
-  zen: 'radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%) fixed',
-  hc: 'radial-gradient(ellipse at 50% 30%, #8b2818 0%, #6b1d12 60%, #3d0e08 100%) fixed',
-  vault: 'radial-gradient(ellipse at 50% 30%, #4f3aa8 0%, #382680 60%, #1f1450 100%) fixed',
+  zen: [13, 110, 79],
+  hc: [139, 40, 24],
+  vault: [79, 58, 168],
+  base: [61, 90, 94]
 };
 
 const dynStyle = document.createElement('style');
 document.head.appendChild(dynStyle);
 
-function setBgColor(bg) { dynStyle.textContent = `body { background: ${bg} !important; }`; }
+function lerpColor(a, b, t) {
+  return [
+    Math.round(a[0] + (b[0] - a[0]) * t),
+    Math.round(a[1] + (b[1] - a[1]) * t),
+    Math.round(a[2] + (b[2] - a[2]) * t),
+  ].join(',');
+}
+
+function setBgColor(rgbString) {
+  dynStyle.textContent = `body { background: radial-gradient(ellipse at 50% 30%, rgb(${rgbString}) 0%, #052e22 100%) fixed !important; }`;
+}
 
 const featPanels = document.querySelectorAll('.feat-panel');
 const featScreens = document.querySelectorAll('.phone-screen');
+const phoneFrame = document.getElementById('phone-frame');
 
 function updateActivePanel() {
   const winMid = window.innerHeight / 2;
-  
+  const featSection = document.querySelector('.features-section');
+  if(!featSection) return;
+  const featRect = featSection.getBoundingClientRect();
+
+  if (featRect.bottom < 0) {
+    const t = Math.min(Math.max(-featRect.bottom / 500, 0), 1);
+    const c = lerpColor(modeColors.vault, modeColors.base, t);
+    setBgColor(c);
+    return;
+  }
+
+  let foundIdx = -1;
   featPanels.forEach((panel, i) => {
     const rect = panel.getBoundingClientRect();
     if (rect.top <= winMid && rect.bottom >= winMid) {
-      panel.classList.add('active');
-      if (featScreens[i]) featScreens[i].classList.add('active');
-      setBgColor(modeColors[panel.dataset.mode]);
-    } else {
-      panel.classList.remove('active');
-      if (featScreens[i]) featScreens[i].classList.remove('active');
+      foundIdx = i;
     }
   });
+
+  if (foundIdx !== -1) {
+    featPanels.forEach((p, j) => p.classList.toggle('active', j === foundIdx));
+    featScreens.forEach((s, j) => s.classList.toggle('active', j === foundIdx));
+    const mode = featPanels[foundIdx].dataset.mode;
+    if(phoneFrame && window.innerWidth > 860) phoneFrame.className = 'phone-frame ' + mode + '-active';
+    setBgColor(modeColors[mode].join(','));
+  }
 }
 
 window.addEventListener('scroll', updateActivePanel);
@@ -253,17 +310,6 @@ updateActivePanel();
 
 function openWaitlist() { document.getElementById('waitlist-modal').classList.add('open'); }
 function closeWaitlist() { document.getElementById('waitlist-modal').classList.remove('open'); }
-function handleOverlay(e) { if (e.target.id === 'waitlist-modal') closeWaitlist(); }
 </script>
-
-<div class="modal-overlay" id="waitlist-modal" onclick="handleOverlay(event)">
-  <div class="modal">
-    <button class="modal-close" onclick="closeWaitlist()">✕</button>
-    <h3>Join the list.</h3>
-    <input type="email" class="modal-input" placeholder="your@email.com" />
-    <button class="modal-submit">Join the Waitlist</button>
-  </div>
-</div>
-
 </body>
 </html>
