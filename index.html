@@ -162,7 +162,6 @@ h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
   align-items: flex-start;
 }
 
-/* Sol: paneller */
 .panels-col {
   flex: 1;
   display: flex;
@@ -208,7 +207,6 @@ h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
   line-height: 1.7; max-width: 340px; font-weight: 400;
 }
 
-/* Sol: sticky telefon */
 .phone-col {
   width: 1100px;
   flex-shrink: 0;
@@ -244,7 +242,6 @@ h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
   display: block;
 }
 
-/* placeholder */
 .phone-placeholder {
   width: 100%; height: 100%;
   display: flex; flex-direction: column;
@@ -420,7 +417,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
   .feat-desc { font-size: 0.92rem; }
 }
 
-/* MOBILE (iPhone ~ <768px) */
+/* MOBILE (iPhone ~ <768px) — Luna tarzı dev mockuplar */
 @media (max-width: 768px) {
   nav { padding: 0 1.25rem; height: 56px; }
   .logo { font-size: 1.4rem; }
@@ -428,7 +425,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
   .nav-r a:not(.nav-btn) { display: none; }
   .nav-btn { padding: 0.4rem 1rem; font-size: 0.78rem; }
 
-  /* Hero — komple yeniden düzenle */
+  /* HERO — dev telefon, metin üstte */
   .hero {
     padding: 5rem 1.25rem 3rem !important;
     min-height: 100vh !important;
@@ -483,18 +480,19 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
     margin: 0 auto !important;
   }
   .hero > div[id="hero-content"] > div:last-child img {
-    width: min(75vw, 300px) !important;
+    width: 95vw !important;
+    max-width: 480px !important;
     height: auto !important;
     display: block !important;
     margin: 0 auto !important;
-    filter: drop-shadow(0 25px 50px rgba(0,0,0,0.45)) !important;
+    filter: drop-shadow(0 30px 60px rgba(0,0,0,0.5)) !important;
   }
 
   /* Features */
   .features-header { padding: 4rem 1.25rem 2rem; }
   h2 { font-size: clamp(1.8rem, 7vw, 2.4rem); }
 
-  /* Sticky scroll — MOBİL: NO STICKY. Her panel için telefon üstte büyük, açıklama altta */
+  /* MOBILE: Sticky scroll yerine her panel ayrı ayrı, dev telefon üstte */
   .sticky-wrap {
     flex-direction: column !important;
     padding: 0 1.25rem 4rem !important;
@@ -502,7 +500,6 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
     align-items: stretch !important;
   }
 
-  /* SOL kolonu (telefon) gizle - artık her panel kendi telefonunu gösteriyor olacak */
   .phone-col {
     display: none !important;
   }
@@ -512,7 +509,6 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
     flex: none !important;
   }
 
-  /* Her feat-panel: ÜSTTE telefon büyük, ALTTA metin */
   .feat-panel {
     min-height: auto !important;
     padding: 3rem 0 !important;
@@ -522,19 +518,20 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
     border-bottom: 1px solid rgba(245,245,240,0.08);
   }
 
-  /* Her panele JS üzerinden eklenmiş telefon görseli */
+  /* Luna tarzı dev mockup */
   .feat-panel::before {
     content: '';
     display: block;
-    width: min(75vw, 300px);
+    width: 95vw;
+    max-width: 480px;
     height: 0;
-    padding-bottom: calc(min(75vw, 300px) * 2.05);
+    padding-bottom: calc(min(95vw, 480px) * 2.05);
     background-image: var(--mobile-img);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    margin: 0 auto 2rem;
-    filter: drop-shadow(0 25px 50px rgba(0,0,0,0.4));
+    margin: 0 auto 2.5rem;
+    filter: drop-shadow(0 30px 60px rgba(0,0,0,0.5));
   }
 
   .feat-mode-tag {
@@ -618,7 +615,6 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
 
   <div class="sticky-wrap">
 
-    <!-- Sol sticky telefon (desktop) -->
     <div class="phone-col">
       <div class="phone-frame zen-active" id="phone-frame">
 
@@ -661,7 +657,6 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
       </div>
     </div>
 
-    <!-- Sağ paneller -->
     <div class="panels-col">
 
       <div class="feat-panel active" data-feat="0" data-mode="zen" style="--mobile-img:url('anasayfa.png')">
