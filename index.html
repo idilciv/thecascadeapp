@@ -163,7 +163,6 @@ h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
   align-items: flex-start;
 }
 
-/* Sol: paneller */
 .panels-col {
   flex: 1;
   display: flex;
@@ -209,7 +208,6 @@ h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
   line-height: 1.7; max-width: 340px; font-weight: 400;
 }
 
-/* Sol: sticky telefon */
 .phone-col {
   width: 1100px;
   flex-shrink: 0;
@@ -245,16 +243,13 @@ h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
   display: block;
 }
 
-/* placeholder — görsel yokken */
 .phone-placeholder {
   width: 100%; height: 100%;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   gap: 0.5rem;
 }
-.phone-placeholder-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-}
+.phone-placeholder-dot { width: 8px; height: 8px; border-radius: 50%; }
 .phone-placeholder span {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase;
@@ -308,10 +303,6 @@ h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
   border: none; cursor: pointer; transition: opacity 0.2s;
 }
 .btn-cta:hover { opacity: 0.88; }
-.cta-soon {
-  margin-top: 1rem; font-family: 'JetBrains Mono', monospace;
-  font-size: 0.62rem; color: rgba(245,245,240,0.25); letter-spacing: 0.06em;
-}
 
 /* ── FOOTER ── */
 footer {
@@ -378,8 +369,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
 .modal-success { display: none; text-align: center; padding: 1rem 0; }
 .modal-success h4 {
   font-family: 'Instrument Serif', serif; font-weight: 400;
-  font-size: 1.5rem; margin-bottom: 0.4rem;
-  color: #f5f5f0;
+  font-size: 1.5rem; margin-bottom: 0.4rem; color: #f5f5f0;
 }
 .modal-success p { font-size: 0.83rem; color: rgba(245,245,240,0.6); }
 
@@ -392,28 +382,15 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── RESPONSIVE ── */
-
-/* TABLET (iPad ~ 768-1180px) */
+/* ── TABLET ── */
 @media (max-width: 1180px) {
   nav { padding: 0 1.75rem; height: 58px; }
   .logo { font-size: 1.5rem; }
   .nav-r { gap: 1.5rem; }
-
-  .hero > div[id="hero-content"] {
-    padding: 0 2.5rem !important;
-  }
-  .hero > div[id="hero-content"] > div:first-child {
-    max-width: 50% !important;
-  }
-  .hero > div[id="hero-content"] > div:last-child {
-    right: -120px !important;
-    top: 50% !important;
-  }
-  .hero > div[id="hero-content"] > div:last-child img {
-    width: 520px !important;
-  }
-
+  .hero > div[id="hero-content"] { padding: 0 2.5rem !important; }
+  .hero > div[id="hero-content"] > div:first-child { max-width: 50% !important; }
+  .hero > div[id="hero-content"] > div:last-child { right: -120px !important; top: 50% !important; }
+  .hero > div[id="hero-content"] > div:last-child img { width: 520px !important; }
   .sticky-wrap { padding: 0 2rem 6rem; gap: 2rem; max-width: 100%; }
   .phone-col { width: 360px; top: 80px; }
   .phone-frame { width: 360px; }
@@ -421,7 +398,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
   .feat-desc { font-size: 0.92rem; }
 }
 
-/* MOBILE (iPhone ~ <768px) */
+/* ── MOBILE ── */
 @media (max-width: 768px) {
   nav { padding: 0 1.25rem; height: 56px; }
   .logo { font-size: 1.4rem; }
@@ -429,7 +406,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
   .nav-r a:not(.nav-btn) { display: none; }
   .nav-btn { padding: 0.4rem 1rem; font-size: 0.78rem; }
 
-  /* ── HERO ── */
+  /* HERO */
   .hero {
     min-height: 100vh !important;
     padding: 5rem 1.5rem 3rem !important;
@@ -470,30 +447,19 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
     opacity: 1 !important;
     animation: none !important;
   }
-  .hero > div[id="hero-content"] button {
-    opacity: 1 !important;
-    animation: none !important;
-  }
-  .hero > div[id="hero-content"] > div:last-child {
-    display: none !important;
-  }
+  .hero > div[id="hero-content"] button { opacity: 1 !important; animation: none !important; }
+  .hero > div[id="hero-content"] > div:last-child { display: none !important; }
 
-  /* ── FEATURES ── */
+  /* FEATURES */
   .features-header { padding: 4rem 1.25rem 2rem; }
   h2 { font-size: clamp(1.8rem, 7vw, 2.4rem); }
-
-  .sticky-wrap {
-    flex-direction: column !important;
-    padding: 0 !important;
-    gap: 0 !important;
-    align-items: stretch !important;
-  }
+  .sticky-wrap { flex-direction: column !important; padding: 0 !important; gap: 0 !important; align-items: stretch !important; }
   .phone-col { display: none !important; }
   .panels-col { width: 100% !important; flex: none !important; }
 
   .feat-panel {
     min-height: auto !important;
-    padding: 2rem 1.5rem 3rem !important;
+    padding: 0 0 2.5rem !important;
     opacity: 1 !important;
     text-align: center !important;
     align-items: center !important;
@@ -504,32 +470,24 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
   .feat-panel::before {
     content: '';
     display: block;
-    width: 85vw;
-    max-width: 360px;
-    aspect-ratio: 9 / 19.5;
+    width: 100vw;
+    height: calc(100vw * 2.16);
     background-image: var(--mobile-img);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center top;
-    margin: 0 auto 2rem;
+    margin: 0 0 1.5rem 0;
     filter: drop-shadow(0 20px 50px rgba(0,0,0,0.5));
   }
 
-  .feat-mode-tag { margin-left: auto !important; margin-right: auto !important; }
-  .feat-title { font-size: clamp(1.6rem, 6.5vw, 2.2rem) !important; text-align: center !important; margin-bottom: 0.85rem; }
-  .feat-desc { font-size: 0.88rem; max-width: 100%; text-align: center !important; margin: 0 auto !important; line-height: 1.65; }
+  .feat-mode-tag { margin-left: auto !important; margin-right: auto !important; margin-bottom: 0.75rem !important; }
+  .feat-title { font-size: clamp(1.6rem, 6.5vw, 2.2rem) !important; text-align: center !important; margin-bottom: 0.6rem; padding: 0 1.5rem; }
+  .feat-desc { font-size: 0.88rem; max-width: 100%; text-align: center !important; margin: 0 auto !important; line-height: 1.6; padding: 0 1.5rem; }
 
-  /* ── HOW IT WORKS ── */
   .how-section { padding: 5rem 1.5rem; }
   .how-inner h2 { font-size: clamp(1.8rem, 7vw, 2.4rem); }
-
-  /* ── CTA ── */
   .cta-section { padding: 5rem 1.5rem; }
-
-  /* ── FOOTER ── */
   footer { flex-direction: column; gap: 1rem; text-align: center; padding: 1.5rem; }
-
-  /* ── MODAL ── */
   .modal { padding: 2rem 1.5rem; }
   .modal h3 { font-size: 1.4rem; }
 }
@@ -578,50 +536,20 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
 
   <div class="sticky-wrap">
 
-    <!-- Sol sticky telefon -->
     <div class="phone-col">
       <div class="phone-frame zen-active" id="phone-frame">
-
-        <div class="phone-screen active" id="feat-screen-0">
-          <img src="anasayfa.png" alt="Choose your path" />
-        </div>
-
-        <div class="phone-screen" id="feat-screen-1">
-          <img src="zenmodemockup.png" alt="Zen Mode" />
-        </div>
-
-        <div class="phone-screen" id="feat-screen-2">
-          <img src="zenmoderutin.png" alt="Routine Schedule" />
-        </div>
-
-        <div class="phone-screen" id="feat-screen-3">
-          <img src="hardcoremode.png" alt="Hardcore Mode" />
-        </div>
-
-        <div class="phone-screen" id="feat-screen-4">
-          <img src="unlockwindowhardcore.png" alt="Unlock Window" />
-        </div>
-
-        <div class="phone-screen" id="feat-screen-5">
-          <img src="hardcorerutinayar.png" alt="Hardcore Routine" />
-        </div>
-
-        <div class="phone-screen" id="feat-screen-6">
-          <img src="vaultmode.png" alt="Vault Mode" />
-        </div>
-
-        <div class="phone-screen" id="feat-screen-7">
-          <img src="518shots_so-Photoroom.png" alt="No Way Out" />
-        </div>
-
-        <div class="phone-screen" id="feat-screen-8">
-          <img src="vaultrutin.png" alt="Vault Routine" />
-        </div>
-
+        <div class="phone-screen active" id="feat-screen-0"><img src="anasayfa.png" alt="Choose your path" /></div>
+        <div class="phone-screen" id="feat-screen-1"><img src="zenmodemockup.png" alt="Zen Mode" /></div>
+        <div class="phone-screen" id="feat-screen-2"><img src="zenmoderutin.png" alt="Routine Schedule" /></div>
+        <div class="phone-screen" id="feat-screen-3"><img src="hardcoremode.png" alt="Hardcore Mode" /></div>
+        <div class="phone-screen" id="feat-screen-4"><img src="unlockwindowhardcore.png" alt="Unlock Window" /></div>
+        <div class="phone-screen" id="feat-screen-5"><img src="hardcorerutinayar.png" alt="Hardcore Routine" /></div>
+        <div class="phone-screen" id="feat-screen-6"><img src="vaultmode.png" alt="Vault Mode" /></div>
+        <div class="phone-screen" id="feat-screen-7"><img src="518shots_so-Photoroom.png" alt="No Way Out" /></div>
+        <div class="phone-screen" id="feat-screen-8"><img src="vaultrutin.png" alt="Vault Routine" /></div>
       </div>
     </div>
 
-    <!-- Sağ paneller -->
     <div class="panels-col">
 
       <div class="feat-panel active" data-feat="0" data-mode="zen" style="--mobile-img:url('anasayfa.png')">
@@ -679,7 +607,6 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
       </div>
 
     </div>
-
   </div>
 </section>
 
@@ -745,12 +672,6 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBhh2U4MeLqd5BMvt2wjTXAsWFJ_ZwF9zxNxEQBErTWwRJjr7xpqHYt_7zKx0VxYMu/exec";
 
-const navColors = {
-  zen:   'rgba(212,237,224,0.92)',
-  hc:    'rgba(236,216,212,0.92)',
-  vault: 'rgba(219,212,237,0.92)',
-};
-
 const modeColors = {
   zen:   'radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%) fixed',
   hc:    'radial-gradient(ellipse at 50% 30%, #8b2818 0%, #6b1d12 60%, #3d0e08 100%) fixed',
@@ -760,8 +681,6 @@ const modeColors = {
 const phoneFrame = document.getElementById('phone-frame');
 const featPanels  = document.querySelectorAll('.feat-panel');
 const featScreens = document.querySelectorAll('.phone-screen');
-const navEl = document.querySelector('nav');
-
 const modeFrameClass = { zen: 'zen-active', hc: 'hc-active', vault: 'vault-active' };
 
 const dynStyle = document.createElement('style');
@@ -807,11 +726,9 @@ function updateActivePanel() {
     const docEnd = document.documentElement.scrollHeight - window.innerHeight;
     const range  = Math.max(docEnd - featBottomAbs, 1);
     const t = Math.min(Math.max((window.scrollY - featBottomAbs) / range, 0), 1);
-
     const c1 = lerpColor([79, 58, 168], [106, 157, 138], t);
     const c2 = lerpColor([56, 38, 128], [93, 138, 110], t);
     const c3 = lerpColor([31, 20, 80], [61, 90, 94], t);
-
     setBgColor(`radial-gradient(ellipse at 50% 30%, rgb(${c1}) 0%, rgb(${c2}) 60%, rgb(${c3}) 100%) fixed`);
     return;
   }
@@ -840,10 +757,7 @@ function updateActivePanel() {
 function onScroll() {
   if (_ticking) return;
   _ticking = true;
-  requestAnimationFrame(() => {
-    updateActivePanel();
-    _ticking = false;
-  });
+  requestAnimationFrame(() => { updateActivePanel(); _ticking = false; });
 }
 
 window.addEventListener('scroll', onScroll, { passive: true });
