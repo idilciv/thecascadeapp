@@ -27,6 +27,7 @@ a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transpar
 html {
   background: #3d5a5e;
   overscroll-behavior: none;
+  overflow-x: hidden;
 }
 
 body {
@@ -480,7 +481,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
     margin: 0 auto !important;
   }
   .hero > div[id="hero-content"] > div:last-child img {
-    width: 95vw !important;
+    width: 100% !important;
     max-width: 480px !important;
     height: auto !important;
     display: block !important;
@@ -495,7 +496,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
   /* MOBILE: Sticky scroll yerine her panel ayrı ayrı, dev telefon üstte */
   .sticky-wrap {
     flex-direction: column !important;
-    padding: 0 1.25rem 4rem !important;
+    padding: 0 0.5rem 4rem !important;
     gap: 0 !important;
     align-items: stretch !important;
   }
@@ -518,14 +519,13 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
     border-bottom: 1px solid rgba(245,245,240,0.08);
   }
 
-  /* Luna tarzı dev mockup */
+  /* Luna tarzı dev mockup — parent'a sığacak şekilde */
   .feat-panel::before {
     content: '';
     display: block;
-    width: 1500vw;
-    max-width: 1500px;
-    height: 0;
-    padding-bottom: calc(min(95vw, 480px) * 2.05);
+    width: 100%;
+    max-width: 480px;
+    aspect-ratio: 1 / 2.05;
     background-image: var(--mobile-img);
     background-size: contain;
     background-repeat: no-repeat;
