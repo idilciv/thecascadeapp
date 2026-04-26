@@ -1,315 +1,1503 @@
 <!doctype html>
+
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
 <title>Cascade — Reclaim Your Attention</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
+
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏔️</text></svg>" />
+
 <style>
-/* TEMEL SIFIRLAMA - TAŞMAYI ÖNLEME */
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { 
-  width: 100%; 
-  overflow-x: hidden; /* Sağdaki boşluğu ve kaymayı bitirir */
-  position: relative;
-}
+
 a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
 
+
+
 :root {
+
   --bg:      #064e3b;
+
+  --bg2:     #c4e0d0;
+
   --fg:      #18171a;
+
   --muted:   #5a7868;
+
+  --border:  rgba(0,0,0,0.1);
+
+
+
+  --zen:     #0ea861;
+
+  --hc:      #d45a20;
+
+  --vault:   #6644cc;
+
 }
+
+
+
+html {
+
+  background: #3d5a5e;
+
+  overscroll-behavior: none;
+
+}
+
+
 
 body {
+
   background: radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%);
+
   color: var(--fg);
+
   font-family: 'DM Sans', system-ui, sans-serif;
+
   font-weight: 300;
+
+  overflow-x: hidden;
+
+  overscroll-behavior: none;
+
   -webkit-font-smoothing: antialiased;
+
   background-attachment: fixed;
+
 }
+
+body[data-mode="zen"]   { background: radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%) fixed !important; }
+
+body[data-mode="hc"]    { background: radial-gradient(ellipse at 50% 30%, #8b2818 0%, #6b1d12 60%, #3d0e08 100%) fixed !important; }
+
+body[data-mode="vault"] { background: radial-gradient(ellipse at 50% 30%, #4f3aa8 0%, #382680 60%, #1f1450 100%) fixed !important; }
+
+
 
 /* ── NAV ── */
+
 nav {
-  position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+
   display: flex; align-items: center; justify-content: space-between;
+
   padding: 0 3rem; height: 62px;
+
+  background: transparent;
+
+  transition: background 0.8s ease;
+
 }
-.logo { font-family: 'Instrument Serif', serif; font-size: 1.85rem; color: #f5f5f0; }
+
+.logo {
+
+  font-family: 'Instrument Serif', serif;
+
+  font-size: 1.85rem; font-weight: 400; color: #f5f5f0;
+
+  letter-spacing: -0.01em;
+
+}
+
 .nav-r { display: flex; align-items: center; gap: 2.5rem; }
-.nav-btn { background: #f5f5f0; color: #18171a; padding: 0.45rem 1.2rem; border-radius: 100px; font-weight: 500; border: none; cursor: pointer; }
+
+.nav-r a { color: rgba(245,245,240,0.7); font-size: 0.85rem; font-weight: 400; transition: color 0.2s; }
+
+.nav-r a:hover { color: #f5f5f0; }
+
+.nav-btn {
+
+  background: #f5f5f0; color: #18171a;
+
+  padding: 0.45rem 1.2rem; border-radius: 100px;
+
+  font-size: 0.82rem; font-weight: 500; font-family: inherit;
+
+  border: none; cursor: pointer; transition: opacity 0.2s;
+
+}
+
+.nav-btn:hover { opacity: 0.82; }
+
+
 
 /* ── HERO ── */
-.hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
 
-/* ── STICKY WRAP (DESKTOP) ── */
-.sticky-wrap { display: flex; max-width: 1900px; margin: 0 auto; padding: 0 2rem 8rem; gap: 2rem; align-items: flex-start; }
-.panels-col { flex: 1; display: flex; flex-direction: column; }
-.feat-panel { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; opacity: 0.3; transition: opacity 0.4s ease; }
+.hero {
+
+  min-height: 100vh;
+
+  display: flex; flex-direction: column;
+
+  align-items: center; justify-content: center;
+
+  text-align: center;
+
+  padding: 10rem 2rem 6rem;
+
+  position: relative;
+
+}
+
+
+
+.hero-tag {
+
+  display: inline-flex; align-items: center;
+
+  font-family: 'JetBrains Mono', monospace;
+
+  font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase;
+
+  color: var(--muted); border: 1px solid var(--border);
+
+  padding: 0.3rem 0.9rem; border-radius: 100px;
+
+  margin-bottom: 2.5rem;
+
+  opacity: 0; animation: fadeUp 0.7s 0.2s ease forwards;
+
+}
+
+
+
+h1 {
+
+  font-family: 'Instrument Serif', serif;
+
+  font-size: clamp(3rem, 6vw, 6rem); font-weight: 400;
+
+  line-height: 1.05; letter-spacing: -0.025em;
+
+  margin-bottom: 1.75rem; max-width: 800px;
+
+  opacity: 0; animation: fadeUp 0.7s 0.4s ease forwards;
+
+}
+
+h1 em { font-style: italic; color: var(--muted); }
+
+
+
+.hero-sub {
+
+  font-size: clamp(0.95rem, 1.3vw, 1.05rem); font-weight: 300;
+
+  color: var(--muted); line-height: 1.8;
+
+  max-width: 380px; margin: 0 auto 3rem;
+
+  opacity: 0; animation: fadeUp 0.7s 0.6s ease forwards;
+
+}
+
+
+
+.hero-actions {
+
+  display: flex; align-items: center; gap: 1rem;
+
+  justify-content: center; flex-wrap: wrap;
+
+  opacity: 0; animation: fadeUp 0.7s 0.8s ease forwards;
+
+}
+
+
+
+.btn-primary {
+
+  background: var(--fg); color: var(--bg);
+
+  padding: 0.85rem 2.2rem; border-radius: 100px;
+
+  font-family: inherit; font-size: 0.9rem; font-weight: 500;
+
+  border: none; cursor: pointer;
+
+  transition: opacity 0.2s, transform 0.15s;
+
+}
+
+.btn-primary:hover { opacity: 0.82; transform: translateY(-1px); }
+
+
+
+.btn-ghost {
+
+  background: none; color: var(--muted);
+
+  padding: 0.85rem 1.75rem; border-radius: 100px;
+
+  font-family: inherit; font-size: 0.9rem; font-weight: 400;
+
+  border: 1px solid var(--border); cursor: pointer;
+
+  transition: all 0.2s;
+
+}
+
+.btn-ghost:hover { color: var(--fg); border-color: rgba(0,0,0,0.2); }
+
+
+
+/* ── SECTION LABEL ── */
+
+.s-label {
+
+  font-family: 'JetBrains Mono', monospace;
+
+  font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+
+  color: var(--muted); margin-bottom: 1rem;
+
+}
+
+
+
+/* ── FEATURES ── */
+
+.features-section {
+
+  padding-top: 4rem;
+
+}
+
+
+
+.features-header {
+
+  text-align: center; padding: 6rem 2rem 3rem;
+
+}
+
+
+
+h2 {
+
+  font-family: 'Instrument Serif', serif;
+
+  font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 400;
+
+  line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 0.75rem;
+
+  color: #f5f5f0;
+
+}
+
+h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
+
+.s-sub { color: rgba(245,245,240,0.7); font-size: 0.95rem; line-height: 1.75; }
+
+
+
+/* ── STICKY SCROLL ── */
+
+.sticky-wrap {
+
+  display: flex;
+
+  max-width: 1900px;
+
+  margin: 0 auto;
+
+  padding: 0 2rem 8rem;
+
+  gap: 2rem;
+
+  align-items: flex-start;
+
+}
+
+
+
+/* Sol: paneller */
+
+.panels-col {
+
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+}
+
+
+
+.feat-panel {
+
+  min-height: 100vh;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  padding: 5rem 0;
+
+  border-bottom: 1px solid var(--border);
+
+  opacity: 0.3;
+
+  transition: opacity 0.4s ease;
+
+}
+
+.feat-panel:last-child { border-bottom: none; }
+
 .feat-panel.active { opacity: 1; }
 
-.phone-col { width: 1100px; flex-shrink: 0; position: sticky; top: 50px; align-self: flex-start; }
-.phone-frame { width: 100%; position: relative; }
-.phone-screen { position: relative; width: 100%; opacity: 0; transition: opacity 0.5s ease; }
-.phone-screen:not(.active) { position: absolute; inset: 0; }
-.phone-screen.active { opacity: 1; }
-.phone-screen img { width: 100%; display: block; }
 
-/* ── MOBILE FIX (TAŞMA VE BOŞLUK ÇÖZÜMÜ) ── */
-@media (max-width: 860px) {
-  nav { padding: 0 1.25rem; }
-  .nav-r a:not(.nav-btn) { display: none; }
-  
-  .sticky-wrap { 
-    display: block !important; 
-    padding: 0 !important; 
-    margin: 0 !important;
-    width: 100% !important;
-  }
-  
-  .phone-col { display: none !important; }
-  
-  .feat-panel {
-    min-height: 100vh !important;
-    width: 100vw !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    align-items: center !important;
-    opacity: 1 !important;
-  }
 
-  /* Mockup Görseli */
-  .feat-panel::before {
-    content: "";
-    display: block;
-    width: 100% !important;
-    height: 60vh !important; 
-    background-image: var(--mobile-img);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center bottom;
-    margin-bottom: 0 !important;
-  }
+.feat-mode-tag {
 
-  /* Yazı Kapsayıcısı */
-  .feat-text-wrap {
-    width: 100% !important;
-    padding: 2rem 1.5rem 5rem !important;
-    text-align: center !important;
-  }
+  font-family: 'JetBrains Mono', monospace;
 
-  .feat-title { 
-    font-size: 1.8rem !important; 
-    width: 100% !important; 
-    margin-bottom: 0.8rem !important; 
-    color: #f5f5f0 !important;
-  }
-  
-  .feat-desc { 
-    font-size: 0.95rem !important; 
-    width: 100% !important; 
-    color: rgba(245,245,240,0.7) !important;
-    margin: 0 auto !important;
-  }
-  
-  .feat-mode-tag {
-    font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
-    padding: 0.3rem 0.8rem; border-radius: 100px;
-    margin-bottom: 1rem; display: inline-block;
-  }
-  .feat-mode-tag.zen { color: #6ee7b7; background: rgba(110,231,183,0.12); border: 1px solid rgba(110,231,183,0.3); }
-  .feat-mode-tag.hc { color: #fed7aa; background: rgba(254,215,170,0.12); border: 1px solid rgba(254,215,170,0.3); }
-  .feat-mode-tag.vault { color: #ddd6fe; background: rgba(221,214,254,0.12); border: 1px solid rgba(221,214,254,0.3); }
+  font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase;
+
+  padding: 0.28rem 0.8rem; border-radius: 100px;
+
+  display: inline-flex; align-items: center;
+
+  margin-bottom: 1.75rem; width: fit-content;
+
+  font-weight: 400;
+
 }
 
-.modal-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(24,23,26,0.6); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+.feat-mode-tag.zen   { color: #6ee7b7;   background: rgba(110,231,183,0.12);  border: 1px solid rgba(110,231,183,0.3); }
+
+.feat-mode-tag.hc    { color: #fed7aa;   background: rgba(254,215,170,0.12);  border: 1px solid rgba(254,215,170,0.3); }
+
+.feat-mode-tag.vault { color: #ddd6fe;   background: rgba(221,214,254,0.12);  border: 1px solid rgba(221,214,254,0.3); }
+
+
+
+.feat-title {
+
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+
+  font-size: clamp(2rem, 3vw, 2.8rem); font-weight: 700;
+
+  line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 1.25rem;
+
+  color: #f5f5f0;
+
+}
+
+.feat-title em { font-style: normal; color: rgba(245,245,240,0.55); font-weight: 700; }
+
+
+
+.feat-desc {
+
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+
+  font-size: 0.95rem; color: rgba(245,245,240,0.75);
+
+  line-height: 1.7; max-width: 340px; font-weight: 400;
+
+}
+
+
+
+/* Sol: sticky telefon */
+
+.phone-col {
+
+  width: 1100px;
+
+  flex-shrink: 0;
+
+  position: sticky;
+
+  top: 50px;
+
+  align-self: flex-start;
+
+  height: fit-content;
+
+}
+
+
+
+.phone-frame {
+
+  width: 1100px;
+
+  height: auto;
+
+  position: relative;
+
+  transition: filter 0.5s ease;
+
+}
+
+.phone-frame.zen-active   { filter: drop-shadow(0 24px 50px rgba(14,168,97,0.15)); }
+
+.phone-frame.hc-active    { filter: drop-shadow(0 24px 50px rgba(212,90,32,0.15)); }
+
+.phone-frame.vault-active { filter: drop-shadow(0 24px 50px rgba(102,68,204,0.15)); }
+
+
+
+.phone-screen {
+
+  position: relative;
+
+  width: 100%;
+
+  opacity: 0;
+
+  transition: opacity 0.5s ease;
+
+}
+
+.phone-screen:not(.active) {
+
+  position: absolute; inset: 0;
+
+}
+
+.phone-screen.active { opacity: 1; }
+
+.phone-screen img {
+
+  width: 100%;
+
+  height: auto;
+
+  display: block;
+
+}
+
+
+
+/* placeholder — görsel yokken */
+
+.phone-placeholder {
+
+  width: 100%; height: 100%;
+
+  display: flex; flex-direction: column;
+
+  align-items: center; justify-content: center;
+
+  gap: 0.5rem;
+
+}
+
+.phone-placeholder-dot {
+
+  width: 8px; height: 8px; border-radius: 50%;
+
+}
+
+.phone-placeholder span {
+
+  font-family: 'JetBrains Mono', monospace;
+
+  font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase;
+
+  text-align: center; opacity: 0.35; padding: 0 1rem;
+
+}
+
+
+
+/* ── HOW IT WORKS ── */
+
+.how-section {
+
+  background: transparent;
+
+  padding: 8rem 2rem;
+
+  display: flex; flex-direction: column;
+
+  align-items: center; text-align: center;
+
+  border: none;
+
+}
+
+.how-inner { max-width: 520px; width: 100%; }
+
+.how-inner h2 { margin-bottom: 0.75rem; color: #f5f5f0; }
+
+.how-inner h2 em { color: rgba(245,245,240,0.5); }
+
+.how-inner .s-sub { margin-bottom: 4rem; color: rgba(245,245,240,0.7); }
+
+.how-inner .s-label { color: rgba(245,245,240,0.5); }
+
+
+
+.steps { display: flex; flex-direction: column; width: 100%; text-align: left; }
+
+.step {
+
+  display: flex; gap: 1.5rem;
+
+  padding: 1.75rem 0;
+
+  border-bottom: 1px solid rgba(245,245,240,0.12);
+
+}
+
+.step:first-child { border-top: 1px solid rgba(245,245,240,0.12); }
+
+.step-n {
+
+  font-family: 'JetBrains Mono', monospace;
+
+  font-size: 0.62rem; color: rgba(245,245,240,0.5);
+
+  min-width: 22px; padding-top: 3px;
+
+}
+
+.step h4 { font-size: 0.93rem; font-weight: 500; margin-bottom: 0.3rem; color: #f5f5f0; }
+
+.step p { font-size: 0.83rem; color: rgba(245,245,240,0.6); line-height: 1.7; }
+
+
+
+/* ── CTA ── */
+
+.cta-section {
+
+  background: transparent;
+
+  padding: 8rem 2rem;
+
+  display: flex; flex-direction: column;
+
+  align-items: center; text-align: center;
+
+}
+
+.cta-section h2 { color: #f5f5f0; }
+
+.cta-section h2 em { color: rgba(245,245,240,0.4); }
+
+.cta-section .s-label { color: rgba(245,245,240,0.4); }
+
+.cta-section p { color: rgba(245,245,240,0.55); font-size: 0.95rem; line-height: 1.75; margin: 0.75rem 0 2.5rem; max-width: 400px; }
+
+.btn-cta {
+
+  background: #f5f5f0; color: #18171a;
+
+  padding: 0.9rem 2.2rem; border-radius: 100px;
+
+  font-family: inherit; font-size: 0.95rem; font-weight: 500;
+
+  border: none; cursor: pointer; transition: opacity 0.2s;
+
+}
+
+.btn-cta:hover { opacity: 0.88; }
+
+.cta-soon {
+
+  margin-top: 1rem; font-family: 'JetBrains Mono', monospace;
+
+  font-size: 0.62rem; color: rgba(245,245,240,0.25); letter-spacing: 0.06em;
+
+}
+
+
+
+/* ── FOOTER ── */
+
+footer {
+
+  background: transparent;
+
+  padding: 2rem 3rem;
+
+  display: flex; align-items: center; justify-content: space-between;
+
+  border: none;
+
+}
+
+.f-logo { font-family: 'Instrument Serif', serif; font-size: 1rem; color: rgba(245,245,240,0.5); }
+
+.f-links { display: flex; gap: 2rem; list-style: none; }
+
+.f-links a { font-size: 0.78rem; color: rgba(245,245,240,0.55); transition: color 0.2s; }
+
+.f-links a:hover { color: #f5f5f0; }
+
+footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
+
+
+
+/* ── MODAL ── */
+
+.modal-overlay {
+
+  position: fixed; inset: 0; z-index: 1000;
+
+  background: rgba(24,23,26,0.6); backdrop-filter: blur(12px);
+
+  display: flex; align-items: center; justify-content: center;
+
+  padding: 2rem; opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+
+}
+
 .modal-overlay.open { opacity: 1; pointer-events: all; }
-.modal { background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 2.5rem; max-width: 400px; width: 100%; color: #f5f5f0; }
+
+.modal {
+
+  background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08);
+
+  border-radius: 24px; padding: 2.5rem; max-width: 400px; width: 100%;
+
+  transform: translateY(18px) scale(0.98); transition: transform 0.25s ease; position: relative;
+
+  color: #f5f5f0;
+
+}
+
+.modal-overlay.open .modal { transform: translateY(0) scale(1); }
+
+.modal-close {
+
+  position: absolute; top: 1.25rem; right: 1.25rem;
+
+  background: none; border: none; color: rgba(245,245,240,0.5);
+
+  font-size: 1rem; cursor: pointer; padding: 0.25rem; transition: color 0.2s; font-family: inherit;
+
+}
+
+.modal-close:hover { color: #f5f5f0; }
+
+.modal-badge {
+
+  font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+
+  letter-spacing: 0.16em; text-transform: uppercase;
+
+  color: rgba(245,245,240,0.5); margin-bottom: 1.25rem;
+
+}
+
+.modal h3 {
+
+  font-family: 'Instrument Serif', serif; font-weight: 400;
+
+  font-size: 1.65rem; line-height: 1.15; margin-bottom: 0.5rem;
+
+  color: #f5f5f0;
+
+}
+
+.modal h3 em { font-style: italic; color: rgba(245,245,240,0.5); }
+
+.modal > div > p { font-size: 0.85rem; color: rgba(245,245,240,0.6); line-height: 1.7; margin-bottom: 1.5rem; }
+
+.modal-input {
+
+  width: 100%; height: 46px;
+
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+
+  border-radius: 10px; color: #f5f5f0;
+
+  font-family: inherit; font-size: 0.88rem; font-weight: 300;
+
+  padding: 0 1rem; outline: none; margin-bottom: 0.75rem; transition: border-color 0.2s;
+
+}
+
+.modal-input::placeholder { color: rgba(245,245,240,0.4); }
+
+.modal-input:focus { border-color: rgba(255,255,255,0.25); }
+
+.modal-submit {
+
+  width: 100%; height: 46px; background: #f5f5f0; color: #0a0a0a;
+
+  border: none; border-radius: 10px;
+
+  font-family: inherit; font-size: 0.9rem; font-weight: 500;
+
+  cursor: pointer; transition: opacity 0.2s;
+
+}
+
+.modal-submit:hover { opacity: 0.82; }
+
+.modal-success { display: none; text-align: center; padding: 1rem 0; }
+
+.modal-success h4 {
+
+  font-family: 'Instrument Serif', serif; font-weight: 400;
+
+  font-size: 1.5rem; margin-bottom: 0.4rem;
+
+  color: #f5f5f0;
+
+}
+
+.modal-success p { font-size: 0.83rem; color: rgba(245,245,240,0.6); }
+
+
+
+/* FADE UP */
 
 .fade-up { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+
 .fade-up.in { opacity: 1; transform: translateY(0); }
+
+
+
+@keyframes fadeUp {
+
+  from { opacity: 0; transform: translateY(14px); }
+
+  to   { opacity: 1; transform: translateY(0); }
+
+}
+
+
+
+/* RESPONSIVE */
+
+@media (max-width: 860px) {
+
+  nav { padding: 0 1.25rem; }
+
+  .nav-r a:not(.nav-btn) { display: none; }
+
+  .sticky-wrap { flex-direction: column; padding: 0 1.5rem 5rem; gap: 0; }
+
+  .phone-col { display: none; }
+
+  .feat-panel { min-height: auto; padding: 3rem 0; opacity: 1; }
+
+  footer { flex-direction: column; gap: 1rem; text-align: center; padding: 1.5rem; }
+
+}
+
 </style>
+
 </head>
+
 <body>
 
+
+
+<!-- NAV -->
+
 <nav>
+
   <span class="logo">Cascade</span>
+
   <div class="nav-r">
+
+    <a href="#features">Features</a>
+
+    <a href="#about">About</a>
+
+    <a href="#feedback">Feedback</a>
+
     <button onclick="openWaitlist()" class="nav-btn">Join Waitlist</button>
+
   </div>
+
 </nav>
 
-<section class="hero" style="background:transparent; padding:0;">
-  <div style="position:absolute;inset:0;z-index:0;background:linear-gradient(135deg, #5d8a6e 0%, #6a9d8a 25%, #7eb4a0 45%, #5d8a8e 65%, #3d5a5e 85%, #1a2a30 100%);"></div>
-  <div style="position:relative;z-index:10;width:100%;max-width:1100px;padding:0 4rem;display:flex;align-items:center;" id="hero-content">
-    <div style="max-width:520px;">
-      <h1 style="font-family:'Instrument Serif',serif; font-size:clamp(2.8rem,5vw,5rem); color:#f5f5f0;">A screen time app <em style="font-style:italic;color:rgba(245,245,240,0.55);">you'll love using.</em></h1>
-      <p style="font-size:1rem;color:rgba(245,245,240,0.7);margin:1.5rem 0 2.5rem;">Easy to use, designed to help you take back your time.</p>
-      <button onclick="openWaitlist()" class="nav-btn">Join the Waitlist</button>
-    </div>
-    <div style="position:absolute;right:-400px;top:57%;transform:translateY(-50%);">
-      <img src="anasayfa.png" style="width:1100px;height:auto;filter:drop-shadow(0 40px 80px rgba(0,0,0,0.5));" />
-    </div>
+
+
+<!-- HERO -->
+
+<section class="hero" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:0;text-align:left;position:relative;overflow:hidden;">
+
+  <div style="position:absolute;inset:0;z-index:0;background:linear-gradient(135deg, #5d8a6e 0%, #6a9d8a 25%, #7eb4a0 45%, #5d8a8e 65%, #3d5a5e 85%, #1a2a30 100%);">
+
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%, rgba(180,210,180,0.25) 0%, transparent 60%);"></div>
+
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 70% 70%, rgba(40,80,90,0.4) 0%, transparent 70%);"></div>
+
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(20,40,40,0.2) 0%,transparent 30%,transparent 70%,rgba(15,25,30,0.6) 100%);"></div>
+
   </div>
+
+  <div style="position:relative;z-index:10;width:100%;max-width:1100px;padding:0 4rem;display:flex;align-items:center;" id="hero-content">
+
+    <div style="max-width:520px;">
+
+      <p style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(240,238,236,0.55);margin-bottom:1.5rem;opacity:0;animation:fadeUp 1s 0.3s ease forwards;">Coming to iOS</p>
+
+      <h1 style="font-family:'Instrument Serif',serif;font-size:clamp(2.8rem,5vw,5rem);font-weight:400;line-height:1.05;letter-spacing:-0.025em;margin-bottom:1.5rem;color:#f5f5f0;opacity:0;animation:fadeUp 1s 0.5s ease forwards;text-shadow:0 2px 20px rgba(0,0,0,0.3);">A screen time app <em style="font-style:italic;color:rgba(245,245,240,0.55);">you'll love using.</em></h1>
+
+      <p style="font-size:clamp(0.9rem,1.2vw,1rem);color:rgba(245,245,240,0.7);line-height:1.75;max-width:360px;margin:0 0 2.5rem;opacity:0;animation:fadeUp 1s 0.7s ease forwards;">Easy to use, designed to help you take back your time. Block what distracts. Keep what matters.</p>
+
+      <button onclick="openWaitlist()" style="background:rgba(245,245,240,0.1);border:1px solid rgba(245,245,240,0.3);color:rgba(245,245,240,0.9);padding:0.7rem 1.75rem;border-radius:100px;font-family:inherit;font-size:0.88rem;cursor:pointer;transition:all 0.2s;opacity:0;animation:fadeUp 1s 0.9s ease forwards;backdrop-filter:blur(8px);" onmouseover="this.style.background='rgba(245,245,240,0.18)';this.style.borderColor='rgba(245,245,240,0.5)'" onmouseout="this.style.background='rgba(245,245,240,0.1)';this.style.borderColor='rgba(245,245,240,0.3)'">Join the Waitlist</button>
+
+    </div>
+
+    <div style="position:absolute;right:-400px;top:57%;transform:translateY(-50%);opacity:0.95;">
+
+      <img src="anasayfa.png" alt="Cascade app" style="width:1100px;height:auto;filter:drop-shadow(0 40px 80px rgba(0,0,0,0.5));" />
+
+    </div>
+
+  </div>
+
 </section>
+
+
+
+<!-- FEATURES -->
 
 <section class="features-section" id="features">
+
   <div class="features-header fade-up">
+
+    <p class="s-label">Features</p>
+
     <h2>Built to <em>make things easy.</em></h2>
+
+    <p class="s-sub">Every tool you need to cut through the noise and get back to what matters.</p>
+
   </div>
+
+
 
   <div class="sticky-wrap">
+
+
+
+    <!-- Sol sticky telefon -->
+
     <div class="phone-col">
-      <div class="phone-frame" id="phone-frame">
-        <div class="phone-screen active"><img src="anasayfa.png" /></div>
-        <div class="phone-screen"><img src="zenmodemockup.png" /></div>
-        <div class="phone-screen"><img src="zenmoderutin.png" /></div>
-        <div class="phone-screen"><img src="hardcoremode.png" /></div>
-        <div class="phone-screen"><img src="unlockwindowhardcore.png" /></div>
-        <div class="phone-screen"><img src="hardcorerutinayar.png" /></div>
-        <div class="phone-screen"><img src="vaultmode.png" /></div>
-        <div class="phone-screen"><img src="518shots_so-Photoroom.png" /></div>
-        <div class="phone-screen"><img src="vaultrutin.png" /></div>
+
+      <div class="phone-frame zen-active" id="phone-frame">
+
+
+
+        <div class="phone-screen active" id="feat-screen-0">
+
+          <img src="anasayfa.png" alt="Choose your path" />
+
+        </div>
+
+
+
+        <div class="phone-screen" id="feat-screen-1">
+
+          <img src="zenmodemockup.png" alt="Zen Mode" />
+
+        </div>
+
+
+
+        <div class="phone-screen" id="feat-screen-2">
+
+          <img src="zenmoderutin.png" alt="Routine Schedule" />
+
+        </div>
+
+
+
+        <div class="phone-screen" id="feat-screen-3">
+
+          <img src="hardcoremode.png" alt="Hardcore Mode" />
+
+        </div>
+
+
+
+        <div class="phone-screen" id="feat-screen-4">
+
+          <img src="unlockwindowhardcore.png" alt="Unlock Window" />
+
+        </div>
+
+
+
+        <div class="phone-screen" id="feat-screen-5">
+
+          <img src="hardcorerutinayar.png" alt="Hardcore Routine" />
+
+        </div>
+
+
+
+        <div class="phone-screen" id="feat-screen-6">
+
+          <img src="vaultmode.png" alt="Vault Mode" />
+
+        </div>
+
+
+
+        <div class="phone-screen" id="feat-screen-7">
+
+          <img src="518shots_so-Photoroom.png" alt="No Way Out" />
+
+        </div>
+
+
+
+        <div class="phone-screen" id="feat-screen-8">
+
+          <img src="vaultrutin.png" alt="Vault Routine" />
+
+        </div>
+
+
+
       </div>
+
     </div>
+
+
+
+    <!-- Sağ paneller -->
 
     <div class="panels-col">
-      <div class="feat-panel active" data-feat="0" data-mode="zen" style="--mobile-img:url('anasayfa.png')">
-        <div class="feat-text-wrap">
-          <span class="feat-mode-tag zen">Choose your path</span>
-          <h3 class="feat-title">How will <em>you resist?</em></h3>
-          <p class="feat-desc">Three modes to fit your day. Zen, Hardcore, and Vault.</p>
-        </div>
+
+
+
+      <div class="feat-panel active" data-feat="0" data-mode="zen">
+
+        <span class="feat-mode-tag zen">Choose your path</span>
+
+        <h3 class="feat-title">How will <em>you resist?</em></h3>
+
+        <p class="feat-desc">Three modes to fit your day. Zen for gentle focus. Hardcore for serious commitment. Vault for the strictest protection.</p>
+
       </div>
-      <div class="feat-panel" data-feat="1" data-mode="zen" style="--mobile-img:url('zenmodemockup.png')">
-        <div class="feat-text-wrap">
-          <span class="feat-mode-tag zen">Zen Mode</span>
-          <h3 class="feat-title">Gentle blocking.</h3>
-          <p class="feat-desc">Pick the apps you want to block and the session length.</p>
-        </div>
+
+
+
+      <div class="feat-panel" data-feat="1" data-mode="zen">
+
+        <span class="feat-mode-tag zen">Zen Mode</span>
+
+        <h3 class="feat-title">Gentle blocking.</h3>
+
+        <p class="feat-desc">Pick the apps you want to block and the session length, then start. If you need to stop, you can stop the session and use the apps you need.</p>
+
       </div>
-      <div class="feat-panel" data-feat="2" data-mode="zen" style="--mobile-img:url('zenmoderutin.png')">
-        <div class="feat-text-wrap">
-          <span class="feat-mode-tag zen">Zen Mode</span>
-          <h3 class="feat-title">Set a <em>routine.</em></h3>
-          <p class="feat-desc">Schedule recurring blocks for any day and time.</p>
-        </div>
+
+
+
+      <div class="feat-panel" data-feat="2" data-mode="zen">
+
+        <span class="feat-mode-tag zen">Zen Mode</span>
+
+        <h3 class="feat-title">Set a <em>routine.</em></h3>
+
+        <p class="feat-desc">Schedule recurring blocks for any day and time. Cascade starts your session automatically.</p>
+
       </div>
-      <div class="feat-panel" data-feat="3" data-mode="hc" style="--mobile-img:url('hardcoremode.png')">
-        <div class="feat-text-wrap">
-          <span class="feat-mode-tag hc">Hardcore Mode</span>
-          <h3 class="feat-title">Customizable blocking.</h3>
-          <p class="feat-desc">Give yourself a few unlock passes.</p>
-        </div>
+
+
+
+      <div class="feat-panel" data-feat="3" data-mode="hc">
+
+        <span class="feat-mode-tag hc">Hardcore Mode</span>
+
+        <h3 class="feat-title">Customizable blocking.</h3>
+
+        <p class="feat-desc">You block the apps you choose, but you also give yourself a few unlock passes. For example, you can let a blocked app open 3 times for 10 minutes. When they're gone, the app stays blocked until the session ends.</p>
+
       </div>
-      <div class="feat-panel" data-feat="4" data-mode="hc" style="--mobile-img:url('unlockwindowhardcore.png')">
-        <div class="feat-text-wrap">
-          <span class="feat-mode-tag hc">Hardcore Mode</span>
-          <h3 class="feat-title">Your rules. <em>Your limits.</em></h3>
-          <p class="feat-desc">Set temporary unlock windows before you start.</p>
-        </div>
+
+
+
+      <div class="feat-panel" data-feat="4" data-mode="hc">
+
+        <span class="feat-mode-tag hc">Hardcore Mode</span>
+
+        <h3 class="feat-title">Your rules. <em>Your limits.</em></h3>
+
+        <p class="feat-desc">Before you start, you set the blocking duration, how many times you can temporarily unlock apps, and how long each unlock window lasts.</p>
+
       </div>
-      <div class="feat-panel" data-feat="5" data-mode="hc" style="--mobile-img:url('hardcorerutinayar.png')">
-        <div class="feat-text-wrap">
-          <span class="feat-mode-tag hc">Hardcore Mode</span>
-          <h3 class="feat-title">Routine on <em>autopilot.</em></h3>
-          <p class="feat-desc">Set recurring Hardcore sessions automatically.</p>
-        </div>
+
+
+
+      <div class="feat-panel" data-feat="5" data-mode="hc">
+
+        <span class="feat-mode-tag hc">Hardcore Mode</span>
+
+        <h3 class="feat-title">Routine on <em>autopilot.</em></h3>
+
+        <p class="feat-desc">Set recurring Hardcore sessions for the days and times you want. Cascade locks you in automatically when the schedule begins.</p>
+
       </div>
-      <div class="feat-panel" data-feat="6" data-mode="vault" style="--mobile-img:url('vaultmode.png')">
-        <div class="feat-text-wrap">
-          <span class="feat-mode-tag vault">Vault Mode</span>
-          <h3 class="feat-title">Strict blocking.</h3>
-          <p class="feat-desc">Limited weekly unlock passes only.</p>
-        </div>
+
+
+
+      <div class="feat-panel" data-feat="6" data-mode="vault">
+
+        <span class="feat-mode-tag vault">Vault Mode</span>
+
+        <h3 class="feat-title">Strict blocking.</h3>
+
+        <p class="feat-desc">You block the apps you choose and you can't stop the session early. The only way in is a limited number of weekly unlock passes that you set yourself beforehand.</p>
+
       </div>
-      <div class="feat-panel" data-feat="7" data-mode="vault" style="--mobile-img:url('518shots_so-Photoroom.png')">
-        <div class="feat-text-wrap">
-          <span class="feat-mode-tag vault">Vault Mode</span>
-          <h3 class="feat-title">No way <em>out.</em></h3>
-          <p class="feat-desc">Vault sessions cannot be stopped early.</p>
-        </div>
+
+
+
+      <div class="feat-panel" data-feat="7" data-mode="vault">
+
+        <span class="feat-mode-tag vault">Vault Mode</span>
+
+        <h3 class="feat-title">No way <em>out.</em></h3>
+
+        <p class="feat-desc">Vault sessions cannot be stopped early. The session ends automatically when the time is up. This is the strongest commitment you can make to yourself.</p>
+
       </div>
-      <div class="feat-panel" data-feat="8" data-mode="vault" style="--mobile-img:url('vaultrutin.png')">
-        <div class="feat-text-wrap">
-          <span class="feat-mode-tag vault">Vault Mode</span>
-          <h3 class="feat-title">Lock it in <em>on schedule.</em></h3>
-          <p class="feat-desc">Once the schedule kicks in, there's no early exit.</p>
-        </div>
+
+
+
+      <div class="feat-panel" data-feat="8" data-mode="vault">
+
+        <span class="feat-mode-tag vault">Vault Mode</span>
+
+        <h3 class="feat-title">Lock it in <em>on schedule.</em></h3>
+
+        <p class="feat-desc">Set recurring Vault sessions for the days and times you choose. Once the schedule kicks in, there's no early exit until the session ends.</p>
+
       </div>
+
+
+
     </div>
+
+
+
   </div>
+
 </section>
 
+
+
+<!-- HOW IT WORKS -->
+
+<section class="how-section" id="how">
+
+  <div class="how-inner fade-up">
+
+    <p class="s-label">How it works</p>
+
+    <h2>Simple to start.<br><em>Hard to quit.</em></h2>
+
+    <p class="s-sub">Cascade is built to get out of your way.</p>
+
+    <div class="steps">
+
+      <div class="step">
+
+        <span class="step-n">01</span>
+
+        <div><h4>Choose your mode</h4><p>Zen, Hardcore, or Vault — pick what fits your day.</p></div>
+
+      </div>
+
+      <div class="step">
+
+        <span class="step-n">02</span>
+
+        <div><h4>Pick your blocklist</h4><p>Choose which apps get restricted during your session.</p></div>
+
+      </div>
+
+      <div class="step">
+
+        <span class="step-n">03</span>
+
+        <div><h4>Start your session</h4><p>Let Cascade handle the rest.</p></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- CTA -->
+
+<section class="cta-section" id="waitlist">
+
+  <p class="s-label">Get the app</p>
+
+  <h2>Ready to take back <em>your time?</em></h2>
+
+  <p>Join the waitlist and be the first to know when Cascade launches on the App Store.</p>
+
+  <button class="btn-cta" onclick="openWaitlist()">Join the Waitlist</button>
+
+</section>
+
+
+
+<!-- FOOTER -->
+
+<footer>
+
+  <span class="f-logo">Cascade</span>
+
+  <ul class="f-links">
+
+    <li><a href="#">Privacy</a></li>
+
+    <li><a href="#">Contact</a></li>
+
+  </ul>
+
+  <small>© 2026 Cascade</small>
+
+</footer>
+
+
+
+<!-- MODAL -->
+
+<div class="modal-overlay" id="waitlist-modal" onclick="handleOverlay(event)">
+
+  <div class="modal">
+
+    <button class="modal-close" onclick="closeWaitlist()">✕</button>
+
+    <div id="modal-form-wrap">
+
+      <div class="modal-badge">Early Access</div>
+
+      <h3>Get early access <em>to Cascade.</em></h3>
+
+      <p>Be the first to know when we launch.</p>
+
+      <input type="email" id="waitlist-email" class="modal-input" placeholder="your@email.com" />
+
+      <button class="modal-submit" onclick="submitWaitlist()">Join the Waitlist</button>
+
+    </div>
+
+    <div class="modal-success" id="modal-success">
+
+      <h4>You're on the list.</h4>
+
+      <p>We'll reach out when Cascade is ready.</p>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
 <script>
-const modeColors = {
-  zen: [13, 110, 79],
-  hc: [139, 40, 24],
-  vault: [79, 58, 168],
-  base: [61, 90, 94]
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBhh2U4MeLqd5BMvt2wjTXAsWFJ_ZwF9zxNxEQBErTWwRJjr7xpqHYt_7zKx0VxYMu/exec";
+
+
+
+const navColors = {
+
+  zen:   'rgba(212,237,224,0.92)',
+
+  hc:    'rgba(236,216,212,0.92)',
+
+  vault: 'rgba(219,212,237,0.92)',
+
 };
 
-const dynStyle = document.createElement('style');
-document.head.appendChild(dynStyle);
 
-function lerpColor(a, b, t) {
-  return [
-    Math.round(a[0] + (b[0] - a[0]) * t),
-    Math.round(a[1] + (b[1] - a[1]) * t),
-    Math.round(a[2] + (b[2] - a[2]) * t),
-  ].join(',');
-}
 
-function setBgColor(rgbString) {
-  dynStyle.textContent = `body { background: radial-gradient(ellipse at 50% 30%, rgb(${rgbString}) 0%, #052e22 100%) fixed !important; }`;
-}
+const modeColors = {
 
-const featPanels = document.querySelectorAll('.feat-panel');
-const featScreens = document.querySelectorAll('.phone-screen');
+  zen:   'radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%) fixed',
+
+  hc:    'radial-gradient(ellipse at 50% 30%, #8b2818 0%, #6b1d12 60%, #3d0e08 100%) fixed',
+
+  vault: 'radial-gradient(ellipse at 50% 30%, #4f3aa8 0%, #382680 60%, #1f1450 100%) fixed',
+
+};
+
+
+
 const phoneFrame = document.getElementById('phone-frame');
 
-function updateActivePanel() {
-  const winMid = window.innerHeight / 2;
-  const featSection = document.querySelector('.features-section');
-  if(!featSection) return;
-  const featRect = featSection.getBoundingClientRect();
+const featPanels  = document.querySelectorAll('.feat-panel');
 
-  if (featRect.bottom < 0) {
-    const t = Math.min(Math.max(-featRect.bottom / 500, 0), 1);
-    const c = lerpColor(modeColors.vault, modeColors.base, t);
-    setBgColor(c);
-    return;
-  }
+const featScreens = document.querySelectorAll('.phone-screen');
 
-  let foundIdx = -1;
-  featPanels.forEach((panel, i) => {
-    const rect = panel.getBoundingClientRect();
-    if (rect.top <= winMid && rect.bottom >= winMid) {
-      foundIdx = i;
-    }
-  });
+const navEl = document.querySelector('nav');
 
-  if (foundIdx !== -1) {
-    featPanels.forEach((p, j) => p.classList.toggle('active', j === foundIdx));
-    featScreens.forEach((s, j) => s.classList.toggle('active', j === foundIdx));
-    const mode = featPanels[foundIdx].dataset.mode;
-    if(phoneFrame && window.innerWidth > 860) phoneFrame.className = 'phone-frame ' + mode + '-active';
-    setBgColor(modeColors[mode].join(','));
-  }
+
+
+const modeFrameClass = { zen: 'zen-active', hc: 'hc-active', vault: 'vault-active' };
+
+
+
+// Dinamik style tag ile arka plan rengi
+
+const dynStyle = document.createElement('style');
+
+document.head.appendChild(dynStyle);
+
+
+
+let _lastBg = '';
+
+let _ticking = false;
+
+
+
+function setBgColor(bg) {
+
+  if (bg === _lastBg) return;
+
+  _lastBg = bg;
+
+  dynStyle.textContent = `body { background: ${bg} !important; }`;
+
 }
 
-window.addEventListener('scroll', updateActivePanel);
+
+
+// İki rgb arasında interpolasyon
+
+function lerpColor(a, b, t) {
+
+  return [
+
+    Math.round(a[0] + (b[0] - a[0]) * t),
+
+    Math.round(a[1] + (b[1] - a[1]) * t),
+
+    Math.round(a[2] + (b[2] - a[2]) * t),
+
+  ].join(',');
+
+}
+
+
+
+function setActive(i) {
+
+  featPanels.forEach((p, j) => p.classList.toggle('active', j === i));
+
+  featScreens.forEach((s, j) => s.classList.toggle('active', j === i));
+
+  const mode = featPanels[i].dataset.mode;
+
+  phoneFrame.className = 'phone-frame ' + modeFrameClass[mode];
+
+  setBgColor(modeColors[mode]);
+
+}
+
+
+
+// Scroll ile panel takibi
+
+function updateActivePanel() {
+
+  const winMid = window.innerHeight / 2;
+
+  const featSection = document.querySelector('.features-section');
+
+  const featRect = featSection.getBoundingClientRect();
+
+
+
+  // Features bölümü ÜSTÜNDE (henüz girmedik)
+
+  if (featRect.top > window.innerHeight) {
+
+    setBgColor('radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%) fixed');
+
+    return;
+
+  }
+
+
+
+  // Features bölümü ALTINDA (çıktık - vault'tan sonra) — smooth gradient akış
+
+  if (featRect.bottom < 0) {
+
+    const featBottomAbs = window.scrollY + featRect.bottom;
+
+    const docEnd = document.documentElement.scrollHeight - window.innerHeight;
+
+    const range  = Math.max(docEnd - featBottomAbs, 1);
+
+    const t = Math.min(Math.max((window.scrollY - featBottomAbs) / range, 0), 1);
+
+
+
+    const c1 = lerpColor([79, 58, 168], [106, 157, 138], t);
+
+    const c2 = lerpColor([56, 38, 128], [93, 138, 110], t);
+
+    const c3 = lerpColor([31, 20, 80], [61, 90, 94], t);
+
+
+
+    setBgColor(`radial-gradient(ellipse at 50% 30%, rgb(${c1}) 0%, rgb(${c2}) 60%, rgb(${c3}) 100%) fixed`);
+
+    return;
+
+  }
+
+
+
+  let found = false;
+
+  featPanels.forEach((panel, i) => {
+
+    const rect = panel.getBoundingClientRect();
+
+    if (!found && rect.top <= winMid && rect.bottom >= winMid) {
+
+      found = true;
+
+      setActive(i);
+
+    }
+
+  });
+
+
+
+  if (!found) {
+
+    let minDist = Infinity, bestIdx = 0;
+
+    featPanels.forEach((panel, i) => {
+
+      const rect = panel.getBoundingClientRect();
+
+      const center = (rect.top + rect.bottom) / 2;
+
+      const dist = Math.abs(center - winMid);
+
+      if (dist < minDist) { minDist = dist; bestIdx = i; }
+
+    });
+
+    setActive(bestIdx);
+
+  }
+
+}
+
+
+
+function onScroll() {
+
+  if (_ticking) return;
+
+  _ticking = true;
+
+  requestAnimationFrame(() => {
+
+    updateActivePanel();
+
+    _ticking = false;
+
+  });
+
+}
+
+
+
+window.addEventListener('scroll', onScroll, { passive: true });
+
 updateActivePanel();
 
-function openWaitlist() { document.getElementById('waitlist-modal').classList.add('open'); }
-function closeWaitlist() { document.getElementById('waitlist-modal').classList.remove('open'); }
+
+
+const fadeObs = new IntersectionObserver(entries => {
+
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-up').forEach(el => fadeObs.observe(el));
+
+
+
+function openWaitlist() {
+
+  document.getElementById('waitlist-modal').classList.add('open');
+
+  document.body.style.overflow = 'hidden';
+
+  setTimeout(() => document.getElementById('waitlist-email').focus(), 280);
+
+}
+
+function closeWaitlist() {
+
+  document.getElementById('waitlist-modal').classList.remove('open');
+
+  document.body.style.overflow = '';
+
+}
+
+function handleOverlay(e) {
+
+  if (e.target === document.getElementById('waitlist-modal')) closeWaitlist();
+
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeWaitlist(); });
+
+function submitWaitlist() {
+
+  const email = document.getElementById('waitlist-email').value.trim();
+
+  if (!email || !email.includes('@')) return;
+
+  document.getElementById('modal-form-wrap').style.display = 'none';
+
+  document.getElementById('modal-success').style.display = 'block';
+
+  setTimeout(closeWaitlist, 2500);
+
+  fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email}) }).catch(()=>{});
+
+}
+
 </script>
+
 </body>
+
 </html>
