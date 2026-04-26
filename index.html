@@ -595,7 +595,7 @@ function setActive(i) {
   featPanels.forEach((p, j) => p.classList.toggle('active', j === i));
   featScreens.forEach((s, j) => s.classList.toggle('active', j === i));
   const mode = featPanels[i].dataset.mode;
-  phoneFrame.className = 'phone-frame ' + modeFrameClass[mode];
+  if (phoneFrame) phoneFrame.className = 'phone-frame ' + modeFrameClass[mode];
   setBgColor(modeColors[mode]);
 }
 
