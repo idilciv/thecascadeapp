@@ -363,7 +363,6 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
     object-fit: cover !important;
     object-position: center center !important;
     margin: 0 !important;
-    mix-blend-mode: screen;
   }
 
   .feat-mode-tag { margin-left: auto !important; margin-right: auto !important; margin-bottom: 0.6rem !important; }
@@ -658,4 +657,26 @@ const fadeObs = new IntersectionObserver(entries => {
 document.querySelectorAll('.fade-up').forEach(el => fadeObs.observe(el));
 
 function openWaitlist() {
-  document.get
+  document.getElementById('waitlist-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('waitlist-email').focus(), 280);
+}
+function closeWaitlist() {
+  document.getElementById('waitlist-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function handleOverlay(e) {
+  if (e.target === document.getElementById('waitlist-modal')) closeWaitlist();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeWaitlist(); });
+function submitWaitlist() {
+  const email = document.getElementById('waitlist-email').value.trim();
+  if (!email || !email.includes('@')) return;
+  document.getElementById('modal-form-wrap').style.display = 'none';
+  document.getElementById('modal-success').style.display = 'block';
+  setTimeout(closeWaitlist, 2500);
+  fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email}) }).catch(()=>{});
+}
+</script>
+</body>
+</html>
