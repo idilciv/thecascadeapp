@@ -156,8 +156,8 @@ h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
 
 .phone-col {
   width: 1100px; flex-shrink: 0;
-  position: sticky; top: 50px;
-  align-self: flex-start; height: fit-content;
+  position: -webkit-sticky; position: sticky; top: 50px;
+  align-self: flex-start; height: auto;
 }
 .phone-frame { width: 1100px; height: auto; position: relative; transition: filter 0.5s ease; }
 .phone-frame.zen-active   { filter: drop-shadow(0 24px 50px rgba(14,168,97,0.15)); }
@@ -600,16 +600,25 @@ function setActive(i) {
   setBgColor(modeColors[mode]);
 }
 
-function updateActivePanel() {
-  const winMid = window.innerHeight / 2;
-  const featSection = document.querySelector('.features-section');
-  const featRect = featSection.getBoundingClientRect();
+// IntersectionObserver for reliable cross-browser panel switching (Safari + Chrome)
+const panelIO = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      setActive(parseInt(entry.target.dataset.feat, 10));
+    }
+  });
+}, { rootMargin: '-40% 0px -40% 0px', threshold: 0 });
+featPanels.forEach(p => panelIO.observe(p));
 
+// Scroll listener only for background gradient outside the features section
+const featSection = document.querySelector('.features-section');
+
+function updateBg() {
+  const featRect = featSection.getBoundingClientRect();
   if (featRect.top > window.innerHeight) {
     setBgColor('radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%) fixed');
     return;
   }
-
   if (featRect.bottom < 0) {
     const featBottomAbs = window.scrollY + featRect.bottom;
     const docEnd = document.documentElement.scrollHeight - window.innerHeight;
@@ -619,33 +628,19 @@ function updateActivePanel() {
     const c2 = lerpColor([56,38,128], [93,138,110], t);
     const c3 = lerpColor([31,20,80],  [61,90,94],   t);
     setBgColor(`radial-gradient(ellipse at 50% 30%, rgb(${c1}) 0%, rgb(${c2}) 60%, rgb(${c3}) 100%) fixed`);
-    return;
-  }
-
-  let found = false;
-  featPanels.forEach((panel, i) => {
-    const rect = panel.getBoundingClientRect();
-    if (!found && rect.top <= winMid && rect.bottom >= winMid) { found = true; setActive(i); }
-  });
-  if (!found) {
-    let minDist = Infinity, bestIdx = 0;
-    featPanels.forEach((panel, i) => {
-      const rect = panel.getBoundingClientRect();
-      const dist = Math.abs((rect.top + rect.bottom) / 2 - winMid);
-      if (dist < minDist) { minDist = dist; bestIdx = i; }
-    });
-    setActive(bestIdx);
   }
 }
 
 function onScroll() {
   if (_ticking) return;
   _ticking = true;
-  requestAnimationFrame(() => { updateActivePanel(); _ticking = false; });
+  requestAnimationFrame(() => { updateBg(); _ticking = false; });
 }
 
 window.addEventListener('scroll', onScroll, { passive: true });
-updateActivePanel();
+document.addEventListener('scroll', onScroll, { passive: true });
+setActive(0);
+updateBg();
 
 const fadeObs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
