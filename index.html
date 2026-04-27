@@ -282,6 +282,37 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
 .modal-success h4 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.5rem; margin-bottom: 0.4rem; color: #f5f5f0; }
 .modal-success p { font-size: 0.83rem; color: rgba(245,245,240,0.6); }
 
+.modal-textarea {
+  width: 100%; min-height: 96px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px; color: #f5f5f0;
+  font-family: inherit; font-size: 0.88rem; font-weight: 300;
+  padding: 0.75rem 1rem; outline: none; margin-bottom: 0.75rem;
+  transition: border-color 0.2s; resize: none; line-height: 1.6;
+}
+.modal-textarea::placeholder { color: rgba(245,245,240,0.4); }
+.modal-textarea:focus { border-color: rgba(255,255,255,0.25); }
+
+.fb-pills { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.fb-pill {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(245,245,240,0.55); border-radius: 100px;
+  padding: 0.38rem 1rem; font-family: inherit; font-size: 0.8rem;
+  cursor: pointer; transition: all 0.2s;
+}
+.fb-pill.active {
+  background: rgba(245,245,240,0.1); border-color: rgba(245,245,240,0.35);
+  color: #f5f5f0;
+}
+
+.privacy-body { font-size: 0.83rem; color: rgba(245,245,240,0.65); line-height: 1.75; }
+.privacy-body h4 { font-size: 0.78rem; font-weight: 500; color: #f5f5f0; margin: 1.25rem 0 0.3rem; letter-spacing: 0.02em; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; }
+.privacy-body h4:first-child { margin-top: 0; }
+.privacy-scroll { max-height: 52vh; overflow-y: auto; padding-right: 0.25rem; margin-top: 1.25rem; }
+.privacy-scroll::-webkit-scrollbar { width: 3px; }
+.privacy-scroll::-webkit-scrollbar-track { background: transparent; }
+.privacy-scroll::-webkit-scrollbar-thumb { background: rgba(245,245,240,0.15); border-radius: 3px; }
+
 .fade-up { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
 .fade-up.in { opacity: 1; transform: translateY(0); }
 
@@ -412,7 +443,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
   <div class="nav-r">
     <a href="#features">Features</a>
     <a href="#how">About</a>
-    <a href="#" onclick="event.preventDefault();openWaitlist()">Feedback</a>
+    <a href="#" onclick="event.preventDefault();openFeedback()">Feedback</a>
     <button onclick="openWaitlist()" class="nav-btn">Join Waitlist</button>
   </div>
 </nav>
@@ -567,8 +598,8 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
 <footer>
   <span class="f-logo">Cascade</span>
   <ul class="f-links">
-    <li><a href="#">Privacy</a></li>
-    <li><a href="#">Contact</a></li>
+    <li><a href="#" onclick="event.preventDefault();openPrivacy()">Privacy</a></li>
+    <li><a href="mailto:thecascadeapp@gmail.com?subject=Hello%20from%20thecascadeapp.com">Contact</a></li>
   </ul>
   <small>© 2026 Cascade</small>
 </footer>
@@ -588,6 +619,60 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
     <div class="modal-success" id="modal-success">
       <h4>You're on the list.</h4>
       <p>We'll reach out when Cascade is ready.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FEEDBACK MODAL -->
+<div class="modal-overlay" id="feedback-modal" onclick="handleFeedbackOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeFeedback()">✕</button>
+    <div id="feedback-form-wrap">
+      <div class="modal-badge">Share Your Voice</div>
+      <h3>Shape <em>Cascade.</em></h3>
+      <p>Tell us what you'd like us to add or remove. We read every message.</p>
+      <div class="fb-pills">
+        <button class="fb-pill active" data-cat="add" onclick="selectFbCat(this)">Add a feature</button>
+        <button class="fb-pill" data-cat="remove" onclick="selectFbCat(this)">Remove a feature</button>
+      </div>
+      <textarea id="fb-suggestion" class="modal-textarea" placeholder="Describe your idea..."></textarea>
+      <input type="email" id="fb-email" class="modal-input" placeholder="your@email.com (optional — to follow up)" />
+      <div id="fb-error" style="display:none;color:#f87171;font-size:0.78rem;margin:-0.25rem 0 0.6rem;text-align:left;">Please describe your idea first.</div>
+      <button type="button" class="modal-submit" onclick="submitFeedback()">Send Feedback</button>
+    </div>
+    <div class="modal-success" id="feedback-success">
+      <h4>Thank you.</h4>
+      <p>Your feedback helps shape a better Cascade.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PRIVACY MODAL -->
+<div class="modal-overlay" id="privacy-modal" onclick="handlePrivacyOverlay(event)">
+  <div class="modal" style="max-width:480px;">
+    <button class="modal-close" onclick="closePrivacy()">✕</button>
+    <div class="modal-badge">Legal</div>
+    <h3>Privacy <em>Policy</em></h3>
+    <div class="privacy-scroll">
+      <div class="privacy-body">
+        <h4>What we collect</h4>
+        <p>We collect your email address only when you voluntarily join our waitlist. This is used solely to notify you when Cascade becomes available on the App Store. We do not collect any other personal information.</p>
+        <h4>Device Activity</h4>
+        <p>Cascade uses Apple's Screen Time and Family Controls APIs to monitor and block apps. All device activity data is processed entirely on your device. None of this data is ever transmitted to, or stored on, our servers.</p>
+        <h4>Third parties</h4>
+        <p>We do not sell, share, rent, or trade your personal information with any third party for commercial purposes.</p>
+        <h4>Data retention</h4>
+        <p>Your email is stored securely and only for the purpose of communicating our launch. You can request deletion at any time by contacting us.</p>
+        <h4>Cookies &amp; analytics</h4>
+        <p>This website does not use cookies or any third-party analytics trackers.</p>
+        <h4>Children's privacy</h4>
+        <p>We do not knowingly collect personal information from children under 13. If you believe we have done so, please contact us and we will delete it promptly.</p>
+        <h4>Changes</h4>
+        <p>We may update this policy as Cascade evolves. Material changes will be communicated via the email address you provided.</p>
+        <h4>Contact</h4>
+        <p><a href="mailto:thecascadeapp@gmail.com" style="color:#f5f5f0;text-decoration:underline;text-underline-offset:3px;">thecascadeapp@gmail.com</a></p>
+        <p style="margin-top:1rem;color:rgba(245,245,240,0.35);font-size:0.75rem;">Last updated: April 2026</p>
+      </div>
     </div>
   </div>
 </div>
@@ -754,11 +839,63 @@ function closeWaitlist() {
 function handleOverlay(e) {
   if (e.target === document.getElementById('waitlist-modal')) closeWaitlist();
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeWaitlist(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeWaitlist(); closeFeedback(); closePrivacy(); }
+});
 document.getElementById('waitlist-email').addEventListener('input', function() {
   document.getElementById('email-error').style.display = 'none';
   this.style.borderColor = '';
 });
+function openFeedback() {
+  document.getElementById('feedback-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeFeedback() {
+  document.getElementById('feedback-modal').classList.remove('open');
+  document.body.style.overflow = '';
+  setTimeout(() => {
+    document.getElementById('feedback-form-wrap').style.display = '';
+    document.getElementById('feedback-success').style.display = 'none';
+    document.getElementById('fb-suggestion').value = '';
+    document.getElementById('fb-email').value = '';
+    document.getElementById('fb-error').style.display = 'none';
+  }, 300);
+}
+function handleFeedbackOverlay(e) {
+  if (e.target === document.getElementById('feedback-modal')) closeFeedback();
+}
+function selectFbCat(btn) {
+  document.querySelectorAll('.fb-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+}
+function submitFeedback() {
+  const suggestion = document.getElementById('fb-suggestion').value.trim();
+  if (!suggestion) { document.getElementById('fb-error').style.display = 'block'; return; }
+  document.getElementById('fb-error').style.display = 'none';
+  const category = document.querySelector('.fb-pill.active').dataset.cat;
+  const email = document.getElementById('fb-email').value.trim();
+  document.getElementById('feedback-form-wrap').style.display = 'none';
+  document.getElementById('feedback-success').style.display = 'block';
+  const subject = category === 'add' ? 'Feature Request: Add' : 'Feature Request: Remove';
+  const body = suggestion + (email ? '\n\nReply to: ' + email : '');
+  const a = document.createElement('a');
+  a.href = 'mailto:thecascadeapp@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  a.click();
+  setTimeout(closeFeedback, 2500);
+}
+
+function openPrivacy() {
+  document.getElementById('privacy-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closePrivacy() {
+  document.getElementById('privacy-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function handlePrivacyOverlay(e) {
+  if (e.target === document.getElementById('privacy-modal')) closePrivacy();
+}
+
 function submitWaitlist() {
   const emailInput = document.getElementById('waitlist-email');
   const errorEl = document.getElementById('email-error');
