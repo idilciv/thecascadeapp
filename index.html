@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#052e22" id="theme-color-meta" />
 <title>Cascade — Reclaim Your Attention</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -347,10 +348,10 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
   .feat-panel {
     min-height: auto !important;
     padding: 2.5rem 0 3rem !important;
+    display: block !important;
     opacity: 1 !important;
     transition: none !important;
     text-align: center !important;
-    align-items: center !important;
     border-bottom: 1px solid rgba(245,245,240,0.08);
     overflow: visible;
   }
@@ -361,7 +362,6 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
     display: block !important;
     width: 100% !important;
     max-width: none !important;
-    align-self: stretch !important;
     margin: 0 0 1.75rem !important;
   }
 
@@ -595,8 +595,18 @@ const featScreens = document.querySelectorAll('.phone-screen');
 const modeFrameClass = { zen: 'zen-active', hc: 'hc-active', vault: 'vault-active' };
 
 const pageBg = document.getElementById('page-bg');
+const themeColorMeta = document.getElementById('theme-color-meta');
 
-let _lastBg = '', _ticking = false;
+let _lastBg = '', _lastTheme = '', _ticking = false;
+
+function rgbToHex(r, g, b) {
+  return '#' + [r,g,b].map(v => Math.round(v).toString(16).padStart(2,'0')).join('');
+}
+function setThemeColor(hex) {
+  if (hex === _lastTheme || !themeColorMeta) return;
+  _lastTheme = hex;
+  themeColorMeta.setAttribute('content', hex);
+}
 
 function setBgColor(bg) {
   if (bg === _lastBg) return;
@@ -648,6 +658,7 @@ function updateBg() {
 
   if (featRect.top > window.innerHeight) {
     setBgColor(modeColors.zen);
+    setThemeColor(rgbToHex(...modeRgb.zen[2]));
     return;
   }
 
@@ -656,10 +667,12 @@ function updateBg() {
     const docEnd = document.documentElement.scrollHeight - window.innerHeight;
     const range = Math.max(docEnd - featBottomAbs, 1);
     const t = Math.min(Math.max((window.scrollY - featBottomAbs) / range, 0), 1);
+    const s = smoothstep(t);
     const c1 = lerpColor([79,58,168], [106,157,138], t);
     const c2 = lerpColor([56,38,128], [93,138,110], t);
     const c3 = lerpColor([31,20,80],  [61,90,94],   t);
     setBgColor(`radial-gradient(ellipse at 50% 30%, rgb(${c1}) 0%, rgb(${c2}) 60%, rgb(${c3}) 100%)`);
+    setThemeColor(rgbToHex(31+(61-31)*s, 20+(90-20)*s, 80+(94-80)*s));
     return;
   }
 
@@ -668,13 +681,25 @@ function updateBg() {
   const panelsArr = Array.from(featPanels);
   const centers = panelsArr.map(p => { const r = p.getBoundingClientRect(); return (r.top + r.bottom) / 2; });
 
-  if (viewMid <= centers[0]) { setBgColor(modeColors[panelsArr[0].dataset.mode]); return; }
-  if (viewMid >= centers[centers.length - 1]) { setBgColor(modeColors[panelsArr[panelsArr.length - 1].dataset.mode]); return; }
+  if (viewMid <= centers[0]) {
+    setBgColor(modeColors[panelsArr[0].dataset.mode]);
+    setThemeColor(rgbToHex(...modeRgb[panelsArr[0].dataset.mode][2]));
+    return;
+  }
+  if (viewMid >= centers[centers.length - 1]) {
+    setBgColor(modeColors[panelsArr[panelsArr.length - 1].dataset.mode]);
+    setThemeColor(rgbToHex(...modeRgb[panelsArr[panelsArr.length - 1].dataset.mode][2]));
+    return;
+  }
 
   for (let i = 0; i < centers.length - 1; i++) {
     if (viewMid >= centers[i] && viewMid <= centers[i + 1]) {
       const t = (viewMid - centers[i]) / (centers[i + 1] - centers[i]);
       interpolateBg(panelsArr[i].dataset.mode, panelsArr[i + 1].dataset.mode, t);
+      const s = smoothstep(t);
+      const e1 = modeRgb[panelsArr[i].dataset.mode][2];
+      const e2 = modeRgb[panelsArr[i+1].dataset.mode][2];
+      setThemeColor(rgbToHex(e1[0]+(e2[0]-e1[0])*s, e1[1]+(e2[1]-e1[1])*s, e1[2]+(e2[2]-e1[2])*s));
       return;
     }
   }
