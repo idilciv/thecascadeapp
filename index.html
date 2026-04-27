@@ -370,11 +370,10 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
   .feat-panel::before { display: none !important; }
 
   .mob-img-wrap {
-    display: flex !important;
-    justify-content: center !important;
-    width: 100% !important;
+    display: block !important;
+    width: 200vw !important;
     max-width: none !important;
-    margin-left: 0 !important;
+    margin-left: calc(50% - 100vw) !important;
     margin-right: 0 !important;
     margin-top: 0 !important;
     margin-bottom: 1.75rem !important;
@@ -384,9 +383,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
 
   .feat-panel img.mob-img {
     display: block !important;
-    width: auto !important;
-    max-width: 88% !important;
-    max-height: 62vh !important;
+    width: 100% !important;
     height: auto !important;
     object-fit: initial !important;
     object-position: initial !important;
