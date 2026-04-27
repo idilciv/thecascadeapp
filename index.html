@@ -346,22 +346,24 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
 
   .feat-panel {
     min-height: auto !important;
-    padding: 2.5rem 1.5rem 3rem !important;
+    padding: 2.5rem 0 3rem !important;
     opacity: 1 !important;
     transition: none !important;
     text-align: center !important;
     align-items: center !important;
     border-bottom: 1px solid rgba(245,245,240,0.08);
-    overflow: hidden;
+    overflow: visible;
   }
 
   .feat-panel::before { display: none !important; }
 
   .mob-img-wrap {
     display: block !important;
-    width: calc(100% + 3rem) !important;
+    width: 100vw !important;
     max-width: none !important;
-    margin: 0 -1.5rem 1.75rem !important;
+    margin-left: calc(-50vw + 50%) !important;
+    margin-right: calc(-50vw + 50%) !important;
+    margin-bottom: 1.75rem !important;
   }
 
   .feat-panel img.mob-img {
@@ -371,9 +373,9 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
     margin: 0 !important;
   }
 
-  .feat-mode-tag { margin-left: auto !important; margin-right: auto !important; margin-bottom: 0.6rem !important; }
-  .feat-title { font-size: clamp(1.4rem, 5.5vw, 1.9rem) !important; text-align: center !important; margin-bottom: 0.5rem; }
-  .feat-desc { font-size: 0.85rem; max-width: 100%; text-align: center !important; margin: 0 auto !important; line-height: 1.65; }
+  .feat-mode-tag { margin-left: auto !important; margin-right: auto !important; margin-bottom: 0.6rem !important; padding: 0 1.5rem !important; }
+  .feat-title { font-size: clamp(1.4rem, 5.5vw, 1.9rem) !important; text-align: center !important; margin-bottom: 0.5rem; padding: 0 1.5rem !important; }
+  .feat-desc { font-size: 0.85rem; max-width: 100%; text-align: center !important; margin: 0 auto !important; line-height: 1.65; padding: 0 1.5rem !important; }
 
   .how-section { padding: 5rem 1.5rem; }
   .how-inner h2 { font-size: clamp(1.8rem, 7vw, 2.4rem); }
