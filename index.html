@@ -24,7 +24,7 @@ a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transpar
 }
 
 html {
-  background: #3d5a5e;
+  background: #052e22;
   overscroll-behavior: none;
   overflow-x: clip;
   scroll-behavior: smooth;
@@ -39,7 +39,6 @@ body {
   overscroll-behavior: none;
   -webkit-font-smoothing: antialiased;
   background-attachment: fixed;
-  transition: background 0.8s ease;
 }
 body[data-mode="zen"]   { background: radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%) fixed !important; }
 body[data-mode="hc"]    { background: radial-gradient(ellipse at 50% 30%, #8b2818 0%, #6b1d12 60%, #3d0e08 100%) fixed !important; }
@@ -158,8 +157,10 @@ h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
 
 .phone-col {
   width: clamp(340px, 50%, 1100px); flex-shrink: 0;
-  position: sticky; top: 50px;
-  align-self: flex-start; height: auto;
+  position: sticky; top: 0;
+  align-self: flex-start;
+  height: 100vh; display: flex; align-items: center;
+  padding-top: 62px; box-sizing: border-box;
 }
 .phone-frame { width: 100%; max-width: 1100px; height: auto; position: relative; transition: filter 0.5s ease; }
 .phone-frame.zen-active   { filter: drop-shadow(0 24px 50px rgba(14,168,97,0.15)); }
@@ -279,7 +280,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
   .hero > div[id="hero-content"] > div:last-child { right: -120px !important; }
   .hero > div[id="hero-content"] > div:last-child img { width: 520px !important; }
   .sticky-wrap { padding: 0 2rem 6rem; gap: 2rem; }
-  .phone-col { width: 340px; top: 80px; }
+  .phone-col { width: 340px; padding-top: 58px; }
   .feat-title { font-size: clamp(1.6rem, 2.4vw, 2.2rem); }
   .feat-desc { font-size: 0.92rem; }
 }
@@ -384,7 +385,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
   <div class="nav-r">
     <a href="#features">Features</a>
     <a href="#how">About</a>
-    <a href="#waitlist">Feedback</a>
+    <a href="#" onclick="event.preventDefault();openWaitlist()">Feedback</a>
     <button onclick="openWaitlist()" class="nav-btn">Join Waitlist</button>
   </div>
 </nav>
@@ -552,6 +553,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
       <h3>Get early access <em>to Cascade.</em></h3>
       <p>Be the first to know when we launch.</p>
       <input type="email" id="waitlist-email" class="modal-input" placeholder="your@email.com" />
+      <p id="email-error" style="display:none;color:#f87171;font-size:0.78rem;margin:-0.25rem 0 0.6rem;text-align:left;">Please enter a valid email address.</p>
       <button class="modal-submit" onclick="submitWaitlist()">Join the Waitlist</button>
     </div>
     <div class="modal-success" id="modal-success">
@@ -568,6 +570,12 @@ const modeColors = {
   zen:   'radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%) fixed',
   hc:    'radial-gradient(ellipse at 50% 30%, #8b2818 0%, #6b1d12 60%, #3d0e08 100%) fixed',
   vault: 'radial-gradient(ellipse at 50% 30%, #4f3aa8 0%, #382680 60%, #1f1450 100%) fixed',
+};
+
+const modeRgb = {
+  zen:   [[13,110,79],  [9,77,57],   [5,46,34]],
+  hc:    [[139,40,24],  [107,29,18], [61,14,8]],
+  vault: [[79,58,168],  [56,38,128], [31,20,80]],
 };
 
 const phoneFrame = document.getElementById('phone-frame');
@@ -594,12 +602,22 @@ function lerpColor(a, b, t) {
   ].join(',');
 }
 
+function smoothstep(t) { return t * t * (3 - 2 * t); }
+
+function interpolateBg(mode1, mode2, t) {
+  const r1 = modeRgb[mode1], r2 = modeRgb[mode2];
+  const s = smoothstep(t);
+  const c1 = lerpColor(r1[0], r2[0], s);
+  const c2 = lerpColor(r1[1], r2[1], s);
+  const c3 = lerpColor(r1[2], r2[2], s);
+  setBgColor(`radial-gradient(ellipse at 50% 30%, rgb(${c1}) 0%, rgb(${c2}) 60%, rgb(${c3}) 100%) fixed`);
+}
+
 function setActive(i) {
   featPanels.forEach((p, j) => p.classList.toggle('active', j === i));
   featScreens.forEach((s, j) => s.classList.toggle('active', j === i));
   const mode = featPanels[i].dataset.mode;
   if (phoneFrame) phoneFrame.className = 'phone-frame ' + modeFrameClass[mode];
-  setBgColor(modeColors[mode]);
 }
 
 // IntersectionObserver for reliable cross-browser panel switching (Safari + Chrome)
@@ -612,15 +630,17 @@ const panelIO = new IntersectionObserver(entries => {
 }, { rootMargin: '-40% 0px -40% 0px', threshold: 0 });
 featPanels.forEach(p => panelIO.observe(p));
 
-// Scroll listener only for background gradient outside the features section
+// Scroll-driven smooth background interpolation
 const featSection = document.querySelector('.features-section');
 
 function updateBg() {
   const featRect = featSection.getBoundingClientRect();
+
   if (featRect.top > window.innerHeight) {
-    setBgColor('radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%) fixed');
+    setBgColor(modeColors.zen);
     return;
   }
+
   if (featRect.bottom < 0) {
     const featBottomAbs = window.scrollY + featRect.bottom;
     const docEnd = document.documentElement.scrollHeight - window.innerHeight;
@@ -630,6 +650,23 @@ function updateBg() {
     const c2 = lerpColor([56,38,128], [93,138,110], t);
     const c3 = lerpColor([31,20,80],  [61,90,94],   t);
     setBgColor(`radial-gradient(ellipse at 50% 30%, rgb(${c1}) 0%, rgb(${c2}) 60%, rgb(${c3}) 100%) fixed`);
+    return;
+  }
+
+  // Within features: interpolate between adjacent panel colors as viewport midpoint moves
+  const viewMid = window.innerHeight / 2;
+  const panelsArr = Array.from(featPanels);
+  const centers = panelsArr.map(p => { const r = p.getBoundingClientRect(); return (r.top + r.bottom) / 2; });
+
+  if (viewMid <= centers[0]) { setBgColor(modeColors[panelsArr[0].dataset.mode]); return; }
+  if (viewMid >= centers[centers.length - 1]) { setBgColor(modeColors[panelsArr[panelsArr.length - 1].dataset.mode]); return; }
+
+  for (let i = 0; i < centers.length - 1; i++) {
+    if (viewMid >= centers[i] && viewMid <= centers[i + 1]) {
+      const t = (viewMid - centers[i]) / (centers[i + 1] - centers[i]);
+      interpolateBg(panelsArr[i].dataset.mode, panelsArr[i + 1].dataset.mode, t);
+      return;
+    }
   }
 }
 
@@ -657,14 +694,29 @@ function openWaitlist() {
 function closeWaitlist() {
   document.getElementById('waitlist-modal').classList.remove('open');
   document.body.style.overflow = '';
+  document.getElementById('email-error').style.display = 'none';
+  document.getElementById('waitlist-email').style.borderColor = '';
 }
 function handleOverlay(e) {
   if (e.target === document.getElementById('waitlist-modal')) closeWaitlist();
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeWaitlist(); });
+document.getElementById('waitlist-email').addEventListener('input', function() {
+  document.getElementById('email-error').style.display = 'none';
+  this.style.borderColor = '';
+});
 function submitWaitlist() {
-  const email = document.getElementById('waitlist-email').value.trim();
-  if (!email || !email.includes('@')) return;
+  const emailInput = document.getElementById('waitlist-email');
+  const errorEl = document.getElementById('email-error');
+  const email = emailInput.value.trim();
+  const valid = email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (!valid) {
+    emailInput.style.borderColor = 'rgba(248,113,113,0.7)';
+    errorEl.style.display = 'block';
+    return;
+  }
+  errorEl.style.display = 'none';
+  emailInput.style.borderColor = '';
   document.getElementById('modal-form-wrap').style.display = 'none';
   document.getElementById('modal-success').style.display = 'block';
   setTimeout(closeWaitlist, 2500);
