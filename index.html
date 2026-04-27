@@ -31,18 +31,22 @@ html {
 }
 
 body {
-  background: radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%);
+  background: transparent;
   color: var(--fg);
   font-family: 'DM Sans', system-ui, sans-serif;
   font-weight: 300;
   overflow-x: clip;
   overscroll-behavior: none;
   -webkit-font-smoothing: antialiased;
-  background-attachment: fixed;
 }
-body[data-mode="zen"]   { background: radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%) fixed !important; }
-body[data-mode="hc"]    { background: radial-gradient(ellipse at 50% 30%, #8b2818 0%, #6b1d12 60%, #3d0e08 100%) fixed !important; }
-body[data-mode="vault"] { background: radial-gradient(ellipse at 50% 30%, #4f3aa8 0%, #382680 60%, #1f1450 100%) fixed !important; }
+
+#page-bg {
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%);
+}
 
 /* ── NAV ── */
 nav {
@@ -157,12 +161,10 @@ h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
 
 .phone-col {
   width: clamp(340px, 50%, 1100px); flex-shrink: 0;
-  position: sticky; top: 0;
+  position: sticky; top: 70px;
   align-self: flex-start;
-  height: 100vh; display: flex; align-items: center;
-  padding-top: 62px; box-sizing: border-box;
 }
-.phone-frame { width: 100%; max-width: 1100px; height: auto; position: relative; transition: filter 0.5s ease; }
+.phone-frame { width: 100%; max-width: 1100px; height: auto; max-height: calc(100vh - 120px); overflow: hidden; position: relative; transition: filter 0.5s ease; }
 .phone-frame.zen-active   { filter: drop-shadow(0 24px 50px rgba(14,168,97,0.15)); }
 .phone-frame.hc-active    { filter: drop-shadow(0 24px 50px rgba(212,90,32,0.15)); }
 .phone-frame.vault-active { filter: drop-shadow(0 24px 50px rgba(102,68,204,0.15)); }
@@ -280,7 +282,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
   .hero > div[id="hero-content"] > div:last-child { right: -120px !important; }
   .hero > div[id="hero-content"] > div:last-child img { width: 520px !important; }
   .sticky-wrap { padding: 0 2rem 6rem; gap: 2rem; }
-  .phone-col { width: 340px; padding-top: 58px; }
+  .phone-col { width: 340px; }
   .feat-title { font-size: clamp(1.6rem, 2.4vw, 2.2rem); }
   .feat-desc { font-size: 0.92rem; }
 }
@@ -378,6 +380,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
 </style>
 </head>
 <body>
+<div id="page-bg"></div>
 
 <!-- NAV -->
 <nav>
@@ -553,8 +556,8 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
       <h3>Get early access <em>to Cascade.</em></h3>
       <p>Be the first to know when we launch.</p>
       <input type="email" id="waitlist-email" class="modal-input" placeholder="your@email.com" />
-      <p id="email-error" style="display:none;color:#f87171;font-size:0.78rem;margin:-0.25rem 0 0.6rem;text-align:left;">Please enter a valid email address.</p>
-      <button class="modal-submit" onclick="submitWaitlist()">Join the Waitlist</button>
+      <div id="email-error" style="display:none;color:#f87171;font-size:0.78rem;margin:-0.25rem 0 0.6rem;text-align:left;">Please enter a valid email address.</div>
+      <button type="button" class="modal-submit" onclick="submitWaitlist()">Join the Waitlist</button>
     </div>
     <div class="modal-success" id="modal-success">
       <h4>You're on the list.</h4>
@@ -567,9 +570,9 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBhh2U4MeLqd5BMvt2wjTXAsWFJ_ZwF9zxNxEQBErTWwRJjr7xpqHYt_7zKx0VxYMu/exec";
 
 const modeColors = {
-  zen:   'radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%) fixed',
-  hc:    'radial-gradient(ellipse at 50% 30%, #8b2818 0%, #6b1d12 60%, #3d0e08 100%) fixed',
-  vault: 'radial-gradient(ellipse at 50% 30%, #4f3aa8 0%, #382680 60%, #1f1450 100%) fixed',
+  zen:   'radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%)',
+  hc:    'radial-gradient(ellipse at 50% 30%, #8b2818 0%, #6b1d12 60%, #3d0e08 100%)',
+  vault: 'radial-gradient(ellipse at 50% 30%, #4f3aa8 0%, #382680 60%, #1f1450 100%)',
 };
 
 const modeRgb = {
@@ -583,15 +586,14 @@ const featPanels  = document.querySelectorAll('.feat-panel');
 const featScreens = document.querySelectorAll('.phone-screen');
 const modeFrameClass = { zen: 'zen-active', hc: 'hc-active', vault: 'vault-active' };
 
-const dynStyle = document.createElement('style');
-document.head.appendChild(dynStyle);
+const pageBg = document.getElementById('page-bg');
 
 let _lastBg = '', _ticking = false;
 
 function setBgColor(bg) {
   if (bg === _lastBg) return;
   _lastBg = bg;
-  dynStyle.textContent = `body { background: ${bg} !important; }`;
+  pageBg.style.background = bg;
 }
 
 function lerpColor(a, b, t) {
@@ -610,7 +612,7 @@ function interpolateBg(mode1, mode2, t) {
   const c1 = lerpColor(r1[0], r2[0], s);
   const c2 = lerpColor(r1[1], r2[1], s);
   const c3 = lerpColor(r1[2], r2[2], s);
-  setBgColor(`radial-gradient(ellipse at 50% 30%, rgb(${c1}) 0%, rgb(${c2}) 60%, rgb(${c3}) 100%) fixed`);
+  setBgColor(`radial-gradient(ellipse at 50% 30%, rgb(${c1}) 0%, rgb(${c2}) 60%, rgb(${c3}) 100%)`);
 }
 
 function setActive(i) {
@@ -649,7 +651,7 @@ function updateBg() {
     const c1 = lerpColor([79,58,168], [106,157,138], t);
     const c2 = lerpColor([56,38,128], [93,138,110], t);
     const c3 = lerpColor([31,20,80],  [61,90,94],   t);
-    setBgColor(`radial-gradient(ellipse at 50% 30%, rgb(${c1}) 0%, rgb(${c2}) 60%, rgb(${c3}) 100%) fixed`);
+    setBgColor(`radial-gradient(ellipse at 50% 30%, rgb(${c1}) 0%, rgb(${c2}) 60%, rgb(${c3}) 100%)`);
     return;
   }
 
