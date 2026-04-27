@@ -343,7 +343,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
     align-items: stretch !important;
   }
   .phone-col { display: none !important; }
-  .panels-col { width: 100% !important; flex: none !important; }
+  .panels-col { width: 100% !important; flex: none !important; display: block !important; }
 
   .feat-panel {
     min-height: auto !important;
@@ -360,9 +360,12 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
 
   .mob-img-wrap {
     display: block !important;
-    width: 100% !important;
+    width: 100vw !important;
     max-width: none !important;
-    margin: 0 0 1.75rem !important;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 1.75rem !important;
   }
 
   .feat-panel img.mob-img {
