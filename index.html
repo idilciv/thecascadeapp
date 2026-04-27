@@ -160,12 +160,15 @@ h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
 }
 
 .phone-col {
-  width: clamp(340px, 60%, 1100px); flex-shrink: 0;
+  width: clamp(400px, 65%, 1100px); flex-shrink: 0;
   position: sticky; top: 0;
   align-self: flex-start;
-  padding-top: 80px; padding-bottom: 40px;
+  height: 100vh;
+  display: flex; align-items: flex-start;
+  padding-top: 80px; box-sizing: border-box;
+  overflow: hidden;
 }
-.phone-frame { width: 100%; max-width: 1100px; height: auto; max-height: calc(100vh - 120px); overflow: hidden; position: relative; transition: filter 0.5s ease; }
+.phone-frame { width: 100%; max-width: 1100px; height: auto; position: relative; transition: filter 0.5s ease; }
 .phone-frame.zen-active   { filter: drop-shadow(0 24px 50px rgba(14,168,97,0.15)); }
 .phone-frame.hc-active    { filter: drop-shadow(0 24px 50px rgba(212,90,32,0.15)); }
 .phone-frame.vault-active { filter: drop-shadow(0 24px 50px rgba(102,68,204,0.15)); }
