@@ -83,6 +83,19 @@ nav {
   position: relative;
 }
 
+#hero-phone-wrap {
+  position: absolute;
+  right: clamp(-400px, calc(1379px - 127vw), -50px);
+  top: 57%;
+  transform: translateY(-50%);
+  opacity: 0.95;
+}
+#hero-phone-wrap img {
+  width: clamp(520px, 80vw, 1100px);
+  height: auto;
+  filter: drop-shadow(0 40px 80px rgba(0,0,0,0.5));
+}
+
 h1 {
   font-family: 'Instrument Serif', serif;
   font-size: clamp(3rem, 6vw, 6rem); font-weight: 400;
@@ -418,8 +431,8 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
       <p style="font-size:clamp(0.9rem,1.2vw,1rem);color:rgba(245,245,240,0.7);line-height:1.75;max-width:360px;margin:0 0 2.5rem;opacity:0;animation:fadeUp 1s 0.7s ease forwards;">Easy to use, designed to help you take back your time. Block what distracts. Keep what matters.</p>
       <button onclick="openWaitlist()" style="background:rgba(245,245,240,0.1);border:1px solid rgba(245,245,240,0.3);color:rgba(245,245,240,0.9);padding:0.7rem 1.75rem;border-radius:100px;font-family:inherit;font-size:0.88rem;cursor:pointer;transition:all 0.2s;opacity:0;animation:fadeUp 1s 0.9s ease forwards;backdrop-filter:blur(8px);" onmouseover="this.style.background='rgba(245,245,240,0.18)';this.style.borderColor='rgba(245,245,240,0.5)'" onmouseout="this.style.background='rgba(245,245,240,0.1)';this.style.borderColor='rgba(245,245,240,0.3)'">Join the Waitlist</button>
     </div>
-    <div style="position:absolute;right:clamp(-400px,calc(-127vw + 1379px),-50px);top:57%;transform:translateY(-50%);opacity:0.95;">
-      <img src="anasayfa.png" alt="Cascade app" style="width:clamp(520px,80vw,1100px);height:auto;filter:drop-shadow(0 40px 80px rgba(0,0,0,0.5));" />
+    <div id="hero-phone-wrap">
+      <img src="anasayfa.png" alt="Cascade app" />
     </div>
   </div>
 </section>
