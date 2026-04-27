@@ -166,8 +166,8 @@ h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
   height: 170vh;
   display: flex; align-items: flex-start;
   padding-top: 80px; box-sizing: border-box;
-  overflow: hidden;
 }
+.phone-clip { width: 100%; height: 100%; overflow: hidden; }
 .phone-frame { width: 100%; max-width: 1100px; height: auto; position: relative; transition: filter 0.5s ease; }
 .phone-frame.zen-active   { filter: drop-shadow(0 24px 50px rgba(14,168,97,0.15)); }
 .phone-frame.hc-active    { filter: drop-shadow(0 24px 50px rgba(212,90,32,0.15)); }
@@ -429,6 +429,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
   <div class="sticky-wrap">
 
     <div class="phone-col">
+      <div class="phone-clip">
       <div class="phone-frame zen-active" id="phone-frame">
         <div class="phone-screen active" id="feat-screen-0"><img src="anasayfa.png" alt="Choose your path" /></div>
         <div class="phone-screen" id="feat-screen-1"><img src="zenmodemockup.png" alt="Zen Mode" /></div>
@@ -439,6 +440,7 @@ footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
         <div class="phone-screen" id="feat-screen-6"><img src="vaultmode.png" alt="Vault Mode" /></div>
         <div class="phone-screen" id="feat-screen-7"><img src="518shots_so-Photoroom.png" alt="No Way Out" /></div>
         <div class="phone-screen" id="feat-screen-8"><img src="vaultrutin.png" alt="Vault Routine" /></div>
+      </div>
       </div>
     </div>
 
