@@ -4,65 +4,85 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Opening Cascade…</title>
+
+  <!--
+    Smart App Banner — iOS shows a native "Open in Cascade" banner at the top of Safari.
+    App Store ID: 6761320124
+  -->
+  <meta name="apple-itunes-app" content="app-id=6761320124, app-argument=cascade://join/CODE_PLACEHOLDER" />
+
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: #06060a;
-      color: #f0eeec;
-      font-family: 'DM Sans', system-ui, sans-serif;
+      margin: 0;
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
+      background: #0a0a0a;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+      color: #fff;
       text-align: center;
-      padding: 2rem;
+      padding: 24px;
     }
-    .wrap { max-width: 320px; }
-    .logo {
-      font-size: 1.4rem;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-      opacity: 0.8;
+    .card {
+      max-width: 360px;
     }
-    p {
-      font-size: 0.95rem;
-      color: rgba(240,238,236,0.45);
-      line-height: 1.65;
-      margin-bottom: 2rem;
-    }
-    .btn {
+    h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+    p  { font-size: 15px; color: rgba(255,255,255,0.6); margin-bottom: 32px; }
+    a.btn {
       display: inline-block;
-      background: #f0eeec;
-      color: #06060a;
-      padding: 0.85rem 2rem;
-      border-radius: 100px;
-      font-size: 0.95rem;
-      font-weight: 500;
+      padding: 14px 32px;
+      border-radius: 50px;
+      background: #fff;
+      color: #000;
+      font-size: 16px;
+      font-weight: 600;
       text-decoration: none;
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="logo">Cascade</div>
-    <p>Opening the app…<br>If nothing happens, get Cascade on the App Store.</p>
-    <a class="btn" href="https://apps.apple.com/app/id6761320124">Download on the App Store</a>
+  <div class="card">
+    <h1>Opening Cascade…</h1>
+    <p>If Cascade doesn't open automatically, get it on the App Store.</p>
+    <a class="btn" id="storeBtn" href="https://apps.apple.com/app/id6761320124">
+      Get Cascade
+    </a>
   </div>
-  <script>
-    // Extract friend code from path e.g. /ABC123
-    var code = window.location.pathname.replace(/\//g, '').trim().toUpperCase();
 
-    if (code && code.length === 6) {
-      // Try custom URL scheme (works if app is installed but Universal Links missed)
-      window.location.href = 'cascade://join/' + code;
-      // Fallback: App Store after 1.5s
-      setTimeout(function() {
-        window.location.href = 'https://apps.apple.com/app/id6761320124';
-      }, 1500);
-    } else {
-      // No valid code — go straight to App Store
-      window.location.href = 'https://apps.apple.com/app/id6761320124';
+  <script>
+    // Extract the invite code from the path, e.g. /ABC123 → "ABC123"
+    var pathParts = window.location.pathname.split('/').filter(Boolean);
+    var code = pathParts[pathParts.length - 1] || '';
+
+    // Update Smart App Banner app-argument with the real code
+    var bannerMeta = document.querySelector('meta[name="apple-itunes-app"]');
+    if (bannerMeta && code) {
+      bannerMeta.setAttribute(
+        'content',
+        'app-id=6761320124, app-argument=cascade://join/' + code
+      );
     }
+
+    // Try to open the app via custom URL scheme (works if app is installed)
+    if (code) {
+      window.location.href = 'cascade://join/' + code;
+    }
+
+    // After a short delay, if the page is still visible the app wasn't installed —
+    // redirect to App Store.
+    var storeUrl = 'https://apps.apple.com/app/id6761320124';
+    document.getElementById('storeBtn').href = storeUrl;
+
+    var redirectTimer = setTimeout(function () {
+      window.location.href = storeUrl;
+    }, 1500);
+
+    // If the user comes back to this tab (app opened), cancel the redirect.
+    window.addEventListener('pagehide', function () { clearTimeout(redirectTimer); });
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) clearTimeout(redirectTimer);
+    });
   </script>
 </body>
 </html>
