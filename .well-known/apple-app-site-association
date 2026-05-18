@@ -5,7 +5,8 @@
         "appIDs": ["5KMF4KN85Y.com.ic.void"],
         "components": [
           {
-            "/": "/*"
+            "/": "/*",
+            "comment": "Match all paths on join.thecascadeapp.com"
           }
         ]
       }
