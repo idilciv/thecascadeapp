@@ -4,7 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Join Cascade</title>
-  <meta name="apple-itunes-app" content="app-id=6761320124, app-argument=cascade://join/CODE_PLACEHOLDER" />
+  <script>
+    var _c = window.location.pathname.split('/').filter(Boolean).pop() || '';
+    var _m = document.createElement('meta');
+    _m.name = 'apple-itunes-app';
+    _m.content = 'app-id=6761320124' + (_c ? ', app-argument=cascade://join/' + _c : '');
+    document.head.appendChild(_m);
+  </script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -87,18 +93,5 @@
     </a>
   </div>
 
-  <script>
-    var pathParts = window.location.pathname.split('/').filter(Boolean);
-    var code = pathParts[pathParts.length - 1] || '';
-
-    // Update Smart App Banner with real code
-    if (code) {
-      var banner = document.querySelector('meta[name="apple-itunes-app"]');
-      if (banner) {
-        banner.setAttribute('content', 'app-id=6761320124, app-argument=cascade://join/' + code);
-      }
-
-    }
-  </script>
 </body>
 </html>
