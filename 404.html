@@ -97,6 +97,9 @@
       if (banner) {
         banner.setAttribute('content', 'app-id=6761320124, app-argument=cascade://join/' + code);
       }
+
+      // Sayfa açılır açılmaz uygulamayı aç (yüklüyse "Open in Cascade" bildirimi çıkar)
+      window.location.href = 'cascade://join/' + code;
     }
   </script>
 </body>
