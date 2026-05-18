@@ -82,9 +82,8 @@
     <h1>You're invited to Cascade</h1>
     <p>Your friend wants you to join them on Cascade — the focus app that actually works.</p>
 
-    <button class="btn-primary" id="openBtn">Open in Cascade</button>
-    <a class="btn-secondary" id="storeBtn" href="https://apps.apple.com/app/id6761320124">
-      Get Cascade on the App Store
+    <a class="btn-primary" href="https://apps.apple.com/app/id6761320124">
+      Download on the App Store
     </a>
   </div>
 
@@ -99,28 +98,6 @@
         banner.setAttribute('content', 'app-id=6761320124, app-argument=cascade://join/' + code);
       }
     }
-
-    var storeUrl = 'https://apps.apple.com/app/id6761320124';
-
-    document.getElementById('openBtn').addEventListener('click', function () {
-      if (!code) { window.location.href = storeUrl; return; }
-
-      // iOS 15+: custom URL scheme yalnızca kullanıcı gesture'ı ile açılabilir.
-      // Butona tıklama bu gesture'ı sağlar.
-      window.location.href = 'cascade://join/' + code;
-
-      // Eğer uygulama yüklü değilse (cascade:// açılamazsa) 1.5 sn sonra App Store'a git.
-      var timer = setTimeout(function () {
-        window.location.href = storeUrl;
-      }, 1500);
-
-      document.addEventListener('visibilitychange', function () {
-        if (document.hidden) clearTimeout(timer);
-      });
-    });
-
-    // App Store butonu
-    document.getElementById('storeBtn').href = storeUrl;
   </script>
 </body>
 </html>
