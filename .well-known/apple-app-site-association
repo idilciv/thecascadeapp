@@ -1,0 +1,12 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["5KMF4KN85Y.com.ic.void"],
+        "components": [
+          { "/": "/*" }
+        ]
+      }
+    ]
+  }
+}
