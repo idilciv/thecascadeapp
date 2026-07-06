@@ -1,918 +1,856 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="theme-color" content="#052e22" id="theme-color-meta" />
-<title>Cascade — Reclaim Your Attention</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏔️</text></svg>" />
+<title>Cascade · Break the scroll. Rebuild your focus.</title>
+<meta name="description" content="Cascade blocks the apps that hijack your attention, walks you through the urge, and helps you become someone who doesn't need the dopamine. Three modes, meditation, and identity rewiring, all in one app." />
+<meta name="theme-color" content="#08080b" />
+<!-- Open Graph / social share preview. NOTE: replace the domain with your real one for absolute URLs. -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Cascade" />
+<meta property="og:title" content="Cascade · Break the scroll. Rebuild your focus." />
+<meta property="og:description" content="Block the apps that hijack you, ride the urge with guided meditation, and rewire who you're becoming. Three modes, streaks, and a calm mountain sunrise for every session." />
+<meta property="og:url" content="https://thecascadeapp.com/" />
+<meta property="og:image" content="https://thecascadeapp.com/assets/mountain.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Cascade · Break the scroll. Rebuild your focus." />
+<meta name="twitter:description" content="Block distractions, ride the urge, rewire your identity. Focus that actually sticks." />
+<meta name="twitter:image" content="https://thecascadeapp.com/assets/mountain.png" />
+<link rel="icon" type="image/png" href="assets/cascade-icon-rounded.png" />
+<link rel="apple-touch-icon" href="assets/cascade-icon.png" />
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
-
-:root {
-  --bg:      #064e3b;
-  --bg2:     #c4e0d0;
-  --fg:      #18171a;
-  --muted:   #5a7868;
-  --border:  rgba(0,0,0,0.1);
-  --zen:     #0ea861;
-  --hc:      #d45a20;
-  --vault:   #6644cc;
-}
-
-html {
-  background: #052e22;
-  overscroll-behavior: none;
-  overflow-x: clip;
-  scroll-behavior: smooth;
-}
-
-body {
-  background: transparent;
-  color: var(--fg);
-  font-family: 'DM Sans', system-ui, sans-serif;
-  font-weight: 300;
-  overflow-x: clip;
-  overscroll-behavior: none;
-  -webkit-font-smoothing: antialiased;
-}
-
-#page-bg {
-  position: fixed;
-  top: 0; right: 0; bottom: 0; left: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%);
-}
-
-/* ── NAV ── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 3rem; height: 62px;
-  background: transparent;
-  transition: background 0.8s ease;
-}
-.logo {
-  font-family: 'Instrument Serif', serif;
-  font-size: 1.85rem; font-weight: 400; color: #f5f5f0;
-  letter-spacing: -0.01em; cursor: pointer;
-}
-.nav-r { display: flex; align-items: center; gap: 2.5rem; }
-.nav-r a { color: rgba(245,245,240,0.7); font-size: 0.85rem; font-weight: 400; transition: color 0.2s; }
-.nav-r a:hover { color: #f5f5f0; }
-.nav-btn {
-  background: #f5f5f0; color: #18171a;
-  padding: 0.45rem 1.2rem; border-radius: 100px;
-  font-size: 0.82rem; font-weight: 500; font-family: inherit;
-  border: none; cursor: pointer; transition: opacity 0.2s;
-}
-.nav-btn:hover { opacity: 0.82; }
-
-/* ── HERO ── */
-.hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center;
-  padding: 10rem 2rem 6rem;
-  position: relative;
-}
-
-#hero-phone-wrap {
-  position: absolute;
-  right: clamp(-400px, calc(1379px - 127vw), -50px);
-  top: 57%;
-  transform: translateY(-50%);
-  opacity: 0.95;
-}
-#hero-phone-wrap img {
-  width: clamp(520px, 80vw, 1100px);
-  height: auto;
-  filter: drop-shadow(0 40px 80px rgba(0,0,0,0.5));
-}
-
-h1 {
-  font-family: 'Instrument Serif', serif;
-  font-size: clamp(3rem, 6vw, 6rem); font-weight: 400;
-  line-height: 1.05; letter-spacing: -0.025em;
-  margin-bottom: 1.75rem; max-width: 800px;
-  opacity: 0; animation: fadeUp 0.7s 0.4s ease forwards;
-}
-h1 em { font-style: italic; color: var(--muted); }
-
-.s-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 1rem;
-}
-
-/* ── FEATURES ── */
-.features-section { padding-top: 4rem; }
-.features-header { text-align: center; padding: 6rem 2rem 3rem; }
-
-h2 {
-  font-family: 'Instrument Serif', serif;
-  font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 400;
-  line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 0.75rem;
-  color: #f5f5f0;
-}
-h2 em { font-style: italic; color: rgba(245,245,240,0.5); }
-.s-sub { color: rgba(245,245,240,0.7); font-size: 0.95rem; line-height: 1.75; }
-
-/* ── STICKY SCROLL ── */
-.sticky-wrap {
-  display: flex;
-  max-width: 1900px;
-  margin: 0 auto;
-  padding: 0 2rem 8rem 2rem;
-  gap: 2rem;
-  align-items: flex-start;
-}
-
-.panels-col { flex: none; width: 360px; display: flex; flex-direction: column; }
-
-.feat-panel {
-  min-height: 100vh;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 3rem 2rem 3rem 0;
-  border-bottom: 1px solid var(--border);
-  opacity: 1;
-  transition: opacity 0.4s ease;
-}
-.feat-panel:last-child { border-bottom: none; }
-.feat-panel.active { opacity: 1; }
-.feat-panel img.mob-img { display: none; }
-.mob-img-wrap { display: none; }
-
-.feat-mode-tag {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase;
-  padding: 0.28rem 0.8rem; border-radius: 100px;
-  display: inline-flex; align-items: center;
-  margin-bottom: 1.75rem; width: fit-content; font-weight: 400;
-}
-.feat-mode-tag.zen   { color: #6ee7b7; background: rgba(110,231,183,0.12); border: 1px solid rgba(110,231,183,0.3); }
-.feat-mode-tag.hc    { color: #fed7aa; background: rgba(254,215,170,0.12); border: 1px solid rgba(254,215,170,0.3); }
-.feat-mode-tag.vault { color: #ddd6fe; background: rgba(221,214,254,0.12); border: 1px solid rgba(221,214,254,0.3); }
-
-.feat-title {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-  font-size: clamp(2rem, 3vw, 2.8rem); font-weight: 700;
-  line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 1.25rem; color: #f5f5f0;
-}
-.feat-title em { font-style: normal; color: rgba(245,245,240,0.55); font-weight: 700; }
-
-.feat-desc {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
-  font-size: 0.95rem; color: rgba(245,245,240,0.75);
-  line-height: 1.7; max-width: 340px; font-weight: 400;
-}
-
-.phone-col {
-  flex: 1; max-width: 1100px; min-width: 0;
-  position: sticky; top: 0;
-  align-self: flex-start;
-  height: 170vh;
-  display: flex; align-items: flex-start;
-  padding-top: 80px; box-sizing: border-box;
-}
-.phone-clip { width: 100%; height: 100%; overflow: hidden; }
-.phone-frame { width: 100%; max-width: 1100px; height: auto; position: relative; transition: filter 0.5s ease; }
-.phone-frame.zen-active   { filter: drop-shadow(0 24px 50px rgba(14,168,97,0.15)); }
-.phone-frame.hc-active    { filter: drop-shadow(0 24px 50px rgba(212,90,32,0.15)); }
-.phone-frame.vault-active { filter: drop-shadow(0 24px 50px rgba(102,68,204,0.15)); }
-.phone-screen { position: relative; width: 100%; opacity: 0; transition: opacity 0.5s ease; }
-.phone-screen:not(.active) { position: absolute; top: 0; right: 0; bottom: 0; left: 0; }
-.phone-screen.active { opacity: 1; }
-.phone-screen img { width: 100%; height: auto; display: block; }
-
-/* ── HOW IT WORKS ── */
-.how-section {
-  background: transparent; padding: 8rem 2rem;
-  display: flex; flex-direction: column;
-  align-items: center; text-align: center; border: none;
-}
-.how-inner { max-width: 520px; width: 100%; }
-.how-inner h2 { margin-bottom: 0.75rem; color: #f5f5f0; }
-.how-inner h2 em { color: rgba(245,245,240,0.5); }
-.how-inner .s-sub { margin-bottom: 4rem; color: rgba(245,245,240,0.7); }
-.how-inner .s-label { color: rgba(245,245,240,0.5); }
-
-.steps { display: flex; flex-direction: column; width: 100%; text-align: left; }
-.step { display: flex; gap: 1.5rem; padding: 1.75rem 0; border-bottom: 1px solid rgba(245,245,240,0.12); }
-.step:first-child { border-top: 1px solid rgba(245,245,240,0.12); }
-.step-n { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: rgba(245,245,240,0.5); min-width: 22px; padding-top: 3px; }
-.step h4 { font-size: 0.93rem; font-weight: 500; margin-bottom: 0.3rem; color: #f5f5f0; }
-.step p { font-size: 0.83rem; color: rgba(245,245,240,0.6); line-height: 1.7; }
-
-/* ── CTA ── */
-.cta-section {
-  background: transparent; padding: 8rem 2rem;
-  display: flex; flex-direction: column; align-items: center; text-align: center;
-}
-.cta-section h2 { color: #f5f5f0; }
-.cta-section h2 em { color: rgba(245,245,240,0.4); }
-.cta-section .s-label { color: rgba(245,245,240,0.4); }
-.cta-section p { color: rgba(245,245,240,0.55); font-size: 0.95rem; line-height: 1.75; margin: 0.75rem 0 2.5rem; max-width: 400px; }
-.btn-cta {
-  background: #f5f5f0; color: #18171a;
-  padding: 0.9rem 2.2rem; border-radius: 100px;
-  font-family: inherit; font-size: 0.95rem; font-weight: 500;
-  border: none; cursor: pointer; transition: opacity 0.2s;
-}
-.btn-cta:hover { opacity: 0.88; }
-
-/* ── FOOTER ── */
-footer {
-  background: transparent; padding: 2rem 3rem;
-  display: flex; align-items: center; justify-content: space-between; border: none;
-}
-.f-logo { font-family: 'Instrument Serif', serif; font-size: 1rem; color: rgba(245,245,240,0.5); }
-.f-links { display: flex; gap: 2rem; list-style: none; }
-.f-links a { font-size: 0.78rem; color: rgba(245,245,240,0.55); transition: color 0.2s; }
-.f-links a:hover { color: #f5f5f0; }
-footer small { font-size: 0.73rem; color: rgba(245,245,240,0.4); }
-
-/* ── MODAL ── */
-.modal-overlay {
-  position: fixed; inset: 0; z-index: 1000;
-  background: rgba(24,23,26,0.6); backdrop-filter: blur(12px);
-  display: flex; align-items: center; justify-content: center;
-  padding: 2rem; opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
-}
-.modal-overlay.open { opacity: 1; pointer-events: all; }
-.modal {
-  background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 24px; padding: 2.5rem; max-width: 400px; width: 100%;
-  transform: translateY(18px) scale(0.98); transition: transform 0.25s ease; position: relative; color: #f5f5f0;
-}
-.modal-overlay.open .modal { transform: translateY(0) scale(1); }
-.modal-close {
-  position: absolute; top: 1.25rem; right: 1.25rem;
-  background: none; border: none; color: rgba(245,245,240,0.5);
-  font-size: 1rem; cursor: pointer; padding: 0.25rem; transition: color 0.2s; font-family: inherit;
-}
-.modal-close:hover { color: #f5f5f0; }
-.modal-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(245,245,240,0.5); margin-bottom: 1.25rem; }
-.modal h3 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.65rem; line-height: 1.15; margin-bottom: 0.5rem; color: #f5f5f0; }
-.modal h3 em { font-style: italic; color: rgba(245,245,240,0.5); }
-.modal > div > p { font-size: 0.85rem; color: rgba(245,245,240,0.6); line-height: 1.7; margin-bottom: 1.5rem; }
-.modal-input {
-  width: 100%; height: 46px;
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 10px; color: #f5f5f0;
-  font-family: inherit; font-size: 0.88rem; font-weight: 300;
-  padding: 0 1rem; outline: none; margin-bottom: 0.75rem; transition: border-color 0.2s;
-}
-.modal-input::placeholder { color: rgba(245,245,240,0.4); }
-.modal-input:focus { border-color: rgba(255,255,255,0.25); }
-.modal-submit {
-  width: 100%; height: 46px; background: #f5f5f0; color: #0a0a0a;
-  border: none; border-radius: 10px;
-  font-family: inherit; font-size: 0.9rem; font-weight: 500;
-  cursor: pointer; transition: opacity 0.2s;
-}
-.modal-submit:hover { opacity: 0.82; }
-.modal-success { display: none; text-align: center; padding: 1rem 0; }
-.modal-success h4 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.5rem; margin-bottom: 0.4rem; color: #f5f5f0; }
-.modal-success p { font-size: 0.83rem; color: rgba(245,245,240,0.6); }
-
-.modal-textarea {
-  width: 100%; min-height: 96px;
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 10px; color: #f5f5f0;
-  font-family: inherit; font-size: 0.88rem; font-weight: 300;
-  padding: 0.75rem 1rem; outline: none; margin-bottom: 0.75rem;
-  transition: border-color 0.2s; resize: none; line-height: 1.6;
-}
-.modal-textarea::placeholder { color: rgba(245,245,240,0.4); }
-.modal-textarea:focus { border-color: rgba(255,255,255,0.25); }
-
-.fb-pills { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
-.fb-pill {
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-  color: rgba(245,245,240,0.55); border-radius: 100px;
-  padding: 0.38rem 1rem; font-family: inherit; font-size: 0.8rem;
-  cursor: pointer; transition: all 0.2s;
-}
-.fb-pill.active {
-  background: rgba(245,245,240,0.1); border-color: rgba(245,245,240,0.35);
-  color: #f5f5f0;
-}
-
-.privacy-body { font-size: 0.83rem; color: rgba(245,245,240,0.65); line-height: 1.75; }
-.privacy-body h4 { font-size: 0.78rem; font-weight: 500; color: #f5f5f0; margin: 1.25rem 0 0.3rem; letter-spacing: 0.02em; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; }
-.privacy-body h4:first-child { margin-top: 0; }
-.privacy-scroll { max-height: 52vh; overflow-y: auto; padding-right: 0.25rem; margin-top: 1.25rem; }
-.privacy-scroll::-webkit-scrollbar { width: 3px; }
-.privacy-scroll::-webkit-scrollbar-track { background: transparent; }
-.privacy-scroll::-webkit-scrollbar-thumb { background: rgba(245,245,240,0.15); border-radius: 3px; }
-
-.fade-up { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
-.fade-up.in { opacity: 1; transform: translateY(0); }
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ── TABLET ── */
-@media (max-width: 1180px) {
-  nav { padding: 0 1.75rem; height: 58px; }
-  .logo { font-size: 1.5rem; }
-  .nav-r { gap: 1.5rem; }
-  .hero > div[id="hero-content"] { padding: 0 2.5rem !important; }
-  .hero > div[id="hero-content"] > div:first-child { max-width: 50% !important; }
-  .sticky-wrap { padding: 0 2rem 6rem; gap: 2rem; }
-  .phone-col { flex: none; width: 500px; }
-  .panels-col { flex: 1; width: auto; }
-  .feat-title { font-size: clamp(1.6rem, 2.4vw, 2.2rem); }
-  .feat-desc { font-size: 0.92rem; }
-}
-
-/* ── MOBILE ── */
-@media (max-width: 768px) {
-  nav { padding: 0 1.25rem; height: 56px; }
-  .logo { font-size: 1.4rem; }
-  .nav-r a:not(.nav-btn) { display: none; }
-  .nav-btn { padding: 0.4rem 1rem; font-size: 0.78rem; }
-
-  .hero {
-    min-height: 100vh !important;
-    padding: 5rem 1.5rem 3rem !important;
-    justify-content: center !important;
-    align-items: center !important;
+  :root{
+    --bg:#08080b; --bg2:#0c0c11; --panel:rgba(255,255,255,.035);
+    --border:rgba(255,255,255,.09); --border2:rgba(255,255,255,.06);
+    --text:#f5f5f3; --muted:rgba(245,245,243,.56); --faint:rgba(245,245,243,.34);
+    --zen:#19d194; --zen-deep:#10b981; --sun:#39d98a;
+    --hard:#b083f2; --hard-deep:#8f5cf0;
+    --vault:#26b6cc; --vault-deep:#1a94a6; --vault-sun:#bfe0f5;
+    --radius:22px;
+    --font:-apple-system,BlinkMacSystemFont,"SF Pro Rounded","SF Pro Display","Segoe UI",system-ui,sans-serif;
   }
-  .hero > div[id="hero-content"] {
-    position: static !important;
-    width: 100% !important; max-width: 100% !important;
-    padding: 0 !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
-    gap: 0 !important;
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--text); font-family:var(--font);
+    -webkit-font-smoothing:antialiased; line-height:1.55; overflow-x:hidden;
   }
-  .hero > div[id="hero-content"] > div:first-child {
-    max-width: 100% !important; width: 100% !important;
-    display: flex !important; flex-direction: column !important;
-    align-items: center !important; text-align: center !important;
+  a{color:inherit;text-decoration:none}
+  ::selection{background:rgba(20,216,154,.28)}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+  .eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  h1,h2,h3{letter-spacing:-.02em;font-weight:800;line-height:1.08}
+  .grad-text{background:linear-gradient(100deg,#fff 10%,var(--zen) 55%,var(--vault) 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* ---------- NAV ---------- */
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:.35s}
+  nav.scrolled{background:rgba(8,8,11,.72);backdrop-filter:blur(18px);border-bottom:1px solid var(--border2)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px;max-width:1160px;margin:0 auto;padding:0 24px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;letter-spacing:-.02em}
+  .logo .mark{width:30px;height:30px;border-radius:9px;overflow:hidden;display:block;border:1px solid var(--border);background:#000}
+  .logo .mark img{width:100%;height:100%;object-fit:cover;display:block}
+  .nav-links{display:flex;gap:30px;align-items:center;font-size:14.5px;color:var(--muted)}
+  .nav-links a{transition:.2s}.nav-links a:hover{color:var(--text)}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:650;font-size:14.5px;border-radius:100px;padding:11px 20px;transition:.25s;cursor:pointer;border:1px solid transparent;white-space:nowrap}
+  .btn-primary{background:var(--text);color:#0a0a0a}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 10px 30px rgba(255,255,255,.14)}
+  .btn-ghost{border-color:var(--border);color:var(--text);background:var(--panel)}
+  .btn-ghost:hover{border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.06)}
+  .nav-links .btn{padding:9px 18px}
+  .lang-select{position:relative;display:inline-flex;align-items:center}
+  .lang-select .globe{position:absolute;left:10px;opacity:.75;pointer-events:none;color:var(--muted)}
+  .lang-select select{appearance:none;-webkit-appearance:none;background:var(--panel);border:1px solid var(--border);color:var(--text);font-size:13.5px;font-family:inherit;border-radius:100px;padding:8px 26px 8px 30px;cursor:pointer;transition:.2s;max-width:160px}
+  .lang-select select:hover{border-color:rgba(255,255,255,.22)}
+  .lang-select select option{background:#111218;color:var(--text)}
+  .lang-select::after{content:"";position:absolute;right:12px;width:7px;height:7px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:translateY(-2px) rotate(45deg);pointer-events:none}
+  @media(max-width:820px){.nav-links a:not(.btn){display:none}.nav-links{gap:12px}.lang-select select{max-width:132px;font-size:13px;padding:7px 24px 7px 28px}}
+  [dir="rtl"] .lang-select .globe{left:auto;right:10px}
+  [dir="rtl"] .lang-select select{padding:8px 30px 8px 26px}
+  [dir="rtl"] .lang-select::after{right:auto;left:12px}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;padding:150px 0 90px;overflow:hidden}
+  .blobs{position:absolute;inset:0;z-index:0;filter:blur(60px);opacity:.55;pointer-events:none}
+  .blob{position:absolute;border-radius:50%}
+  .b1{width:520px;height:520px;top:-140px;left:-120px;background:radial-gradient(circle,var(--zen-deep),transparent 62%);animation:float1 14s ease-in-out infinite}
+  .b2{width:560px;height:560px;top:-80px;right:-160px;background:radial-gradient(circle,var(--hard-deep),transparent 62%);animation:float2 17s ease-in-out infinite}
+  .b3{width:460px;height:460px;top:220px;left:38%;background:radial-gradient(circle,var(--vault-deep),transparent 62%);animation:float3 20s ease-in-out infinite}
+  @keyframes float1{50%{transform:translate(60px,50px) scale(1.1)}}
+  @keyframes float2{50%{transform:translate(-50px,60px) scale(1.08)}}
+  @keyframes float3{50%{transform:translate(30px,-50px) scale(1.12)}}
+  .hero-in{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+  .hero h1{font-size:clamp(38px,5.4vw,62px);margin:18px 0 20px}
+  .hero p.lead{font-size:clamp(16px,1.7vw,19px);color:var(--muted);max-width:520px;margin-bottom:30px}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .store-btn{display:inline-flex;align-items:center;gap:10px;background:var(--text);color:#0a0a0a;border-radius:12px;padding:8px 18px;font-weight:700;transition:.25s;line-height:1.1}
+  .store-btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(255,255,255,.16)}
+  .store-btn svg{width:auto;height:19px;flex:none}
+  .store-btn small{display:block;font-size:9.5px;font-weight:600;opacity:.7;letter-spacing:.02em;line-height:1}
+  .store-btn b{font-size:15.5px;font-weight:800;letter-spacing:-.01em;line-height:1.15}
+  .trust{display:flex;align-items:center;gap:16px;margin-top:26px;color:var(--faint);font-size:13.5px}
+  .stars{color:#ffcf4a;letter-spacing:2px}
+  @media(max-width:860px){.hero-in{grid-template-columns:1fr;text-align:center}.hero p.lead{margin-inline:auto}.hero-cta,.trust{justify-content:center}.phone-stage{margin-top:20px}}
+
+  /* ---------- PHONE MOCKUP ---------- */
+  .phone-stage{position:relative;display:flex;justify-content:center}
+  .phone{position:relative;width:300px;height:612px;border-radius:52px;background:linear-gradient(160deg,#1c1c22,#050506);padding:12px;box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06),inset 0 0 0 2px rgba(255,255,255,.03);z-index:2}
+  .screen{position:relative;width:100%;height:100%;border-radius:42px;overflow:hidden;background:radial-gradient(120% 80% at 20% 0%,#0f1512,#070709)}
+  .notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:104px;height:26px;background:#000;border-radius:16px;z-index:5}
+  .scr-pad{padding:16px 20px 22px}
+  .scr-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;font-weight:600}
+  .pill{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:100px;font-size:11px;font-weight:700;background:rgba(20,216,154,.13);color:var(--zen);border:1px solid rgba(20,216,154,.25)}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--zen);box-shadow:0 0 8px var(--zen)}
+  .timer{margin:30px 0 6px;text-align:center}
+  .timer .big{font-size:52px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+  .timer .lbl{color:var(--faint);font-size:12.5px;font-weight:600;margin-top:2px}
+  .prog{height:8px;border-radius:100px;background:rgba(255,255,255,.08);margin:22px 4px;overflow:hidden}
+  .prog i{display:block;height:100%;width:64%;border-radius:100px;background:linear-gradient(90deg,var(--zen-deep),var(--zen))}
+  .stat-row{display:flex;gap:10px;margin-top:20px}
+  .stat{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:16px;padding:13px 12px}
+  .stat .n{font-size:20px;font-weight:800}
+  .stat .k{font-size:10.5px;color:var(--faint);font-weight:600;margin-top:2px}
+  .blocked{margin-top:16px;background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:16px;padding:13px 14px;display:flex;align-items:center;gap:11px}
+  .lockico{width:34px;height:34px;border-radius:10px;background:rgba(176,131,242,.15);display:grid;place-items:center;color:var(--hard)}
+  .blocked .t{font-size:12.5px;font-weight:700}.blocked .s{font-size:11px;color:var(--faint)}
+  /* floating live activity */
+  .la{position:absolute;left:-38px;bottom:70px;width:230px;background:rgba(16,16,20,.9);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:20px;padding:13px 15px;box-shadow:0 20px 50px rgba(0,0,0,.5);z-index:3;animation:floatLA 6s ease-in-out infinite}
+  @keyframes floatLA{50%{transform:translateY(-10px)}}
+  .la .h{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700}
+  .la .h .i{width:20px;height:20px;border-radius:6px;background:rgba(38,182,204,.16);display:grid;place-items:center;color:var(--vault)}
+  .la .cd{font-size:22px;font-weight:800;margin:7px 0 8px;font-variant-numeric:tabular-nums}
+  .la .bar{height:6px;border-radius:100px;background:rgba(255,255,255,.1);overflow:hidden}
+  .la .bar i{display:block;height:100%;width:48%;background:linear-gradient(90deg,var(--vault-deep),var(--vault))}
+  @media(max-width:520px){.la{display:none}}
+
+  /* ---------- MOUNTAIN (real app render — mountain.png) ---------- */
+  .mtn{position:relative;height:152px;overflow:hidden;border-radius:42px 42px 0 0;--sc:var(--sun)}
+  .mtn.vaultsun{--sc:var(--vault-sun)}
+  .mtn .pic{position:absolute;inset:0;background:url('assets/mountain.png') center 24%/cover no-repeat}
+  .mtn .tint{position:absolute;inset:0;background:radial-gradient(130% 92% at 50% 6%,color-mix(in srgb,var(--sc) 44%,transparent),transparent 56%);mix-blend-mode:screen;pointer-events:none}
+  .mtn .fade{position:absolute;inset:0;background:linear-gradient(180deg,transparent 26%,rgba(8,8,11,.5) 70%,#08080b 100%)}
+  .mtn .sun{position:absolute;left:50%;top:30px;width:66px;height:66px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,var(--sc),color-mix(in srgb,var(--sc) 26%,transparent) 42%,transparent 68%);box-shadow:0 0 48px 14px color-mix(in srgb,var(--sc) 40%,transparent);opacity:.9;animation:sunrise 9s ease-in-out infinite}
+  @keyframes sunrise{0%,100%{transform:translateX(-50%) translateY(16px);opacity:.72}50%{transform:translateX(-50%) translateY(-6px);opacity:1}}
+  /* hero horizon ambiance (blurred real mountain) */
+  .horizon{position:absolute;left:0;right:0;bottom:0;height:360px;z-index:1;pointer-events:none;overflow:hidden}
+  .horizon .pic{position:absolute;inset:0;background:url('assets/mountain.png') center bottom/cover no-repeat;filter:blur(7px) saturate(.85);opacity:.2;-webkit-mask-image:linear-gradient(180deg,transparent,#000 62%);mask-image:linear-gradient(180deg,transparent,#000 62%)}
+  .horizon .hsun{position:absolute;left:50%;bottom:-170px;width:660px;height:660px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(57,217,138,.15),transparent 60%)}
+
+  /* ---------- STICKY SCROLL STORY ---------- */
+  .story{padding:30px 0 20px}
+  .story-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+  .story-phone{position:sticky;top:max(90px,calc(50vh - 312px));display:flex;justify-content:center}
+  .story-phone .phone{margin:0}
+  .story-panels{display:flex;flex-direction:column}
+  .spanel{min-height:86vh;display:flex;flex-direction:column;justify-content:center;padding:18px 0}
+  .spanel h2{font-size:clamp(27px,3.3vw,40px);margin:13px 0 15px;letter-spacing:-.02em;font-weight:800;line-height:1.1}
+  .spanel p.d{color:var(--muted);font-size:16.5px;margin-bottom:20px;max-width:440px}
+  .spanel .mini{display:flex;flex-direction:column;gap:11px}
+  .spanel .mini .fitem b{font-size:14.5px}
+  @media(max-width:860px){
+    /* Tek sütunda sabit-telefon metinle çakışır → mobilde telefon statik (üstte, Zen ekranı),
+       paneller altında okunur liste. Scroll-ile-değişen efekt masaüstü zevki olarak kalır. */
+    .story-grid{grid-template-columns:1fr;gap:6px}
+    .story-phone{position:static;height:auto;margin:0 auto 6px}
+    .spanel{min-height:auto;padding:20px 0;text-align:center;align-items:center}
+    .spanel p.d{margin-inline:auto}
+    .spanel .mini{align-items:center}
+    .spanel .mini .fitem{text-align:left;max-width:360px}
   }
-  .hero > div[id="hero-content"] h1 {
-    font-size: clamp(2rem, 8vw, 2.8rem) !important;
-    margin-bottom: 1rem !important; text-align: center !important;
-    color: #f5f5f0 !important; opacity: 1 !important; animation: none !important;
+  /* phone screen states */
+  .screen .state{position:absolute;inset:0;opacity:0;transition:opacity .5s ease;pointer-events:none}
+  .screen .state.on{opacity:1}
+  .state.hard-s{--mc:var(--hard)} .state.vault-s{--mc:var(--vault)}
+  .state .pill{background:color-mix(in srgb,var(--mc,var(--zen)) 14%,transparent);color:var(--mc,var(--zen));border:1px solid color-mix(in srgb,var(--mc,var(--zen)) 26%,transparent)}
+  .state .dot{background:var(--mc,var(--zen));box-shadow:0 0 8px var(--mc,var(--zen))}
+  .state .prog i{background:linear-gradient(90deg,color-mix(in srgb,var(--mc,var(--zen)) 60%,#000),var(--mc,var(--zen)))}
+  .state.hard-s .lockico{background:rgba(176,131,242,.16);color:var(--hard)}
+  .state.vault-s .lockico{background:rgba(38,182,204,.16);color:var(--vault)}
+  .state.zen-s .lockico{background:rgba(20,216,154,.14);color:var(--zen)}
+  .hardglow{position:absolute;top:24px;left:50%;transform:translateX(-50%);width:200px;height:150px;border-radius:50%;filter:blur(48px);background:var(--hard-deep);opacity:.5}
+  .passes{display:flex;align-items:center;gap:7px;margin-top:18px}
+  .passes .pd{width:24px;height:8px;border-radius:100px;background:var(--hard)}
+  .passes .pd.used{background:rgba(255,255,255,.12)}
+  .passes .pl{font-size:11px;color:var(--faint);margin-left:5px;font-weight:600}
+  /* meditation full screen (real app scene, used meaningfully) */
+  .medscreen{position:absolute;inset:0;overflow:hidden}
+  .medscreen .bg{position:absolute;inset:0;background:url('assets/urgesurf_bg.jpg') center/cover}
+  .medscreen .ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,10,10,.3),rgba(6,10,10,.74))}
+  .medscreen .top{position:absolute;top:46px;left:22px;right:22px;display:flex;justify-content:space-between;color:rgba(255,255,255,.82);font-size:12px;font-weight:700;z-index:2}
+  .medscreen .ct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:44px 26px;text-align:center}
+  .medscreen .cap{color:rgba(255,255,255,.92);font-size:13.5px;font-weight:600;line-height:1.5;max-width:225px;text-shadow:0 1px 10px rgba(0,0,0,.5)}
+  .medbtns{display:flex;gap:10px;margin-top:2px}
+  .medbtns .mb{font-size:12px;font-weight:700;padding:9px 15px;border-radius:100px;background:#fff;color:#0a0a0a}
+  .medbtns .mb.g{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.3)}
+  /* rewire phone-scoped sizing */
+  .state.rewire-s .scr-pad{padding-top:40px}
+  .state .votecard{padding:12px 14px;margin-bottom:10px}
+  .state .votecard .vh{font-size:12.5px}
+  .state .votecard .vt{font-size:11.5px}
+  .state .idcard{padding:11px 13px;margin-bottom:9px}
+  .state .idcard .k{font-size:9.5px}
+  .state .idcard .v{font-size:12.5px}
+
+  /* ---------- SECTIONS ---------- */
+  section{position:relative;padding:96px 0}
+  .sec-head{max-width:640px;margin-bottom:52px}
+  .sec-head.center{margin-inline:auto;text-align:center}
+  .sec-head h2{font-size:clamp(28px,3.6vw,42px);margin:14px 0 16px}
+  .sec-head p{color:var(--muted);font-size:16.5px}
+  .reveal{opacity:0;transform:translateY(26px);transition:.7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* modes */
+  .modes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:860px){.modes{grid-template-columns:1fr}}
+  .mode{position:relative;border-radius:var(--radius);padding:26px 24px 28px;border:1px solid var(--border);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));overflow:hidden;transition:.35s}
+  .mode:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.2)}
+  .mode .glow{position:absolute;top:-40px;left:-30px;width:180px;height:180px;border-radius:50%;filter:blur(50px);opacity:.5}
+  .mode .ic{position:relative;width:46px;height:46px;border-radius:13px;display:grid;place-items:center;margin-bottom:18px;font-size:20px}
+  .mode h3{position:relative;font-size:22px;margin-bottom:9px}
+  .mode p{position:relative;color:var(--muted);font-size:14.5px}
+  .mode .tag{position:relative;display:inline-block;margin-top:16px;font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:5px 11px;border-radius:100px}
+  .m-zen .glow{background:var(--zen-deep)} .m-zen .ic{background:rgba(20,216,154,.14);color:var(--zen)} .m-zen .tag{color:var(--zen);background:rgba(20,216,154,.1)}
+  .m-hard .glow{background:var(--hard-deep)} .m-hard .ic{background:rgba(176,131,242,.14);color:var(--hard)} .m-hard .tag{color:var(--hard);background:rgba(176,131,242,.1)}
+  .m-vault .glow{background:var(--vault-deep)} .m-vault .ic{background:rgba(38,182,204,.14);color:var(--vault)} .m-vault .tag{color:var(--vault);background:rgba(38,182,204,.1)}
+
+  /* split feature */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .split.rev .txt{order:2}
+  @media(max-width:860px){.split{grid-template-columns:1fr;gap:34px}.split.rev .txt{order:0}}
+  .split h2{font-size:clamp(26px,3.3vw,38px);margin:14px 0 16px}
+  .split p.d{color:var(--muted);font-size:16px;margin-bottom:22px}
+  .flist{display:flex;flex-direction:column;gap:14px}
+  .fitem{display:flex;gap:13px;align-items:flex-start}
+  .fitem .c{flex-shrink:0;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:13px;margin-top:1px}
+  .fitem b{font-weight:700;font-size:15px} .fitem span{color:var(--muted);font-size:14px;display:block}
+
+  /* meditation visual */
+  .med-visual{position:relative;height:400px;border-radius:26px;border:1px solid var(--border);overflow:hidden}
+  .med-visual .bg{position:absolute;inset:0;background:url('assets/urgesurf_bg.jpg') center/cover no-repeat;filter:blur(3px) saturate(1.08);transform:scale(1.09)}
+  .med-visual .ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,10,12,.34),rgba(8,10,12,.72) 78%)}
+  .med-visual .content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:30px}
+  .med-visual .cap{color:rgba(255,255,255,.9);font-size:14.5px;font-weight:600;line-height:1.5;max-width:280px;text-shadow:0 1px 12px rgba(0,0,0,.5)}
+  .breath{position:relative;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(57,217,138,.55),rgba(57,217,138,0) 70%);border:1.5px solid rgba(57,217,138,.55);display:grid;place-items:center;animation:breathe 5.5s ease-in-out infinite}
+  .breath::after{content:"";position:absolute;width:140px;height:140px;border-radius:50%;border:1px solid rgba(57,217,138,.4);animation:ring 5.5s ease-in-out infinite}
+  @keyframes breathe{0%,100%{transform:scale(.72)}50%{transform:scale(1.15)}}
+  @keyframes ring{0%,100%{transform:scale(.8);opacity:.6}50%{transform:scale(1.95);opacity:0}}
+  .breath b{font-size:14px;font-weight:700;color:#eafff6;letter-spacing:.03em}
+  /* small blurred image chips */
+  .medchips{display:flex;gap:12px;margin-top:24px}
+  .medchip{flex:1;height:96px;border-radius:16px;border:1px solid var(--border);overflow:hidden;position:relative}
+  .medchip .im{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(1.5px) saturate(1.05);transform:scale(1.06)}
+  .medchip .lb{position:absolute;left:0;right:0;bottom:0;padding:8px 11px;font-size:12px;font-weight:700;color:#fff;background:linear-gradient(180deg,transparent,rgba(0,0,0,.6));text-shadow:0 1px 6px rgba(0,0,0,.5)}
+
+  /* rewire visual */
+  .rewire-visual{position:relative;border-radius:26px;border:1px solid var(--border);background:linear-gradient(180deg,rgba(176,131,242,.1),rgba(8,8,11,.2));padding:26px;overflow:hidden}
+  .idcard{background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:16px;padding:16px 18px;margin-bottom:12px}
+  .idcard .k{font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .idcard .v{font-size:15.5px;font-weight:650;margin-top:6px}
+  .idcard.hl{border-color:rgba(176,131,242,.4);box-shadow:0 0 0 1px rgba(176,131,242,.14)}
+  .idcard.hl .v{color:var(--hard)}
+  .votecard{background:linear-gradient(180deg,rgba(176,131,242,.17),rgba(255,255,255,.03));border:1px solid rgba(176,131,242,.32);border-radius:16px;padding:15px 18px;margin-bottom:14px}
+  .votecard .vh{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:800;color:#fff}
+  .votecard .vh .vico{width:22px;height:22px;border-radius:50%;background:var(--hard);color:#160b26;display:grid;place-items:center;font-size:12px;font-weight:900}
+  .votecard .vp{height:6px;border-radius:100px;background:rgba(255,255,255,.1);margin:11px 0 9px;overflow:hidden}
+  .votecard .vp i{display:block;height:100%;width:72%;border-radius:100px;background:linear-gradient(90deg,var(--hard-deep),var(--hard))}
+  .votecard .vt{font-size:12.5px;color:var(--muted)}
+
+  /* stat band */
+  .band{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;border:1px solid var(--border);border-radius:24px;padding:34px;background:var(--panel)}
+  @media(max-width:720px){.band{grid-template-columns:repeat(2,1fr);gap:26px}}
+  .band .b .n{font-size:34px;font-weight:800;letter-spacing:-.02em}
+  .band .b .n.zen{color:var(--zen)}.band .b .n.hard{color:var(--hard)}.band .b .n.vault{color:var(--vault)}
+  .band .b .k{color:var(--muted);font-size:13.5px;margin-top:4px}
+
+  /* feature grid (widgets etc) */
+  .fg{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:860px){.fg{grid-template-columns:1fr}}
+  .card{border:1px solid var(--border);border-radius:var(--radius);padding:24px;background:var(--panel);transition:.3s}
+  .card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.18)}
+  .card .ic{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.06);display:grid;place-items:center;margin-bottom:16px;color:var(--zen)}
+  .card h3{font-size:17.5px;margin-bottom:8px}.card p{color:var(--muted);font-size:14px}
+
+  /* pricing */
+  .price{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1080px;margin:0 auto;align-items:stretch}
+  @media(max-width:960px){.price{grid-template-columns:repeat(2,1fr);max-width:660px;gap:16px}}
+  @media(max-width:560px){.price{grid-template-columns:1fr;max-width:420px}}
+  .plan{border:1px solid var(--border);border-radius:22px;padding:26px 22px;background:var(--panel);position:relative;display:flex;flex-direction:column}
+  .plan.best{border-color:rgba(20,216,154,.45);background:linear-gradient(180deg,rgba(20,216,154,.09),var(--panel));box-shadow:0 0 0 1px rgba(20,216,154,.12),0 20px 50px rgba(0,0,0,.35)}
+  .plan .badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#04140e;background:var(--zen);padding:5px 14px;border-radius:100px;white-space:nowrap}
+  .plan h3{font-size:19px}
+  .plan .amt{font-size:38px;font-weight:800;letter-spacing:-.02em;margin:12px 0 4px;line-height:1.05}.plan .amt small{display:block;font-size:13px;color:var(--muted);font-weight:600;letter-spacing:0;margin-top:3px}
+  .plan .cap{color:var(--muted);font-size:13.5px;margin-bottom:8px;min-height:20px}
+  .plan .save{display:inline-block;font-size:11.5px;font-weight:700;color:var(--zen);background:rgba(20,216,154,.12);padding:3px 10px;border-radius:100px;margin-bottom:18px}
+  .plan .trial{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--zen);margin-bottom:18px}
+  .plan ul{list-style:none;display:flex;flex-direction:column;gap:11px;margin:4px 0 24px}
+  .plan li{display:flex;gap:9px;font-size:14px;color:var(--text)}
+  .plan li svg{flex-shrink:0;margin-top:2px}
+  .plan .btn{width:100%;justify-content:center;margin-top:auto}
+  .free-note{max-width:640px;margin:26px auto 0;text-align:center;color:var(--muted);font-size:14.5px;border:1px solid var(--border2);border-radius:16px;padding:16px 22px;background:var(--panel)}
+  .free-note b{color:var(--zen)}
+
+  /* CTA */
+  .cta{text-align:center;position:relative;border-radius:32px;padding:70px 30px;border:1px solid var(--border);background:radial-gradient(90% 120% at 50% 0%,rgba(20,216,154,.12),rgba(8,8,11,.2));overflow:hidden}
+  .cta h2{font-size:clamp(30px,4vw,48px);margin-bottom:16px}
+  .cta p{color:var(--muted);font-size:17px;max-width:520px;margin:0 auto 30px}
+
+  /* how it works */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1000px;margin:0 auto}
+  .step{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px 24px 26px}
+  .step .num{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:12px;font-weight:800;font-size:17px;color:var(--bg);background:linear-gradient(135deg,var(--zen),var(--vault));margin-bottom:16px}
+  .step h3{font-size:18px;margin-bottom:8px}
+  .step p{color:var(--muted);font-size:14.5px;line-height:1.6}
+
+  /* testimonials */
+  .tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1080px;margin:0 auto}
+  .quote{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px 22px;margin:0;display:flex;flex-direction:column;gap:14px}
+  .quote .stars{color:#f5c451;font-size:14px;letter-spacing:2px}
+  .quote blockquote{margin:0;font-size:15px;line-height:1.62;color:var(--text)}
+  .quote figcaption{display:flex;align-items:center;gap:11px;margin-top:auto}
+  .quote .av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--bg);font-size:15px;flex:none}
+  .quote .av.zen{background:var(--zen)}.quote .av.vault{background:var(--vault)}.quote .av.hard{background:var(--hard)}
+  .quote figcaption b{display:block;font-size:14px}
+  .quote figcaption span{display:block;font-size:12.5px;color:var(--faint)}
+
+  /* faq */
+  .qa{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+  .q{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+  .q summary{list-style:none;cursor:pointer;padding:18px 22px;font-weight:600;font-size:15.5px;display:flex;justify-content:space-between;align-items:center;gap:16px;transition:color .2s}
+  .q summary::-webkit-details-marker{display:none}
+  .q summary::after{content:"";width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .25s;flex:none;margin-top:-3px}
+  .q[open] summary::after{transform:rotate(-135deg);margin-top:3px}
+  .q[open] summary{color:var(--zen)}
+  .q .a{padding:0 22px 20px}
+  .q .a p{color:var(--muted);font-size:14.5px;line-height:1.65;margin:0}
+  @media(max-width:860px){.tgrid{grid-template-columns:1fr;max-width:480px}}
+  @media(max-width:760px){.steps{grid-template-columns:1fr;max-width:440px}}
+
+  /* footer */
+  footer{border-top:1px solid var(--border2);padding:48px 0 60px;margin-top:60px}
+  .foot{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;align-items:flex-start}
+  .foot .col h4{font-size:13px;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;font-weight:700}
+  .foot .col a{display:block;color:var(--muted);font-size:14.5px;margin-bottom:9px;transition:.2s}.foot .col a:hover{color:var(--text)}
+  .foot .lead{max-width:280px}.foot .lead p{color:var(--muted);font-size:14px;margin-top:12px}
+  .copy{margin-top:40px;color:var(--faint);font-size:13px}
+  .langwrap{margin-top:18px}
+  .langhead{display:block;font-size:12px;color:var(--faint);margin-bottom:9px}
+  .langs{display:flex;gap:8px;flex-wrap:wrap}
+  .langs span{font-size:11px;color:var(--faint);border:1px solid var(--border2);border-radius:100px;padding:3px 9px}
+  .langmore{font-size:11px;color:var(--zen);border:1px solid color-mix(in srgb,var(--zen) 42%,transparent);background:color-mix(in srgb,var(--zen) 10%,transparent);border-radius:100px;padding:3px 11px;cursor:pointer;transition:.2s;font-family:inherit}
+  .langmore:hover{background:color-mix(in srgb,var(--zen) 20%,transparent);color:var(--text)}
+
+  /* ---------- RESPONSIVE · phones & tablets ---------- */
+  @media(max-width:760px){
+    .nav-in{height:60px}
+    section{padding:66px 0}
+    .sec-head{margin-bottom:34px}
+    .price{margin-top:6px}
   }
-  .hero > div[id="hero-content"] p {
-    font-size: 0.9rem !important; margin: 0 auto 2rem !important;
-    max-width: 300px !important; text-align: center !important;
-    opacity: 1 !important; animation: none !important;
+  @media(max-width:640px){
+    .wrap{padding:0 18px}
+    .nav-in{padding:0 16px}
+    .logo{font-size:16.5px}.logo .mark{width:27px;height:27px}
+    .nav-links{gap:9px}
+    .nav-links .btn{padding:8px 13px;font-size:13px}
+    .lang-select select{max-width:112px;font-size:12.5px;padding:7px 22px 7px 25px}
+    section{padding:58px 0}
+    .hero{padding:108px 0 46px}
+    .hero h1{font-size:clamp(30px,8vw,40px)}
+    .hero p.lead{font-size:15.5px}
+    .hero-cta{gap:10px}
+    .trust{font-size:12.5px;gap:10px}
+    .sec-head h2{font-size:26px}
+    .spanel h2{font-size:25px}
+    .spanel p.d{font-size:15.5px}
+    .band{padding:24px 18px;gap:20px}
+    .band .b .n{font-size:27px}
+    .card{padding:22px}
+    .plan{padding:24px 20px}
+    .plan .amt{font-size:34px}
+    .cta{padding:46px 20px;border-radius:24px}
+    .cta h2{font-size:27px}
+    .cta p{font-size:15.5px}
+    .foot{gap:24px}
+    .foot .lead{max-width:100%}
+    .store-btn{padding:8px 16px}
   }
-  .hero > div[id="hero-content"] button { opacity: 1 !important; animation: none !important; }
-  .hero > div[id="hero-content"] > div:last-child { display: none !important; }
-
-  .features-header { padding: 4rem 1.25rem 2rem; }
-  h2 { font-size: clamp(1.8rem, 7vw, 2.4rem); }
-
-  .sticky-wrap {
-    flex-direction: column !important;
-    padding: 0 !important;
-    gap: 0 !important;
-    align-items: stretch !important;
+  @media(max-width:400px){
+    .hero h1{font-size:28px}
+    .b1,.b2,.b3{filter:blur(50px)}
+    .phone{width:min(300px,84vw);height:auto;aspect-ratio:300/612}
   }
-  .phone-col { display: none !important; }
-  .panels-col { width: 100% !important; flex: none !important; display: block !important; }
-
-  .feat-panel {
-    min-height: auto !important;
-    padding: 2.5rem 0 3rem !important;
-    display: block !important;
-    opacity: 1 !important;
-    transition: none !important;
-    text-align: center !important;
-    border-bottom: 1px solid rgba(245,245,240,0.08);
-    overflow: visible;
-  }
-
-  .feat-panel::before { display: none !important; }
-
-  .mob-img-wrap {
-    display: block !important;
-    width: 200vw !important;
-    max-width: none !important;
-    margin-left: calc(50% - 100vw) !important;
-    margin-right: 0 !important;
-    margin-top: 0 !important;
-    margin-bottom: 1.75rem !important;
-    height: auto !important;
-    overflow: visible !important;
-  }
-
-  .feat-panel img.mob-img {
-    display: block !important;
-    width: 100% !important;
-    height: auto !important;
-    object-fit: initial !important;
-    object-position: initial !important;
-    margin: 0 !important;
-  }
-
-  .feat-mode-tag { margin-left: auto !important; margin-right: auto !important; margin-bottom: 0.6rem !important; padding: 0 1.5rem !important; }
-  .feat-title { font-size: clamp(1.4rem, 5.5vw, 1.9rem) !important; text-align: center !important; margin-bottom: 0.5rem; padding: 0 1.5rem !important; }
-  .feat-desc { font-size: 0.85rem; max-width: 100%; text-align: center !important; margin: 0 auto !important; line-height: 1.65; padding: 0 1.5rem !important; }
-
-  .how-section { padding: 5rem 1.5rem; }
-  .how-inner h2 { font-size: clamp(1.8rem, 7vw, 2.4rem); }
-  .cta-section { padding: 5rem 1.5rem; }
-  footer { flex-direction: column; gap: 1rem; text-align: center; padding: 1.5rem; }
-  .modal { padding: 2rem 1.5rem; }
-  .modal h3 { font-size: 1.4rem; }
-}
 </style>
 </head>
 <body>
-<div id="page-bg"></div>
 
 <!-- NAV -->
-<nav>
-  <span class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">Cascade</span>
-  <div class="nav-r">
-    <a href="#features">Features</a>
-    <a href="#how">About</a>
-    <a href="#" onclick="event.preventDefault();openFeedback()">Feedback</a>
-    <button onclick="openWaitlist()" class="nav-btn">Join Waitlist</button>
+<nav id="nav">
+  <div class="nav-in">
+    <a href="#top" class="logo"><span class="mark"><img src="assets/cascade-icon.png" alt="Cascade logo"></span>Cascade</a>
+    <div class="nav-links">
+      <a href="#modes" data-i18n="nav.modes">Modes</a>
+      <a href="#meditation" data-i18n="nav.meditation">Meditation</a>
+      <a href="#rewire" data-i18n="nav.rewire">Rewire</a>
+      <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
+      <div class="lang-select">
+        <svg class="globe" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+        <select id="langPicker" aria-label="Language"></select>
+      </div>
+      <a href="https://apps.apple.com/app/id6761320124" target="_blank" rel="noopener" class="btn btn-primary" data-i18n="nav.download">Download</a>
+    </div>
   </div>
 </nav>
 
 <!-- HERO -->
-<section class="hero" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:0;text-align:left;position:relative;overflow:hidden;">
-  <div style="position:absolute;inset:0;z-index:0;background:linear-gradient(135deg, #5d8a6e 0%, #6a9d8a 25%, #7eb4a0 45%, #5d8a8e 65%, #3d5a5e 85%, #1a2a30 100%);">
-    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%, rgba(180,210,180,0.25) 0%, transparent 60%);"></div>
-    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 70% 70%, rgba(40,80,90,0.4) 0%, transparent 70%);"></div>
-    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(20,40,40,0.2) 0%,transparent 30%,transparent 70%,rgba(15,25,30,0.6) 100%);"></div>
+<header class="hero">
+  <div class="blobs"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
+  <div class="horizon">
+    <div class="pic"></div>
+    <div class="hsun"></div>
   </div>
-  <div style="position:relative;z-index:10;width:100%;max-width:1100px;padding:0 4rem;display:flex;align-items:center;" id="hero-content">
-    <div style="max-width:520px;">
-      <p style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(240,238,236,0.55);margin-bottom:1.5rem;opacity:0;animation:fadeUp 1s 0.3s ease forwards;">Coming to iOS</p>
-      <h1 style="font-family:'Instrument Serif',serif;font-size:clamp(2.8rem,5vw,5rem);font-weight:400;line-height:1.05;letter-spacing:-0.025em;margin-bottom:1.5rem;color:#f5f5f0;opacity:0;animation:fadeUp 1s 0.5s ease forwards;text-shadow:0 2px 20px rgba(0,0,0,0.3);">A screen time app <em style="font-style:italic;color:rgba(245,245,240,0.55);">you'll love using.</em></h1>
-      <p style="font-size:clamp(0.9rem,1.2vw,1rem);color:rgba(245,245,240,0.7);line-height:1.75;max-width:360px;margin:0 0 2.5rem;opacity:0;animation:fadeUp 1s 0.7s ease forwards;">Easy to use, designed to help you take back your time. Block what distracts. Keep what matters.</p>
-      <button onclick="openWaitlist()" style="background:rgba(245,245,240,0.1);border:1px solid rgba(245,245,240,0.3);color:rgba(245,245,240,0.9);padding:0.7rem 1.75rem;border-radius:100px;font-family:inherit;font-size:0.88rem;cursor:pointer;transition:all 0.2s;opacity:0;animation:fadeUp 1s 0.9s ease forwards;backdrop-filter:blur(8px);" onmouseover="this.style.background='rgba(245,245,240,0.18)';this.style.borderColor='rgba(245,245,240,0.5)'" onmouseout="this.style.background='rgba(245,245,240,0.1)';this.style.borderColor='rgba(245,245,240,0.3)'">Join the Waitlist</button>
-    </div>
-    <div id="hero-phone-wrap">
-      <img src="anasayfa.png" alt="Cascade app" />
-    </div>
-  </div>
-</section>
-
-<!-- FEATURES -->
-<section class="features-section" id="features">
-  <div class="features-header fade-up">
-    <p class="s-label">Features</p>
-    <h2>Built to <em>make things easy.</em></h2>
-    <p class="s-sub">Every tool you need to cut through the noise and get back to what matters.</p>
-  </div>
-
-  <div class="sticky-wrap">
-
-    <div class="phone-col">
-      <div class="phone-clip">
-      <div class="phone-frame zen-active" id="phone-frame">
-        <div class="phone-screen active" id="feat-screen-0"><img src="anasayfa.png" alt="Choose your path" /></div>
-        <div class="phone-screen" id="feat-screen-1"><img src="zenmodemockup.png" alt="Zen Mode" /></div>
-        <div class="phone-screen" id="feat-screen-2"><img src="zenmoderutin.png" alt="Routine Schedule" /></div>
-        <div class="phone-screen" id="feat-screen-3"><img src="hardcoremode.png" alt="Hardcore Mode" /></div>
-        <div class="phone-screen" id="feat-screen-4"><img src="unlockwindowhardcore.png" alt="Unlock Window" /></div>
-        <div class="phone-screen" id="feat-screen-5"><img src="hardcorerutinayar.png" alt="Hardcore Routine" /></div>
-        <div class="phone-screen" id="feat-screen-6"><img src="vaultmode.png" alt="Vault Mode" /></div>
-        <div class="phone-screen" id="feat-screen-7"><img src="518shots_so-Photoroom.png" alt="No Way Out" /></div>
-        <div class="phone-screen" id="feat-screen-8"><img src="vaultrutin.png" alt="Vault Routine" /></div>
+  <div class="wrap hero-in">
+    <div class="hero-copy">
+      <span class="eyebrow" data-i18n="hero.eyebrow">Focus · Meditation · Rewire</span>
+      <h1 data-i18n="hero.h1">Break the scroll.<br><span class="grad-text">Rebuild your focus.</span></h1>
+      <p class="lead" data-i18n="hero.lead">Cascade blocks the apps you keep opening on autopilot. When the urge to check hits, it helps you ride it out instead of just forcing a "no." Little by little, you stop reaching for the hit at all.</p>
+      <div class="hero-cta">
+        <a href="https://apps.apple.com/app/id6761320124" target="_blank" rel="noopener" class="store-btn">
+          <svg viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+          <span><small data-i18n="hero.dl_small">Download on the</small><b>App Store</b></span>
+        </a>
+        <a href="#modes" class="btn btn-ghost" data-i18n="hero.see">See how it works</a>
       </div>
-      </div>
+      <div class="trust"><span class="stars">★★★★★</span><span data-i18n="hero.trust">For people who want their focus back · 22 languages</span></div>
     </div>
 
-    <div class="panels-col">
-
-      <div class="feat-panel active" data-feat="0" data-mode="zen" style="--mobile-img:url('anasayfa.png')">
-        <div class="mob-img-wrap"><img class="mob-img" src="anasayfa.png" alt="" /></div>
-        <span class="feat-mode-tag zen">Choose your path</span>
-        <h3 class="feat-title">How will <em>you resist?</em></h3>
-        <p class="feat-desc">Three modes to fit your day. Zen for gentle focus. Hardcore for serious commitment. Vault for the strictest protection.</p>
+    <div class="phone-stage">
+      <div class="la">
+        <div class="h"><span class="i"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><span data-i18n="ui.vault_lockedin">Vault · locked in</span></div>
+        <div class="cd">02:14:08</div>
+        <div class="bar"><i></i></div>
       </div>
-
-      <div class="feat-panel" data-feat="1" data-mode="zen" style="--mobile-img:url('zenmodemockup.png')">
-        <div class="mob-img-wrap"><img class="mob-img" src="zenmodemockup.png" alt="" /></div>
-        <span class="feat-mode-tag zen">Zen Mode</span>
-        <h3 class="feat-title">Gentle blocking.</h3>
-        <p class="feat-desc">Pick the apps you want to block and the session length, then start. If you need to stop, you can stop the session and use the apps you need.</p>
+      <div class="phone">
+        <div class="screen">
+          <div class="notch"></div>
+          <div class="mtn">
+            <div class="pic"></div>
+            <div class="tint"></div>
+            <div class="sun"></div>
+            <div class="fade"></div>
+          </div>
+          <div class="scr-pad">
+            <div class="scr-top"><span class="pill"><span class="dot"></span><span data-i18n="ui.zen_active">Zen active</span></span><span data-i18n="ui.focus_inprogress">focus in progress</span></div>
+            <div class="timer">
+              <div class="big">48:12</div>
+              <div class="lbl" data-i18n="ui.focus_remaining">focus remaining · sun still rising</div>
+            </div>
+            <div class="prog"><i></i></div>
+            <div class="stat-row">
+              <div class="stat"><div class="n">🔥 14</div><div class="k" data-i18n="ui.day_streak">Day streak</div></div>
+              <div class="stat"><div class="n">3h 20m</div><div class="k" data-i18n="ui.today">Today</div></div>
+            </div>
+            <div class="blocked">
+              <span class="lockico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
+              <div><div class="t" data-i18n="ui.blocked_8">8 apps blocked</div><div class="s">Instagram, TikTok, X…</div></div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div class="feat-panel" data-feat="2" data-mode="zen" style="--mobile-img:url('zenmoderutin.png')">
-        <div class="mob-img-wrap"><img class="mob-img" src="zenmoderutin.png" alt="" /></div>
-        <span class="feat-mode-tag zen">Zen Mode</span>
-        <h3 class="feat-title">Set a <em>routine.</em></h3>
-        <p class="feat-desc">Schedule recurring blocks for any day and time. Cascade starts your session automatically.</p>
-      </div>
-
-      <div class="feat-panel" data-feat="3" data-mode="hc" style="--mobile-img:url('hardcoremode.png')">
-        <div class="mob-img-wrap"><img class="mob-img" src="hardcoremode.png" alt="" /></div>
-        <span class="feat-mode-tag hc">Hardcore Mode</span>
-        <h3 class="feat-title">Customizable blocking.</h3>
-        <p class="feat-desc">You block the apps you choose, but you also give yourself a few unlock passes. For example, you can let a blocked app open 3 times for 10 minutes. When they're gone, the app stays blocked until the session ends.</p>
-      </div>
-
-      <div class="feat-panel" data-feat="4" data-mode="hc" style="--mobile-img:url('unlockwindowhardcore.png')">
-        <div class="mob-img-wrap"><img class="mob-img" src="unlockwindowhardcore.png" alt="" /></div>
-        <span class="feat-mode-tag hc">Hardcore Mode</span>
-        <h3 class="feat-title">Your rules. <em>Your limits.</em></h3>
-        <p class="feat-desc">Before you start, you set the blocking duration, how many times you can temporarily unlock apps, and how long each unlock window lasts.</p>
-      </div>
-
-      <div class="feat-panel" data-feat="5" data-mode="hc" style="--mobile-img:url('hardcorerutinayar.png')">
-        <div class="mob-img-wrap"><img class="mob-img" src="hardcorerutinayar.png" alt="" /></div>
-        <span class="feat-mode-tag hc">Hardcore Mode</span>
-        <h3 class="feat-title">Routine on <em>autopilot.</em></h3>
-        <p class="feat-desc">Set recurring Hardcore sessions for the days and times you want. Cascade locks you in automatically when the schedule begins.</p>
-      </div>
-
-      <div class="feat-panel" data-feat="6" data-mode="vault" style="--mobile-img:url('vaultmode.png')">
-        <div class="mob-img-wrap"><img class="mob-img" src="vaultmode.png" alt="" /></div>
-        <span class="feat-mode-tag vault">Vault Mode</span>
-        <h3 class="feat-title">Strict blocking.</h3>
-        <p class="feat-desc">You block the apps you choose and you can't stop the session early. The only way in is a limited number of weekly unlock passes that you set yourself beforehand.</p>
-      </div>
-
-      <div class="feat-panel" data-feat="7" data-mode="vault" style="--mobile-img:url('518shots_so-Photoroom.png')">
-        <div class="mob-img-wrap"><img class="mob-img" src="518shots_so-Photoroom.png" alt="" /></div>
-        <span class="feat-mode-tag vault">Vault Mode</span>
-        <h3 class="feat-title">No way <em>out.</em></h3>
-        <p class="feat-desc">Vault sessions cannot be stopped early. The session ends automatically when the time is up. This is the strongest commitment you can make to yourself.</p>
-      </div>
-
-      <div class="feat-panel" data-feat="8" data-mode="vault" style="--mobile-img:url('vaultrutin.png')">
-        <div class="mob-img-wrap"><img class="mob-img" src="vaultrutin.png" alt="" /></div>
-        <span class="feat-mode-tag vault">Vault Mode</span>
-        <h3 class="feat-title">Lock it in <em>on schedule.</em></h3>
-        <p class="feat-desc">Set recurring Vault sessions for the days and times you choose. Once the schedule kicks in, there's no early exit until the session ends.</p>
-      </div>
-
     </div>
   </div>
-</section>
+</header>
 
-<!-- HOW IT WORKS -->
-<section class="how-section" id="how">
-  <div class="how-inner fade-up">
-    <p class="s-label">How it works</p>
-    <h2>Simple to start.<br><em>Hard to quit.</em></h2>
-    <p class="s-sub">Cascade is built to get out of your way.</p>
+<!-- HOW IT WORKS · 3 steps -->
+<section id="how" class="how">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow" data-i18n="how.eyebrow">How it works</span>
+      <h2 data-i18n="how.h2">Getting your focus back, in three steps.</h2>
+      <p data-i18n="how.sub">It's less about willpower and more about making the good choice the easy one.</p>
+    </div>
     <div class="steps">
-      <div class="step">
-        <span class="step-n">01</span>
-        <div><h4>Choose your mode</h4><p>Zen, Hardcore, or Vault — pick what fits your day.</p></div>
+      <div class="step reveal">
+        <span class="num">1</span>
+        <h3 data-i18n="how.s1h">Choose a mode &amp; your apps</h3>
+        <p data-i18n="how.s1p">Zen gives you a gentle nudge, Hardcore adds real friction, and Vault locks apps away for good. Start with whatever keeps pulling you back.</p>
       </div>
-      <div class="step">
-        <span class="step-n">02</span>
-        <div><h4>Pick your blocklist</h4><p>Choose which apps get restricted during your session.</p></div>
+      <div class="step reveal" style="transition-delay:.08s">
+        <span class="num">2</span>
+        <h3 data-i18n="how.s2h">Focus, and let the urge pass</h3>
+        <p data-i18n="how.s2p">Start a session and watch the sun climb over the mountain as your streak grows. When a craving shows up, a short guided meditation helps you sit with it until it fades.</p>
       </div>
-      <div class="step">
-        <span class="step-n">03</span>
-        <div><h4>Start your session</h4><p>Let Cascade handle the rest.</p></div>
+      <div class="step reveal" style="transition-delay:.16s">
+        <span class="num">3</span>
+        <h3 data-i18n="how.s3h">Become someone new</h3>
+        <p data-i18n="how.s3p">Every session adds up to longer streaks and a clearer sense of who you're becoming. Rewire keeps that person in view: someone who doesn't need the dopamine.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE · sticky scroll story -->
+<section id="modes" class="story">
+  <div class="wrap">
+    <div class="sec-head center reveal" style="margin-bottom:18px">
+      <span class="eyebrow" data-i18n="story.eyebrow">A guided tour</span>
+      <h2 data-i18n="story.h2">One app. Every part of the loop.</h2>
+    </div>
+    <div class="story-grid">
+
+      <!-- STICKY PHONE (stays; only its screen changes) -->
+      <div class="story-phone">
+        <div class="phone">
+          <div class="screen">
+            <div class="notch"></div>
+
+            <div class="state zen-s on" id="s-zen">
+              <div class="mtn"><div class="pic"></div><div class="tint"></div><div class="sun"></div><div class="fade"></div></div>
+              <div class="scr-pad">
+                <div class="scr-top"><span class="pill"><span class="dot"></span><span data-i18n="ui.zen_active">Zen active</span></span><span data-i18n="ui.focus_inprogress">focus in progress</span></div>
+                <div class="timer"><div class="big">48:12</div><div class="lbl" data-i18n="ui.focus_remaining">focus remaining · sun still rising</div></div>
+                <div class="prog"><i></i></div>
+                <div class="stat-row"><div class="stat"><div class="n">🔥 14</div><div class="k" data-i18n="ui.day_streak">Day streak</div></div><div class="stat"><div class="n">3h 20m</div><div class="k" data-i18n="ui.today">Today</div></div></div>
+                <div class="blocked"><span class="lockico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><div><div class="t" data-i18n="ui.blocked_8">8 apps blocked</div><div class="s">Instagram, TikTok, X…</div></div></div>
+              </div>
+            </div>
+
+            <div class="state hard-s" id="s-hard">
+              <div class="hardglow"></div>
+              <div class="scr-pad" style="padding-top:46px">
+                <div class="scr-top"><span class="pill"><span class="dot"></span><span data-i18n="ui.hardcore_active">Hardcore active</span></span><span data-i18n="ui.pass_left_1">1 pass left</span></div>
+                <div class="timer"><div class="big">1:12:40</div><div class="lbl" data-i18n="ui.hard_lockedin">locked in, harder to quit</div></div>
+                <div class="prog"><i></i></div>
+                <div class="passes"><span class="pd"></span><span class="pd used"></span><span class="pd used"></span><span class="pl" data-i18n="ui.passes_1of3">1 of 3 unlock passes left</span></div>
+                <div class="blocked"><span class="lockico"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></span><div><div class="t" data-i18n="ui.blocked_12">12 apps blocked</div><div class="s" data-i18n="ui.each_unlock">Each unlock spends a pass</div></div></div>
+              </div>
+            </div>
+
+            <div class="state vault-s" id="s-vault">
+              <div class="mtn vaultsun"><div class="pic"></div><div class="tint"></div><div class="sun"></div><div class="fade"></div></div>
+              <div class="scr-pad">
+                <div class="scr-top"><span class="pill"><span class="dot"></span><span data-i18n="ui.vault_lockedin">Vault · locked in</span></span><span data-i18n="ui.no_way_out">no way out</span></div>
+                <div class="timer"><div class="big">2d 04h</div><div class="lbl" data-i18n="ui.until_vault">until the vault opens</div></div>
+                <div class="prog"><i></i></div>
+                <div class="stat-row"><div class="stat"><div class="n" data-i18n="ui.mon">Mon</div><div class="k" data-i18n="ui.unlocks">Unlocks</div></div><div class="stat"><div class="n">0</div><div class="k" data-i18n="ui.passes_left">Passes left</div></div></div>
+                <div class="blocked"><span class="lockico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V5z"/></svg></span><div><div class="t" data-i18n="ui.all_social">All social locked</div><div class="s" data-i18n="ui.no_unlocks">No unlocks until time's up</div></div></div>
+              </div>
+            </div>
+
+            <div class="state" id="s-med">
+              <div class="medscreen">
+                <div class="bg"></div><div class="ov"></div>
+                <div class="top"><span data-i18n="ui.urge_surfing">Urge surfing</span><span>0:47</span></div>
+                <div class="ct">
+                  <div class="breath"><b data-i18n="ui.breathe">Breathe</b></div>
+                  <div class="cap" data-i18n="ui.urge_quote">"Urges rise, peak, and fade on their own, if you don't feed them."</div>
+                  <div class="medbtns"><span class="mb" data-i18n="ui.keep_going">Keep going</span><span class="mb g" data-i18n="ui.let_go">Let it go</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="state rewire-s" id="s-rewire">
+              <div class="scr-pad">
+                <div class="scr-top"><span class="pill" style="--mc:var(--hard)" data-i18n="ui.reflect">Reflect</span><span data-i18n="ui.after_session">after your session</span></div>
+                <div class="votecard"><div class="vh"><span class="vico">✓</span> <span data-i18n="ui.vote_cast">Vote #47 cast</span></div><div class="vp"><i></i></div><div class="vt" data-i18n="ui.another_vote">Another vote for who you're becoming.</div></div>
+                <div class="idcard hl"><div class="k" data-i18n="ui.becoming_who">I'm becoming someone who</div><div class="v" data-i18n="ui.becoming_val">uses their phone intentionally.</div></div>
+                <div class="idcard"><div class="k" data-i18n="ui.when_urge">When an urge hits</div><div class="v" data-i18n="ui.take_breaths">Take 5 slow breaths, then decide.</div></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- SCROLLING PANELS -->
+      <div class="story-panels">
+        <div class="spanel" data-target="s-zen">
+          <span class="eyebrow" style="color:var(--zen)" data-i18n="p1.ey">Zen · ease in</span>
+          <h2 data-i18n="p1.h2">Block the noise. Watch the sun rise.</h2>
+          <p class="d" data-i18n="p1.d">Pick your apps and how long you want to focus. The longer you stay with it, the higher the sun climbs over the mountain, a quiet picture of your progress. Want to stop early? That's fine, no guilt.</p>
+          <div class="mini">
+            <div class="fitem"><span class="c" style="background:rgba(20,216,154,.14);color:var(--zen)">✓</span><b data-i18n="p1.fi">Free forever<span>The easiest way to start. No commitment, no account.</span></b></div>
+          </div>
+        </div>
+        <div class="spanel" data-target="s-hard">
+          <span class="eyebrow" style="color:var(--hard)" data-i18n="p2.ey">Hardcore · commit harder</span>
+          <h2 data-i18n="p2.h2">Make quitting a real decision.</h2>
+          <p class="d" data-i18n="p2.d">Block with a limited number of unlock passes. Every time you cave, you spend one, so that easy dopamine hit finally costs you something. Made for the apps you genuinely can't put down.</p>
+          <div class="mini">
+            <div class="fitem"><span class="c" style="background:rgba(176,131,242,.14);color:var(--hard)">⚡</span><b data-i18n="p2.fi">Limited unlock passes<span>Spend one to peek, or run out and stay locked.</span></b></div>
+          </div>
+        </div>
+        <div class="spanel" data-target="s-vault">
+          <span class="eyebrow" style="color:var(--vault)" data-i18n="p3.ey">Vault · no escape</span>
+          <h2 data-i18n="p3.h2">Lock it in. No way out.</h2>
+          <p class="d" data-i18n="p3.d">You get a set number of passes each week. Once the vault closes, nothing opens it before the timer runs out. Not even you. It's built for the moments your willpower isn't.</p>
+          <div class="mini">
+            <div class="fitem"><span class="c" style="background:rgba(38,182,204,.14);color:var(--vault)">🔒</span><b data-i18n="p3.fi">Zero unlocks<span>Set it and it holds until time's up. No exceptions.</span></b></div>
+          </div>
+        </div>
+        <div class="spanel" id="meditation" data-target="s-med">
+          <span class="eyebrow" style="color:var(--zen)" data-i18n="p4.ey">Meditation · ride the urge</span>
+          <h2 data-i18n="p4.h2">Meet the craving with calm.</h2>
+          <p class="d" data-i18n="p4.d">The moment you reach for a blocked app, Cascade opens a calm, cinematic scene and stays with you: breathe, watch the urge peak, let it pass. Most are gone in under 90 seconds.</p>
+          <div class="mini">
+            <div class="fitem"><span class="c" style="background:rgba(20,216,154,.14);color:var(--zen)">≈</span><b data-i18n="p4.fi">Guided breathing &amp; urge surfing<span>A slow audio pace that helps your body settle.</span></b></div>
+          </div>
+        </div>
+        <div class="spanel" id="rewire" data-target="s-rewire">
+          <span class="eyebrow" style="color:var(--hard)" data-i18n="p5.ey">Rewire · become someone new</span>
+          <h2 data-i18n="p5.h2">Every session is a vote.</h2>
+          <p class="d" data-i18n="p5.d">Before you start, set who you're becoming and why. Afterward, take a moment to reflect. Bit by bit, those small choices become the person you actually are.</p>
+          <div class="mini">
+            <div class="fitem"><span class="c" style="background:rgba(176,131,242,.14);color:var(--hard)">✓</span><b data-i18n="p5.fi">Identity &amp; intentions<span>"I'm becoming someone who protects their focus."</span></b></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ACCOUNTABILITY / STATS -->
+<section id="progress">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow" data-i18n="stats.eyebrow">Momentum you can feel</span>
+      <h2 data-i18n="stats.h2">Streaks, stats &amp; friends who keep you honest.</h2>
+      <p data-i18n="stats.sub">Every focused minute counts toward your streak and your totals. Add friends to keep each other honest, and see who's locked in right now.</p>
+    </div>
+    <div class="band reveal">
+      <div class="b"><div class="n zen">3h 20m</div><div class="k" data-i18n="stats.focused_today">Focused today</div></div>
+      <div class="b"><div class="n hard">14</div><div class="k" data-i18n="ui.day_streak">Day streak</div></div>
+      <div class="b"><div class="n vault">62h</div><div class="k" data-i18n="stats.this_month">This month</div></div>
+      <div class="b"><div class="n">#2</div><div class="k" data-i18n="stats.among_friends">Among friends</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE GRID -->
+<section id="more">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow" data-i18n="fg.eyebrow">Built to actually stick</span>
+      <h2 data-i18n="fg.h2">The details that make it work.</h2>
+    </div>
+    <div class="fg">
+      <div class="card reveal">
+        <div class="ic" style="color:var(--vault)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 9h6v6H9z"/></svg></div>
+        <h3 data-i18n="fg.c1t">Widgets &amp; Live Activities</h3>
+        <p data-i18n="fg.c1p">Your streak, today's focus and a live countdown, right on your Home Screen, Lock Screen and Dynamic Island.</p>
+      </div>
+      <div class="card reveal" style="transition-delay:.06s">
+        <div class="ic" style="color:var(--zen)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+        <h3 data-i18n="fg.c2t">Routines on autopilot</h3>
+        <p data-i18n="fg.c2p">Schedule blocking to start on its own every morning, through work hours, or at bedtime. Set it once and forget it.</p>
+      </div>
+      <div class="card reveal" style="transition-delay:.12s">
+        <div class="ic" style="color:var(--hard)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg></div>
+        <h3 data-i18n="fg.c3t">Friends &amp; leaderboard</h3>
+        <p data-i18n="fg.c3p">Add friends, compare focus time, and see who's in a session right now. It's a lot harder to slack off when someone's watching.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ic" style="color:var(--vault)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg></div>
+        <h3 data-i18n="fg.c4t">22 languages</h3>
+        <p data-i18n="fg.c4p">Cascade speaks your language. Fully localized, so it feels made for you wherever you are.</p>
+      </div>
+      <div class="card reveal" style="transition-delay:.06s">
+        <div class="ic" style="color:var(--zen)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <h3 data-i18n="fg.c5t">Per-app precision</h3>
+        <p data-i18n="fg.c5p">Block exactly what pulls you in, whether that's a few specific apps or whole categories. Nothing you didn't ask for.</p>
+      </div>
+      <div class="card reveal" style="transition-delay:.12s">
+        <div class="ic" style="color:var(--hard)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3 data-i18n="fg.c6t">Private by design</h3>
+        <p data-i18n="fg.c6p">Your focus data stays on your phone. Blocking runs on-device through Apple's Screen Time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF · PLACEHOLDER quotes — replace with real App Store reviews before publishing -->
+<section id="loved" class="tst">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow" data-i18n="tst.eyebrow">Loved by focused people</span>
+      <h2 data-i18n="tst.h2">What early users say.</h2>
+    </div>
+    <div class="tgrid">
+      <figure class="quote reveal">
+        <div class="stars">★★★★★</div>
+        <blockquote data-i18n="tst.q1">"First thing that actually made me stop reaching for Instagram. The mountain sunrise is weirdly motivating, and I don't want to break the streak."</blockquote>
+        <figcaption><span class="av zen">M</span><div><b>Maya R.</b><span data-i18n="tst.r1">Designer · 41-day streak</span></div></figcaption>
+      </figure>
+      <figure class="quote reveal" style="transition-delay:.08s">
+        <div class="stars">★★★★★</div>
+        <blockquote data-i18n="tst.q2">"Vault mode is the only blocker I couldn't cheat. That's exactly why it works. My screen time is down 60% in three weeks."</blockquote>
+        <figcaption><span class="av vault">J</span><div><b>Jonas J.</b><span data-i18n="tst.r2">Student · Vault user</span></div></figcaption>
+      </figure>
+      <figure class="quote reveal" style="transition-delay:.16s">
+        <div class="stars">★★★★★</div>
+        <blockquote data-i18n="tst.q3">"The urge-surfing meditation hits different. Instead of white-knuckling it, I actually breathe through the craving and it passes."</blockquote>
+        <figcaption><span class="av hard">A</span><div><b>Aylin K.</b><span data-i18n="tst.r3">Founder · Hardcore mode</span></div></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow" data-i18n="pr.eyebrow">Pricing</span>
+      <h2 data-i18n="pr.h2">Start free. Go Pro when you're ready.</h2>
+      <p data-i18n="pr.sub">Almost everything in Cascade is free, forever. Pro adds the two modes for when willpower alone isn't enough: Hardcore and Vault. The yearly plan starts with 7 days free.</p>
+    </div>
+    <div class="price">
+      <div class="plan reveal">
+        <h3 data-i18n="pr.free">Free</h3>
+        <div class="amt">$0<small data-i18n="pr.free_suffix">forever</small></div>
+        <div class="cap" data-i18n="pr.free_cap">Everything except the two toughest modes.</div>
+        <ul>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--zen)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="pr.f_zen">Zen mode, unlimited</span></li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--zen)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="pr.f_focus">Meditation &amp; urge surfing</span></li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--zen)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="pr.f_med">Routines, streaks &amp; widgets</span></li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--zen)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="pr.f_widget">Friends, leaderboard &amp; Rewire</span></li>
+        </ul>
+        <a href="https://apps.apple.com/app/id6761320124" target="_blank" rel="noopener" class="btn btn-ghost" data-i18n="pr.free_btn">Get started</a>
+      </div>
+      <div class="plan reveal" style="transition-delay:.05s">
+        <h3 data-i18n="pr.monthly">Monthly</h3>
+        <div class="amt">$5.99<small data-i18n="pr.per_mo">per month</small></div>
+        <div class="cap" data-i18n="pr.mo_cap">Hardcore and Vault, unlocked.</div>
+        <ul>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--zen)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="pr.f_modes">Hardcore mode, real friction</span></li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--zen)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="pr.f_routines">Vault mode, no way out</span></li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--zen)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="pr.f_friends">Everything in Free, included</span></li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--zen)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="pr.mo4">Cancel anytime</span></li>
+        </ul>
+        <a href="https://apps.apple.com/app/id6761320124" target="_blank" rel="noopener" class="btn btn-ghost" data-i18n="pr.mo_btn">Choose Monthly</a>
+      </div>
+      <div class="plan best reveal" style="transition-delay:.07s">
+        <span class="badge" data-i18n="pr.badge">Best value · Save 51%</span>
+        <h3 data-i18n="pr.yearly">Yearly</h3>
+        <div class="amt">$34.99<small data-i18n="pr.per_yr">per year</small></div>
+        <div class="cap" data-i18n="pr.yr_cap">The same Pro, for much less.</div>
+        <div class="trial"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="pr.trial">7-day free trial</span></div>
+        <ul>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--zen)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="pr.f_everything">Everything in Monthly</span></li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--zen)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="pr.f_identity">Just ≈ $2.92 a month</span></li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--zen)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="pr.f_best">Save 51% vs monthly</span></li>
+        </ul>
+        <a href="https://apps.apple.com/app/id6761320124" target="_blank" rel="noopener" class="btn btn-primary" data-i18n="pr.yr_btn">Start free trial</a>
+      </div>
+      <div class="plan reveal" style="transition-delay:.14s">
+        <h3 data-i18n="pr.life">Lifetime</h3>
+        <div class="amt">$89.99<small data-i18n="pr.life_suffix">one-time</small></div>
+        <div class="cap" data-i18n="pr.life_cap">The same Pro, paid once.</div>
+        <ul>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--zen)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="pr.f_allpro">Everything in Yearly, forever</span></li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--zen)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="pr.f_nosub">Never pay again</span></li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--zen)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="pr.f_updates">Every future update</span></li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--zen)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="pr.life4">Cheaper than 3 years on Yearly</span></li>
+        </ul>
+        <a href="https://apps.apple.com/app/id6761320124" target="_blank" rel="noopener" class="btn btn-ghost" data-i18n="pr.life_btn">Get Lifetime</a>
+      </div>
+    </div>
+    <p class="free-note reveal" data-i18n="pr.note">The <b>7-day free trial</b> comes with the Yearly plan. Cancel any time before it ends and you won't be charged. Prices in USD and may vary by region.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="faq">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow" data-i18n="faq.eyebrow">Questions</span>
+      <h2 data-i18n="faq.h2">Everything you might be wondering.</h2>
+    </div>
+    <div class="qa reveal">
+      <details class="q"><summary data-i18n="faq.q1">Can I really not unlock Vault mode early?</summary><div class="a"><p data-i18n="faq.a1">That's the whole point. In Vault mode, the apps you pick stay sealed for the full session. No snooze, no "just five more minutes." If you'd rather have an easier way out, Zen only nudges you and Hardcore gives you a limited number of passes.</p></div></details>
+      <details class="q"><summary data-i18n="faq.q2">Is my data private?</summary><div class="a"><p data-i18n="faq.a2">Yes. Blocking runs on-device with Apple's Screen Time framework, and your focus data stays yours. Cascade is built so your blocked-app choices never leave your phone.</p></div></details>
+      <details class="q"><summary data-i18n="faq.q3">How does the free trial work?</summary><div class="a"><p data-i18n="faq.a3">The Yearly plan comes with a 7-day free trial. You won't be charged if you cancel any time before it ends, and you can manage it straight from your Apple ID subscriptions.</p></div></details>
+      <details class="q"><summary data-i18n="faq.q4">Does it keep working when the app is closed?</summary><div class="a"><p data-i18n="faq.a4">Absolutely. Blocking and scheduled routines run in the background through Screen Time. Widgets, Live Activities and the Dynamic Island keep your streak and countdown visible without opening the app.</p></div></details>
+      <details class="q"><summary data-i18n="faq.q5">What languages is Cascade available in?</summary><div class="a"><p data-i18n="faq.a5">22, fully localized, including English, Türkçe, Español, Deutsch, Français, 日本語, 한국어, 简体中文, العربية and many more.</p></div></details>
+      <details class="q"><summary data-i18n="faq.q6">Can I block specific apps or whole categories?</summary><div class="a"><p data-i18n="faq.a6">Both. Pick out individual apps, or block whole categories at once. Whatever works for you.</p></div></details>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="cta-section" id="waitlist">
-  <p class="s-label">Get the app</p>
-  <h2>Ready to take back <em>your time?</em></h2>
-  <p>Join the waitlist and be the first to know when Cascade launches on the App Store.</p>
-  <button class="btn-cta" onclick="openWaitlist()">Join the Waitlist</button>
+<section id="download">
+  <div class="wrap">
+    <div class="cta reveal">
+      <h2 data-i18n="cta.h2">You only get so much attention. Spend it on what matters.</h2>
+      <p data-i18n="cta.p">Download Cascade and start your first focused session today.</p>
+      <a href="https://apps.apple.com/app/id6761320124" target="_blank" rel="noopener" class="store-btn">
+        <svg viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+        <span><small data-i18n="hero.dl_small">Download on the</small><b>App Store</b></span>
+      </a>
+    </div>
+  </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <span class="f-logo">Cascade</span>
-  <ul class="f-links">
-    <li><a href="#" onclick="event.preventDefault();openPrivacy()">Privacy</a></li>
-    <li><a href="mailto:thecascadeapp@gmail.com?subject=Hello%20from%20thecascadeapp.com">Contact</a></li>
-  </ul>
-  <small>© 2026 Cascade</small>
+  <div class="wrap foot">
+    <div class="col lead">
+      <a href="#top" class="logo"><span class="mark"><img src="assets/cascade-icon.png" alt="Cascade logo"></span>Cascade</a>
+      <p data-i18n="foot.tagline">Block the noise, ride out the urge, and become someone new.</p>
+      <div class="langwrap">
+        <span class="langhead" data-i18n="foot.langhead">Available in 22 languages</span>
+        <div class="langs" id="langs">
+          <span>English</span><span>Türkçe</span><span>Español</span><span>Deutsch</span><span>Français</span><span>日本語</span>
+          <button type="button" class="langmore" id="langMore" aria-expanded="false" data-i18n="foot.langmore">+16 more</button>
+        </div>
+      </div>
+    </div>
+    <div class="col"><h4 data-i18n="foot.product">Product</h4><a href="#modes" data-i18n="nav.modes">Modes</a><a href="#meditation" data-i18n="nav.meditation">Meditation</a><a href="#rewire" data-i18n="nav.rewire">Rewire</a><a href="#pricing" data-i18n="nav.pricing">Pricing</a></div>
+    <div class="col"><h4 data-i18n="foot.company">Company</h4><a href="#how" data-i18n="how.eyebrow">How it works</a><a href="#faq" data-i18n="foot.faq">FAQ</a><a href="mailto:support@thecascadeapp.com" data-i18n="foot.contact">Contact</a></div>
+    <div class="col"><h4 data-i18n="foot.legal">Legal</h4><a href="privacy.html" data-i18n="foot.privacy">Privacy</a><a href="terms.html" data-i18n="foot.terms">Terms</a><a href="mailto:support@thecascadeapp.com" data-i18n="foot.support">Support</a></div>
+  </div>
+  <div class="wrap copy" data-i18n="foot.copy">© 2026 Cascade. Made for people who want their attention back.</div>
 </footer>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="waitlist-modal" onclick="handleOverlay(event)">
-  <div class="modal">
-    <button class="modal-close" onclick="closeWaitlist()">✕</button>
-    <div id="modal-form-wrap">
-      <div class="modal-badge">Early Access</div>
-      <h3>Get early access <em>to Cascade.</em></h3>
-      <p>Be the first to know when we launch.</p>
-      <input type="email" id="waitlist-email" class="modal-input" placeholder="your@email.com" />
-      <div id="email-error" style="display:none;color:#f87171;font-size:0.78rem;margin:-0.25rem 0 0.6rem;text-align:left;">Please enter a valid email address.</div>
-      <button type="button" class="modal-submit" onclick="submitWaitlist()">Join the Waitlist</button>
-    </div>
-    <div class="modal-success" id="modal-success">
-      <h4>You're on the list.</h4>
-      <p>We'll reach out when Cascade is ready.</p>
-    </div>
-  </div>
-</div>
-
-<!-- FEEDBACK MODAL -->
-<div class="modal-overlay" id="feedback-modal" onclick="handleFeedbackOverlay(event)">
-  <div class="modal">
-    <button class="modal-close" onclick="closeFeedback()">✕</button>
-    <div id="feedback-form-wrap">
-      <div class="modal-badge">Share Your Voice</div>
-      <h3>Shape <em>Cascade.</em></h3>
-      <p>Tell us what you'd like us to add or remove. We read every message.</p>
-      <div class="fb-pills">
-        <button class="fb-pill active" data-cat="add" onclick="selectFbCat(this)">Add a feature</button>
-        <button class="fb-pill" data-cat="remove" onclick="selectFbCat(this)">Remove a feature</button>
-      </div>
-      <textarea id="fb-suggestion" class="modal-textarea" placeholder="Describe your idea..."></textarea>
-      <input type="email" id="fb-email" class="modal-input" placeholder="your@email.com (optional — to follow up)" />
-      <div id="fb-error" style="display:none;color:#f87171;font-size:0.78rem;margin:-0.25rem 0 0.6rem;text-align:left;">Please describe your idea first.</div>
-      <button type="button" class="modal-submit" onclick="submitFeedback()">Send Feedback</button>
-    </div>
-    <div class="modal-success" id="feedback-success">
-      <h4>Thank you.</h4>
-      <p>Your feedback helps shape a better Cascade.</p>
-    </div>
-  </div>
-</div>
-
-<!-- PRIVACY MODAL -->
-<div class="modal-overlay" id="privacy-modal" onclick="handlePrivacyOverlay(event)">
-  <div class="modal" style="max-width:480px;">
-    <button class="modal-close" onclick="closePrivacy()">✕</button>
-    <div class="modal-badge">Legal</div>
-    <h3>Privacy <em>Policy</em></h3>
-    <div class="privacy-scroll">
-      <div class="privacy-body">
-        <h4>What we collect</h4>
-        <p>We collect your email address only when you voluntarily join our waitlist. This is used solely to notify you when Cascade becomes available on the App Store. We do not collect any other personal information.</p>
-        <h4>Device Activity</h4>
-        <p>Cascade uses Apple's Screen Time and Family Controls APIs to monitor and block apps. All device activity data is processed entirely on your device. None of this data is ever transmitted to, or stored on, our servers.</p>
-        <h4>Third parties</h4>
-        <p>We do not sell, share, rent, or trade your personal information with any third party for commercial purposes.</p>
-        <h4>Data retention</h4>
-        <p>Your email is stored securely and only for the purpose of communicating our launch. You can request deletion at any time by contacting us.</p>
-        <h4>Cookies &amp; analytics</h4>
-        <p>This website does not use cookies or any third-party analytics trackers.</p>
-        <h4>Children's privacy</h4>
-        <p>We do not knowingly collect personal information from children under 13. If you believe we have done so, please contact us and we will delete it promptly.</p>
-        <h4>Changes</h4>
-        <p>We may update this policy as Cascade evolves. Material changes will be communicated via the email address you provided.</p>
-        <h4>Contact</h4>
-        <p><a href="mailto:thecascadeapp@gmail.com" style="color:#f5f5f0;text-decoration:underline;text-underline-offset:3px;">thecascadeapp@gmail.com</a></p>
-        <p style="margin-top:1rem;color:rgba(245,245,240,0.35);font-size:0.75rem;">Last updated: April 2026</p>
-      </div>
-    </div>
-  </div>
-</div>
-
+<script src="translations.js"></script>
+<script src="i18n.js"></script>
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBhh2U4MeLqd5BMvt2wjTXAsWFJ_ZwF9zxNxEQBErTWwRJjr7xpqHYt_7zKx0VxYMu/exec";
-
-const modeColors = {
-  zen:   'radial-gradient(ellipse at 50% 30%, #0d6e4f 0%, #094d39 60%, #052e22 100%)',
-  hc:    'radial-gradient(ellipse at 50% 30%, #8b2818 0%, #6b1d12 60%, #3d0e08 100%)',
-  vault: 'radial-gradient(ellipse at 50% 30%, #4f3aa8 0%, #382680 60%, #1f1450 100%)',
-};
-
-const modeRgb = {
-  zen:   [[13,110,79],  [9,77,57],   [5,46,34]],
-  hc:    [[139,40,24],  [107,29,18], [61,14,8]],
-  vault: [[79,58,168],  [56,38,128], [31,20,80]],
-};
-
-const phoneFrame = document.getElementById('phone-frame');
-const featPanels  = document.querySelectorAll('.feat-panel');
-const featScreens = document.querySelectorAll('.phone-screen');
-const modeFrameClass = { zen: 'zen-active', hc: 'hc-active', vault: 'vault-active' };
-
-const pageBg = document.getElementById('page-bg');
-const themeColorMeta = document.getElementById('theme-color-meta');
-
-let _lastBg = '', _lastTheme = '', _ticking = false;
-
-function rgbToHex(r, g, b) {
-  return '#' + [r,g,b].map(v => Math.round(v).toString(16).padStart(2,'0')).join('');
-}
-function setThemeColor(hex) {
-  if (hex === _lastTheme || !themeColorMeta) return;
-  _lastTheme = hex;
-  themeColorMeta.setAttribute('content', hex);
-  document.documentElement.style.background = hex;
-}
-
-function setBgColor(bg) {
-  if (bg === _lastBg) return;
-  _lastBg = bg;
-  pageBg.style.background = bg;
-}
-
-function lerpColor(a, b, t) {
-  return [
-    Math.round(a[0] + (b[0]-a[0])*t),
-    Math.round(a[1] + (b[1]-a[1])*t),
-    Math.round(a[2] + (b[2]-a[2])*t),
-  ].join(',');
-}
-
-function smoothstep(t) { return t * t * (3 - 2 * t); }
-
-function interpolateBg(mode1, mode2, t) {
-  const r1 = modeRgb[mode1], r2 = modeRgb[mode2];
-  const s = smoothstep(t);
-  const c1 = lerpColor(r1[0], r2[0], s);
-  const c2 = lerpColor(r1[1], r2[1], s);
-  const c3 = lerpColor(r1[2], r2[2], s);
-  setBgColor(`radial-gradient(ellipse at 50% 30%, rgb(${c1}) 0%, rgb(${c2}) 60%, rgb(${c3}) 100%)`);
-}
-
-function setActive(i) {
-  featPanels.forEach((p, j) => p.classList.toggle('active', j === i));
-  featScreens.forEach((s, j) => s.classList.toggle('active', j === i));
-  const mode = featPanels[i].dataset.mode;
-  if (phoneFrame) phoneFrame.className = 'phone-frame ' + modeFrameClass[mode];
-}
-
-// IntersectionObserver for reliable cross-browser panel switching (Safari + Chrome)
-const panelIO = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      setActive(parseInt(entry.target.dataset.feat, 10));
-    }
-  });
-}, { rootMargin: '-40% 0px -40% 0px', threshold: 0 });
-featPanels.forEach(p => panelIO.observe(p));
-
-// Scroll-driven smooth background interpolation
-const featSection = document.querySelector('.features-section');
-
-function updateBg() {
-  const featRect = featSection.getBoundingClientRect();
-
-  if (featRect.top > window.innerHeight) {
-    setBgColor(modeColors.zen);
-    setThemeColor(rgbToHex(...modeRgb.zen[2]));
-    return;
+  // nav bg on scroll
+  const nav=document.getElementById('nav');
+  const onScroll=()=>nav.classList.toggle('scrolled',window.scrollY>16);
+  onScroll();addEventListener('scroll',onScroll,{passive:true});
+  // reveal on view (fallback: if IntersectionObserver is unavailable, just show everything)
+  if('IntersectionObserver' in window){
+    const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.14});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
   }
 
-  if (featRect.bottom < 0) {
-    const featBottomAbs = window.scrollY + featRect.bottom;
-    const docEnd = document.documentElement.scrollHeight - window.innerHeight;
-    const range = Math.max(docEnd - featBottomAbs, 1);
-    const t = Math.min(Math.max((window.scrollY - featBottomAbs) / range, 0), 1);
-    const s = smoothstep(t);
-    const c1 = lerpColor([79,58,168], [106,157,138], t);
-    const c2 = lerpColor([56,38,128], [93,138,110], t);
-    const c3 = lerpColor([31,20,80],  [61,90,94],   t);
-    setBgColor(`radial-gradient(ellipse at 50% 30%, rgb(${c1}) 0%, rgb(${c2}) 60%, rgb(${c3}) 100%)`);
-    setThemeColor(rgbToHex(31+(61-31)*s, 20+(90-20)*s, 80+(94-80)*s));
-    return;
+  // sticky story: the phone stays put — only its screen changes as each panel scrolls to center
+  const stStates={}; document.querySelectorAll('.screen .state').forEach(s=>{ if(s.id) stStates[s.id]=s; });
+  if(Object.keys(stStates).length && ('IntersectionObserver' in window)){
+    const stObs=new IntersectionObserver((es)=>{
+      es.forEach(e=>{
+        if(e.isIntersecting){
+          const t=e.target.getAttribute('data-target');
+          for(const id in stStates) stStates[id].classList.toggle('on', id===t);
+        }
+      });
+    },{rootMargin:'-48% 0px -48% 0px',threshold:0});
+    document.querySelectorAll('.spanel').forEach(p=>stObs.observe(p));
   }
 
-  // Within features: interpolate between adjacent panel colors as viewport midpoint moves
-  const viewMid = window.innerHeight / 2;
-  const panelsArr = Array.from(featPanels);
-  const centers = panelsArr.map(p => { const r = p.getBoundingClientRect(); return (r.top + r.bottom) / 2; });
-
-  if (viewMid <= centers[0]) {
-    setBgColor(modeColors[panelsArr[0].dataset.mode]);
-    setThemeColor(rgbToHex(...modeRgb[panelsArr[0].dataset.mode][2]));
-    return;
+  // footer: "+16 more" reveals the full localized language list
+  const langMore=document.getElementById('langMore');
+  if(langMore){
+    const rest=["Italiano","Português","Русский","简体中文","繁體中文","العربية","한국어","हिन्दी","Bahasa Indonesia","Nederlands","Polski","Українська","Tiếng Việt","ไทย","Svenska","فارسی"];
+    langMore.addEventListener('click',()=>{
+      const frag=document.createDocumentFragment();
+      rest.forEach(n=>{const s=document.createElement('span');s.textContent=n;frag.appendChild(s);});
+      langMore.replaceWith(frag);
+    });
   }
-  if (viewMid >= centers[centers.length - 1]) {
-    setBgColor(modeColors[panelsArr[panelsArr.length - 1].dataset.mode]);
-    setThemeColor(rgbToHex(...modeRgb[panelsArr[panelsArr.length - 1].dataset.mode][2]));
-    return;
-  }
-
-  for (let i = 0; i < centers.length - 1; i++) {
-    if (viewMid >= centers[i] && viewMid <= centers[i + 1]) {
-      const t = (viewMid - centers[i]) / (centers[i + 1] - centers[i]);
-      interpolateBg(panelsArr[i].dataset.mode, panelsArr[i + 1].dataset.mode, t);
-      const s = smoothstep(t);
-      const e1 = modeRgb[panelsArr[i].dataset.mode][2];
-      const e2 = modeRgb[panelsArr[i+1].dataset.mode][2];
-      setThemeColor(rgbToHex(e1[0]+(e2[0]-e1[0])*s, e1[1]+(e2[1]-e1[1])*s, e1[2]+(e2[2]-e1[2])*s));
-      return;
-    }
-  }
-}
-
-function onScroll() {
-  if (_ticking) return;
-  _ticking = true;
-  requestAnimationFrame(() => { updateBg(); _ticking = false; });
-}
-
-window.addEventListener('scroll', onScroll, { passive: true });
-document.addEventListener('scroll', onScroll, { passive: true });
-setActive(0);
-updateBg();
-
-const fadeObs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-}, { threshold: 0.1 });
-document.querySelectorAll('.fade-up').forEach(el => fadeObs.observe(el));
-
-function openWaitlist() {
-  document.getElementById('waitlist-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  setTimeout(() => document.getElementById('waitlist-email').focus(), 280);
-}
-function closeWaitlist() {
-  document.getElementById('waitlist-modal').classList.remove('open');
-  document.body.style.overflow = '';
-  document.getElementById('email-error').style.display = 'none';
-  document.getElementById('waitlist-email').style.borderColor = '';
-}
-function handleOverlay(e) {
-  if (e.target === document.getElementById('waitlist-modal')) closeWaitlist();
-}
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeWaitlist(); closeFeedback(); closePrivacy(); }
-});
-document.getElementById('waitlist-email').addEventListener('input', function() {
-  document.getElementById('email-error').style.display = 'none';
-  this.style.borderColor = '';
-});
-function openFeedback() {
-  document.getElementById('feedback-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeFeedback() {
-  document.getElementById('feedback-modal').classList.remove('open');
-  document.body.style.overflow = '';
-  setTimeout(() => {
-    document.getElementById('feedback-form-wrap').style.display = '';
-    document.getElementById('feedback-success').style.display = 'none';
-    document.getElementById('fb-suggestion').value = '';
-    document.getElementById('fb-email').value = '';
-    document.getElementById('fb-error').style.display = 'none';
-  }, 300);
-}
-function handleFeedbackOverlay(e) {
-  if (e.target === document.getElementById('feedback-modal')) closeFeedback();
-}
-function selectFbCat(btn) {
-  document.querySelectorAll('.fb-pill').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-}
-function submitFeedback() {
-  const suggestion = document.getElementById('fb-suggestion').value.trim();
-  if (!suggestion) { document.getElementById('fb-error').style.display = 'block'; return; }
-  document.getElementById('fb-error').style.display = 'none';
-  const category = document.querySelector('.fb-pill.active').dataset.cat;
-  const email = document.getElementById('fb-email').value.trim();
-  document.getElementById('feedback-form-wrap').style.display = 'none';
-  document.getElementById('feedback-success').style.display = 'block';
-  const subject = category === 'add' ? 'Feature Request: Add' : 'Feature Request: Remove';
-  const body = suggestion + (email ? '\n\nReply to: ' + email : '');
-  const a = document.createElement('a');
-  a.href = 'mailto:thecascadeapp@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-  a.click();
-  setTimeout(closeFeedback, 2500);
-}
-
-function openPrivacy() {
-  document.getElementById('privacy-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closePrivacy() {
-  document.getElementById('privacy-modal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-function handlePrivacyOverlay(e) {
-  if (e.target === document.getElementById('privacy-modal')) closePrivacy();
-}
-
-function submitWaitlist() {
-  const emailInput = document.getElementById('waitlist-email');
-  const errorEl = document.getElementById('email-error');
-  const email = emailInput.value.trim();
-  const valid = email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  if (!valid) {
-    emailInput.style.borderColor = 'rgba(248,113,113,0.7)';
-    errorEl.style.display = 'block';
-    return;
-  }
-  errorEl.style.display = 'none';
-  emailInput.style.borderColor = '';
-  document.getElementById('modal-form-wrap').style.display = 'none';
-  document.getElementById('modal-success').style.display = 'block';
-  setTimeout(closeWaitlist, 2500);
-  fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email}) }).catch(()=>{});
-}
 </script>
 </body>
 </html>
