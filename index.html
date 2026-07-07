@@ -12,13 +12,30 @@
 <meta property="og:title" content="Cascade · Break the scroll. Rebuild your focus." />
 <meta property="og:description" content="Block the apps that hijack you, ride the urge with guided meditation, and rewire who you're becoming. Three modes, streaks, and a calm mountain sunrise for every session." />
 <meta property="og:url" content="https://thecascadeapp.com/" />
-<meta property="og:image" content="https://thecascadeapp.com/assets/mountain.png" />
+<meta property="og:image" content="https://thecascadeapp.com/assets/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Cascade — Break the scroll. Rebuild your focus." />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Cascade · Break the scroll. Rebuild your focus." />
 <meta name="twitter:description" content="Block distractions, ride the urge, rewire your identity. Focus that actually sticks." />
-<meta name="twitter:image" content="https://thecascadeapp.com/assets/mountain.png" />
+<meta name="twitter:image" content="https://thecascadeapp.com/assets/og-cover.png" />
 <link rel="icon" type="image/png" href="assets/cascade-icon-rounded.png" />
 <link rel="apple-touch-icon" href="assets/cascade-icon.png" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MobileApplication",
+  "name": "Cascade",
+  "operatingSystem": "iOS",
+  "applicationCategory": "ProductivityApplication",
+  "url": "https://thecascadeapp.com/",
+  "image": "https://thecascadeapp.com/assets/og-cover.png",
+  "description": "Cascade blocks the apps that pull you in, walks you through the urge with guided meditation, and helps you rewire your focus. Three modes: Zen, Hardcore and Vault, plus streaks, routines and 22 languages.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "installUrl": "https://apps.apple.com/app/id6761320124"
+}
+</script>
 <style>
   :root{
     --bg:#08080b; --bg2:#0c0c11; --panel:rgba(255,255,255,.035);
@@ -379,6 +396,28 @@
     .hero h1{font-size:28px}
     .b1,.b2,.b3{filter:blur(50px)}
     .phone{width:min(300px,84vw);height:auto;aspect-ratio:300/612}
+  }
+
+  /* ---------- LIGHTER MOBILE · trim repeated prose so it breathes ---------- */
+  @media(max-width:640px){
+    /* Story: keep the mode name + punchy headline + one feature; drop the long paragraph */
+    .spanel p.d{display:none}
+    .spanel .mini .fitem b span{display:none}
+    .spanel .mini .fitem b{font-size:15px}
+    .spanel h2{margin-bottom:14px}
+    /* Feature grid → scannable icon + title rows (descriptions hidden) */
+    .fg{gap:10px}
+    .fg .card{display:flex;align-items:center;gap:13px;padding:15px 16px;text-align:left}
+    .fg .card .ic{margin:0;width:38px;height:38px;flex:none}
+    .fg .card h3{margin:0;font-size:15px}
+    .fg .card p{display:none}
+    /* How it works: keep the 3 steps, trim their paragraphs on the smallest screens */
+    .how .step p{font-size:14px}
+  }
+  @media(max-width:460px){
+    .how .step p{display:none}
+    .how .step{padding:18px 20px}
+    .how .step h3{margin-bottom:0}
   }
 </style>
 </head>
