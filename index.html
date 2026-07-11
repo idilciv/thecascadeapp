@@ -97,22 +97,8 @@
   #cascade-hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:radial-gradient(120% 92% at 50% 60%,#0a1c1d 0%,#08080b 72%)}
   #cascade-spline{position:absolute;inset:0}
   #cascade-hero-bg spline-viewer{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
-  /* lightweight photo hero — shown on phones (and reduced-motion) instead of the heavy 3D scene */
-  .hb-mtn,.hb-teal,.hb-grade,.hb-vig{position:absolute;inset:0}
-  .hb-sunwrap{position:absolute;left:50%;top:62%;transform:translate(-50%,-50%);pointer-events:none}
-  .hb-sun{width:min(92vw,560px);height:min(92vw,560px);border-radius:50%;mix-blend-mode:screen;opacity:.92;filter:blur(7px);
-    background:radial-gradient(circle,rgba(234,255,246,.95) 0%,rgba(57,217,138,.82) 17%,rgba(25,209,148,.48) 38%,rgba(38,182,204,.16) 60%,transparent 76%)}
-  .hb-mtn{background-image:url(assets/mountain.jpg);
-    background-image:-webkit-image-set(url(assets/mountain.webp) type("image/webp"),url(assets/mountain.jpg) type("image/jpeg"));
-    background-image:image-set(url(assets/mountain.webp) type("image/webp"),url(assets/mountain.jpg) type("image/jpeg"));
-    background-size:cover;background-position:center 76%;
-    -webkit-mask-image:linear-gradient(to top,#000 46%,rgba(0,0,0,.85) 62%,transparent 92%);
-    mask-image:linear-gradient(to top,#000 46%,rgba(0,0,0,.85) 62%,transparent 92%)}
-  .hb-teal{background:#0b241d;mix-blend-mode:color;opacity:.3}
-  .hb-grade{background:linear-gradient(to bottom,#08080b 0%,rgba(8,8,11,.5) 14%,transparent 40%,rgba(8,8,11,.34) 76%,#08080b 100%)}
-  .hb-vig{background:radial-gradient(120% 78% at 50% 42%,transparent 42%,rgba(8,8,11,.72) 100%)}
-  @media(min-width:761px){.hb-sunwrap,.hb-mtn,.hb-teal,.hb-grade,.hb-vig{display:none}}
-  @media(max-width:760px){#cascade-spline{display:none}.hero{padding:104px 0 64px}}
+  /* phones: render the 3D scene at ~60% resolution (CSS-upscaled) so the GPU load drops ~3x — much smoother */
+  @media(max-width:760px){.hero{padding:104px 0 64px}#cascade-hero-bg spline-viewer{inset:auto;left:0;top:0;width:60%;height:60%;transform:scale(1.667);transform-origin:0 0}}
   /* readability scrim: darkens the scene behind the headline (below content, above the 3D scene) */
   .hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(105deg,rgba(8,8,11,.82) 0%,rgba(8,8,11,.46) 32%,rgba(8,8,11,.06) 56%,transparent 66%)}
   @media(max-width:860px){.hero::after{background:linear-gradient(to bottom,rgba(8,8,11,.74) 0%,rgba(8,8,11,.34) 42%,transparent 66%)}}
@@ -497,7 +483,7 @@
 
 <!-- HERO -->
 <header class="hero">
-  <div id="cascade-hero-bg" aria-hidden="true"><div class="hb-sunwrap"><div class="hb-sun"></div></div><div class="hb-mtn"></div><div class="hb-teal"></div><div class="hb-grade"></div><div class="hb-vig"></div><div id="cascade-spline"></div></div>
+  <div id="cascade-hero-bg" aria-hidden="true"><div id="cascade-spline"></div></div>
   <div class="wrap hero-in">
     <div class="hero-copy">
       <span class="eyebrow" data-i18n="hero.eyebrow">Focus · Meditation · Rewire</span>
@@ -954,14 +940,13 @@
   }
 </script>
 
-<!-- Desktop: inject the 3D Spline mountain (runtime + scene). Phones / reduced-motion get the light CSS photo hero instead — no WebGL, no jank. -->
+<!-- The 3D Spline mountain (runtime + scene injected). On phones it renders at reduced resolution (CSS) for smoothness. -->
 <script>
 (function () {
   var bg = document.getElementById('cascade-hero-bg');
   if (!bg) return;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  window.__cascadeLightHero = reduce || (window.matchMedia && window.matchMedia('(max-width: 760px)').matches);
-  if (window.__cascadeLightHero) return;   // phones/reduced-motion: keep the light photo hero, skip the heavy scene
+  if (reduce) return;   // reduced-motion: static dark hero, no scene
 
   var host = document.getElementById('cascade-spline');
   var viewer = document.createElement('spline-viewer');
@@ -983,7 +968,7 @@
       }
     }
   }, 200);
-  window.cascadeSetProgress = function(v){ pending = v; apply(); };
+  window.cascadeSetProgress = function(v){ v = Math.round(v); if (v !== pending) { pending = v; apply(); } };
   // Push sessionProgress only when it changes (idle scene won't re-render) — FPS win.
   var _lastP = -999, _lastT = 0;
   (function drive(t){ if (app) { t = t || 0; if (pending !== _lastP || t - _lastT > 500) { try { app.setVariable('sessionProgress', pending); } catch(e){} _lastP = pending; _lastT = t; } } requestAnimationFrame(drive); })();
@@ -1017,24 +1002,16 @@ window.addEventListener('load',function(){
   }
 
   window.__cascadeGsapDriving = true;
-  if (window.__cascadeLightHero) {
-    // phones: animate the lightweight photo sun (cheap CSS transforms — buttery smooth)
-    gsap.timeline({ scrollTrigger:{ trigger:'.hero', start:'top top', end:'bottom top', scrub:0.3 } })
-      .fromTo('.hb-sun', { y:70, scale:0.85, opacity:0.7 }, { y:-120, scale:1.35, opacity:1, ease:'power1.out' }, 0)
-      .fromTo('.hb-mtn', { scale:1.06, filter:'brightness(0.72) saturate(0.92)' }, { scale:1.12, filter:'brightness(1.06) saturate(1.05)', ease:'none' }, 0);
-  } else {
-    // desktop: drive the Spline scene's own sun rise + gentle copy/phone parallax
-    var proxy = { p:60 };
-    var heroTL = gsap.timeline({
-      scrollTrigger:{ trigger:'.hero', start:'top top', end:'+=45%', scrub:0.2 },
-      onUpdate:function(){ if(window.cascadeSetProgress) window.cascadeSetProgress(proxy.p); }
-    });
-    heroTL.to(proxy, { p:8, ease:'none' }, 0);
-    gsap.matchMedia().add('(min-width: 861px)', function(){
-      heroTL.to('.hero-copy', { y:-40, ease:'none' }, 0);
-      if(document.querySelector('.phone-stage')) heroTL.to('.phone-stage', { y:-64, ease:'power1.out' }, 0);
-    });
-  }
+  var proxy = { p:60 };
+  var heroTL = gsap.timeline({
+    scrollTrigger:{ trigger:'.hero', start:'top top', end:'+=45%', scrub:0.2 },
+    onUpdate:function(){ if(window.cascadeSetProgress) window.cascadeSetProgress(proxy.p); }
+  });
+  heroTL.to(proxy, { p:8, ease:'none' }, 0);
+  gsap.matchMedia().add('(min-width: 861px)', function(){
+    heroTL.to('.hero-copy', { y:-40, ease:'none' }, 0);
+    if(document.querySelector('.phone-stage')) heroTL.to('.phone-stage', { y:-64, ease:'power1.out' }, 0);
+  });
 
   ScrollTrigger.refresh();
 });
