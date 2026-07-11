@@ -24,6 +24,9 @@
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" type="image/png" href="assets/cascade-icon-rounded.png" />
 <link rel="apple-touch-icon" href="assets/cascade-icon.png" />
+<!-- Speed up the 3D hero: warm up the WASM CDN + start fetching the runtime early -->
+<link rel="preconnect" href="https://unpkg.com" crossorigin />
+<link rel="modulepreload" href="assets/spline-viewer.js" />
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -93,7 +96,7 @@
   /* App's Spline 3D mountain-sun scene, self-hosted exactly like the app (local runtime + scene, no CDN). */
   #cascade-hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:radial-gradient(120% 92% at 50% 60%,#0a1c1d 0%,#08080b 72%)}
   #cascade-hero-bg spline-viewer{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
-  @media(max-width:640px){.hero{padding:104px 0 64px}}
+  @media(max-width:640px){.hero{padding:104px 0 64px}#cascade-hero-bg spline-viewer{width:150%;left:-25%}}
   /* readability scrim: darkens the scene behind the headline (below content, above the 3D scene) */
   .hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(105deg,rgba(8,8,11,.82) 0%,rgba(8,8,11,.46) 32%,rgba(8,8,11,.06) 56%,transparent 66%)}
   @media(max-width:860px){.hero::after{background:linear-gradient(to bottom,rgba(8,8,11,.74) 0%,rgba(8,8,11,.34) 42%,transparent 66%)}}
@@ -955,7 +958,10 @@
     }
   }, 200);
   window.cascadeSetProgress = function(v){ pending = v; apply(); };
-  (function drive(){ if (app) { try { app.setVariable('sessionProgress', pending); } catch(e){} } requestAnimationFrame(drive); })();
+  // Only push sessionProgress to the scene when it actually changes (or a rare re-assert) — so the WebGL
+  // scene isn't forced to re-render every frame while idle. Big FPS win on mobile.
+  var _lastP = -999, _lastT = 0;
+  (function drive(t){ if (app) { t = t || 0; if (pending !== _lastP || t - _lastT > 500) { try { app.setVariable('sessionProgress', pending); } catch(e){} _lastP = pending; _lastT = t; } } requestAnimationFrame(drive); })();
   function heroP(){ var el=document.getElementById('cascade-hero-bg'); var r=el.getBoundingClientRect(); var hh=r.height||window.innerHeight; return Math.min(1,Math.max(0,Math.abs(Math.min(r.top,0))/hh)); }
   function onScroll(){ if (window.__cascadeGsapDriving) return; window.cascadeSetProgress(60 - Math.min(heroP()/0.45,1)*52); }
   window.addEventListener('scroll', onScroll, { passive:true }); onScroll();
