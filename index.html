@@ -98,7 +98,7 @@
   #cascade-spline{position:absolute;inset:0}
   #cascade-hero-bg spline-viewer{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
   /* phones: render the 3D scene at ~60% resolution (CSS-upscaled) so the GPU load drops ~3x — much smoother */
-  @media(max-width:760px){.hero{padding:104px 0 64px}#cascade-hero-bg spline-viewer{inset:auto;left:0;top:0;width:60%;height:60%;transform:scale(1.667);transform-origin:0 0}}
+  @media(max-width:760px){.hero{padding:104px 0 64px}#cascade-hero-bg spline-viewer{inset:auto;left:0;top:0;width:45%;height:45%;transform:scale(2.222);transform-origin:0 0}}
   /* readability scrim: darkens the scene behind the headline (below content, above the 3D scene) */
   .hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(105deg,rgba(8,8,11,.82) 0%,rgba(8,8,11,.46) 32%,rgba(8,8,11,.06) 56%,transparent 66%)}
   @media(max-width:860px){.hero::after{background:linear-gradient(to bottom,rgba(8,8,11,.74) 0%,rgba(8,8,11,.34) 42%,transparent 66%)}}
@@ -972,6 +972,10 @@
   // Push sessionProgress only when it changes (idle scene won't re-render) — FPS win.
   var _lastP = -999, _lastT = 0;
   (function drive(t){ if (app) { t = t || 0; if (pending !== _lastP || t - _lastT > 500) { try { app.setVariable('sessionProgress', pending); } catch(e){} _lastP = pending; _lastT = t; } } requestAnimationFrame(drive); })();
+  // Pause the scene's render loop when the hero leaves the viewport → frees the GPU so the rest of the page scrolls smoothly.
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function(es){ es.forEach(function(e){ try { if (app) { if (e.isIntersecting) { if (app.play) app.play(); } else { if (app.stop) app.stop(); } } } catch(err){} }); }, { threshold: 0.01 }).observe(bg);
+  }
 })();
 </script>
 
