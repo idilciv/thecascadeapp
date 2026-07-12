@@ -965,7 +965,7 @@
     panels.appendChild(dots);
     const dEls=[].slice.call(dots.children);
     const col={'s-zen':'var(--zen)','s-hard':'var(--hard)','s-vault':'var(--vault)','s-med':'var(--zen)','s-rewire':'var(--hard)'};
-    let onScroll=null, settleT=null, lastIdx=0, shown=-1;
+    let onScroll=null, settleT=null, lastIdx=0, shown=-1, snapping=false, snapTimer=null;
     function range(){ return Math.max(1, grid.offsetHeight - panels.offsetHeight); }
     function prog(){ return (-grid.getBoundingClientRect().top) / range(); }   // <0 above · 0..1 inside · >1 past
     function show(i){
@@ -973,25 +973,30 @@
       cards.forEach((c,k)=>c.classList.toggle('active', k===i));
       dEls.forEach((d,k)=>{ const on=k===i; d.classList.toggle('on',on); d.style.background=on?(col[cards[k].getAttribute('data-target')]||'#fff'):''; });
     }
+    function yFor(i){ return (grid.getBoundingClientRect().top + window.pageYOffset) + ((i+0.5)/N)*range(); }
     function upd(){
+      if(snapping){ show(lastIdx); return; }           // during the snap animation, hold the target (no ahead-flash)
       const p=prog(), raw=Math.max(0, Math.min(N-1, Math.floor(p*N)));
-      let disp = p<=0 ? 0 : p>=1 ? N-1 : Math.max(lastIdx-1, Math.min(lastIdx+1, raw));
+      const disp = p<=0 ? 0 : p>=1 ? N-1 : Math.max(lastIdx-1, Math.min(lastIdx+1, raw));
       show(disp);
     }
     function settle(){
+      if(snapping) return;
       const p=prog();
       if(p<=0){ lastIdx=0; return; }
       if(p>=1){ lastIdx=N-1; return; }                 // past the section → allow leaving
       const raw=Math.max(0, Math.min(N-1, Math.floor(p*N)));
       const target=Math.max(lastIdx-1, Math.min(lastIdx+1, raw));
       lastIdx=target;
-      const y=(grid.getBoundingClientRect().top + window.pageYOffset) + ((target+0.5)/N)*range();
-      if(Math.abs(window.pageYOffset - y) > 4){
-        const L=window.cascadeLenis;
-        L ? L.scrollTo(y,{duration:0.5}) : window.scrollTo({top:y,behavior:'smooth'});
-      }
+      const y=yFor(target);
+      if(Math.abs(window.pageYOffset - y) < 4){ show(target); return; }
+      snapping=true; show(target);                     // lock the view to the target while we scroll onto it
+      const done=()=>{ snapping=false; };
+      const L=window.cascadeLenis;
+      if(L) L.scrollTo(y,{duration:0.5, onComplete:done}); else { window.scrollTo({top:y,behavior:'smooth'}); }
+      clearTimeout(snapTimer); snapTimer=setTimeout(done, 700);
     }
-    function onS(){ requestAnimationFrame(upd); clearTimeout(settleT); settleT=setTimeout(settle, 150); }
+    function onS(){ requestAnimationFrame(upd); clearTimeout(settleT); settleT=setTimeout(settle, 140); }
     function setup(){
       if(mq.matches){
         grid.style.height=(N*72)+'vh';
