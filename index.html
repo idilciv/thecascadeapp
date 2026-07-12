@@ -951,35 +951,52 @@
     document.querySelectorAll('.spanel').forEach(p=>stObs.observe(p));
   }
 
-  // Mobile modes: pinned, scroll-driven CROSS-FADE — each mode replaces the previous as you scroll down. Dots show progress.
+  // Mobile modes: pinned cross-fade, ONE mode per swipe. The visible mode is clamped to (last settled ±1); when the
+  // scroll settles it snaps onto that mode. So however hard you flick you advance exactly one — yet you can still leave.
   (function(){
     const grid=document.querySelector('.story-grid');
     const panels=document.querySelector('.story-panels');
     const cards=[].slice.call(document.querySelectorAll('.story .spanel'));
     if(!grid || !panels || cards.length<2) return;
+    const N=cards.length;
     const mq=window.matchMedia('(max-width: 860px)');
     const dots=document.createElement('div'); dots.className='story-dots';
     cards.forEach(()=>dots.appendChild(document.createElement('i')));
     panels.appendChild(dots);
     const dEls=[].slice.call(dots.children);
     const col={'s-zen':'var(--zen)','s-hard':'var(--hard)','s-vault':'var(--vault)','s-med':'var(--zen)','s-rewire':'var(--hard)'};
-    let onScroll=null, curIdx=-1;
+    let onScroll=null, settleT=null, lastIdx=0, shown=-1;
+    function range(){ return Math.max(1, grid.offsetHeight - panels.offsetHeight); }
+    function prog(){ return (-grid.getBoundingClientRect().top) / range(); }   // <0 above · 0..1 inside · >1 past
+    function show(i){
+      if(i===shown) return; shown=i;
+      cards.forEach((c,k)=>c.classList.toggle('active', k===i));
+      dEls.forEach((d,k)=>{ const on=k===i; d.classList.toggle('on',on); d.style.background=on?(col[cards[k].getAttribute('data-target')]||'#fff'):''; });
+    }
     function upd(){
-      const range=grid.offsetHeight - panels.offsetHeight;
-      const scrolled=Math.min(range, Math.max(0, -grid.getBoundingClientRect().top));
-      const p=range>0 ? scrolled/range : 0;
-      const idx=Math.max(0, Math.min(cards.length-1, Math.floor(p*cards.length + 1e-4)));
-      if(idx!==curIdx){
-        curIdx=idx;
-        cards.forEach((c,i)=>c.classList.toggle('active', i===idx));
-        dEls.forEach((d,i)=>{ const on=i===idx; d.classList.toggle('on',on); d.style.background=on?(col[cards[i].getAttribute('data-target')]||'#fff'):''; });
+      const p=prog(), raw=Math.max(0, Math.min(N-1, Math.floor(p*N)));
+      let disp = p<=0 ? 0 : p>=1 ? N-1 : Math.max(lastIdx-1, Math.min(lastIdx+1, raw));
+      show(disp);
+    }
+    function settle(){
+      const p=prog();
+      if(p<=0){ lastIdx=0; return; }
+      if(p>=1){ lastIdx=N-1; return; }                 // past the section → allow leaving
+      const raw=Math.max(0, Math.min(N-1, Math.floor(p*N)));
+      const target=Math.max(lastIdx-1, Math.min(lastIdx+1, raw));
+      lastIdx=target;
+      const y=(grid.getBoundingClientRect().top + window.pageYOffset) + ((target+0.5)/N)*range();
+      if(Math.abs(window.pageYOffset - y) > 4){
+        const L=window.cascadeLenis;
+        L ? L.scrollTo(y,{duration:0.5}) : window.scrollTo({top:y,behavior:'smooth'});
       }
     }
+    function onS(){ requestAnimationFrame(upd); clearTimeout(settleT); settleT=setTimeout(settle, 150); }
     function setup(){
       if(mq.matches){
-        grid.style.height=(cards.length*62)+'vh';
-        if(!onScroll){ onScroll=()=>requestAnimationFrame(upd); window.addEventListener('scroll',onScroll,{passive:true}); }
-        curIdx=-1; upd();
+        grid.style.height=(N*72)+'vh';
+        if(!onScroll){ onScroll=onS; window.addEventListener('scroll',onScroll,{passive:true}); }
+        shown=-1; upd();
       } else {
         grid.style.height='';
         cards.forEach(c=>c.classList.remove('active'));
@@ -1081,6 +1098,7 @@ window.addEventListener('load',function(){
   // Smooth scroll (Lenis), wired into GSAP's ticker
   if(window.Lenis){
     var lenis = new Lenis({ lerp:0.1 });
+    window.cascadeLenis = lenis;   // exposed so the mobile modes pager can step-scroll
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(function(t){ lenis.raf(t*1000); });
     gsap.ticker.lagSmoothing(0);
