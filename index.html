@@ -25,8 +25,6 @@
 <link rel="icon" type="image/png" href="assets/cascade-icon-rounded.png" />
 <link rel="apple-touch-icon" href="assets/cascade-icon.png" />
 <!-- Speed up the 3D hero: warm up the WASM CDN + start fetching the runtime early -->
-<link rel="preconnect" href="https://unpkg.com" crossorigin />
-<link rel="modulepreload" href="assets/spline-viewer.js" />
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -98,13 +96,10 @@
   /* ---------- HERO ---------- */
   .hero{position:relative;padding:104px 0 72px;overflow:hidden;min-height:100vh;min-height:100svh}
   /* App's Spline 3D mountain-sun scene, self-hosted exactly like the app (local runtime + scene, no CDN). */
-  #cascade-hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:radial-gradient(120% 92% at 50% 55%,#101014 0%,#08080b 70%)}
-  #cascade-hero-bg::after{content:'';position:absolute;left:0;right:0;bottom:0;height:48%;background:linear-gradient(180deg,transparent 0%,rgba(8,8,11,.42) 42%,#08080b 82%);pointer-events:none;z-index:2}
-  #cascade-spline{position:absolute;inset:0}
-  /* Scene renders at a FIXED 1600x1000; JS (fitScene) scales it via transform to cover the hero. Fixed resolution = the sun looks identical at every window size. */
-  #cascade-hero-bg spline-viewer{position:absolute;top:0;left:0;width:1152px;height:720px;transform-origin:0 0;display:block;pointer-events:none}
-  /* phones: render the 3D scene at ~60% resolution (CSS-upscaled) so the GPU load drops ~3x — much smoother */
-  @media(max-width:760px){.hero{padding:104px 0 64px}#cascade-hero-bg spline-viewer{inset:auto;left:0;top:0;width:38%;height:38%;transform:scale(2.632);transform-origin:0 0}}
+  #cascade-hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#08080b}
+  /* Pre-rendered mountain-sunrise frame sequence (scroll-scrubbed on a canvas) — the same 3D scene, but ~0 GPU cost, instant load, identical sun at every size. */
+  #cascade-frames{position:absolute;inset:0;width:100%;height:100%;display:block}
+  @media(max-width:760px){.hero{padding:104px 0 64px}}
   /* readability scrim: darkens the scene behind the headline (below content, above the 3D scene) */
   .hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(105deg,rgba(8,8,11,.82) 0%,rgba(8,8,11,.46) 32%,rgba(8,8,11,.06) 56%,transparent 66%)}
   @media(max-width:860px){.hero::after{background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(to bottom,rgba(8,8,11,.74) 0%,rgba(8,8,11,.34) 42%,transparent 66%)}}
@@ -490,7 +485,7 @@
 
 <!-- HERO -->
 <header class="hero">
-  <div id="cascade-hero-bg" aria-hidden="true"><div id="cascade-spline"></div></div>
+  <div id="cascade-hero-bg" aria-hidden="true"><canvas id="cascade-frames"></canvas></div>
   <div class="wrap hero-in">
     <div class="hero-copy">
       <span class="eyebrow" data-i18n="hero.eyebrow">Focus · Meditation · Rewire</span>
@@ -947,58 +942,55 @@
   }
 </script>
 
-<!-- The 3D Spline mountain (runtime + scene injected). On phones it renders at reduced resolution (CSS) for smoothness. -->
+<!-- Pre-rendered mountain-sunrise frames, scrubbed on a <canvas> by scroll. Replaces the live 3D engine:
+     ~0 GPU cost, instant load, identical sun at every window size, smooth on phones. -->
 <script>
 (function () {
   var bg = document.getElementById('cascade-hero-bg');
-  if (!bg) return;
+  var canvas = document.getElementById('cascade-frames');
+  if (!bg || !canvas) return;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) return;   // reduced-motion: static dark hero, no scene
-  var isMobile = window.matchMedia && window.matchMedia('(max-width: 760px)').matches;
+  var ctx = canvas.getContext('2d', { alpha: false });
+  var COUNT = 72, FW = 1280, FH = 700;          // source frame size (aspect)
+  var frames = new Array(COUNT), ready = false, cur = -1;
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-  var host = document.getElementById('cascade-spline');
-  var viewer = document.createElement('spline-viewer');
-  viewer.setAttribute('url', 'assets/zen_mode.splinecode');
-  viewer.setAttribute('background', 'transparent');
-  host.appendChild(viewer);
-  var mod = document.createElement('script'); mod.type = 'module'; mod.src = 'assets/spline-viewer.js'; document.head.appendChild(mod);
-
-  // Render the scene at a FIXED internal resolution (1600x1000), then CSS-scale it to cover the hero. Fixed
-  // resolution means the sun renders identically at every window size — its colour/glow no longer changes
-  // between a small window and full-screen (only its display scale changes with the transform below).
-  var BW = 1152, BH = 720;
-  function fitScene(){
-    if (isMobile) return;
+  function sizeCanvas(){
     var w = bg.clientWidth, h = bg.clientHeight; if (!w || !h) return;
-    var s = Math.max(w / BW, h / BH);
-    viewer.style.transform = 'translate(' + ((w - BW * s) / 2) + 'px,' + ((h - BH * s) / 2) + 'px) scale(' + s + ')';
+    canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+    cur = -1;                                    // force a redraw at the new size
   }
-  window.addEventListener('resize', fitScene, { passive: true });
-  fitScene();
+  function draw(i){
+    var img = frames[i]; if (!img || !img.complete || !img.naturalWidth) return;
+    var cw = canvas.width, ch = canvas.height;
+    var s = Math.max(cw / FW, ch / FH);          // cover-fit
+    var dw = FW * s, dh = FH * s;
+    ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
+    cur = i;
+  }
+  function progress(){
+    var r = bg.getBoundingClientRect(), hh = r.height || window.innerHeight;
+    return Math.min(1, Math.max(0, (-r.top) / (hh * 0.45)));   // 0 at top -> 1 after ~45% of the hero
+  }
+  function tick(){
+    if (ready){
+      var idx = Math.round((reduce ? 1 : progress()) * (COUNT - 1));
+      if (idx !== cur) draw(idx);                // draw only when the frame index changes
+    }
+    requestAnimationFrame(tick);
+  }
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
 
-  var app = null, sun = null, tries = 0, _lastP = -999;
-  var iv = setInterval(function(){
-    if (++tries > 150) clearInterval(iv);
-    fitScene();   // keep the scene covering the hero as layout/fonts settle
-    if (!app && viewer._spline && typeof viewer._spline.setVariable === 'function') app = viewer._spline;
-    if (app && !sun && typeof app.findObjectByName === 'function') {
-      try { var s = app.findObjectByName('sunLight'); if (s) { sun = s; sun.intensity = 7; } } catch(e){}
-      if (sun) clearInterval(iv);
-    }
-  }, 200);
-  // sessionProgress is a PURE function of the hero's scroll position — recomputed every frame, so it can NEVER
-  // desync/teleport on resume: the sun's value always exactly matches where you scrolled to.
-  window.cascadeSetProgress = function(){};   // (kept as a harmless no-op; the sun is driven below, not by GSAP)
-  (function drive(){
-    if (app) {
-      var r = bg.getBoundingClientRect(), hh = r.height || window.innerHeight;
-      var p = Math.min(1, Math.max(0, (-r.top) / (hh * 0.45)));   // 0 at top -> 1 after scrolling ~45% of the hero
-      var sp = 30 + (8 - 30) * p;                                 // sun rises 30 -> 8 (start already "risen" so static matches scrolling look)
-      if (isMobile) sp = Math.round(sp);
-      if (!isMobile || sp !== _lastP) { try { app.setVariable('sessionProgress', sp); if (sun) sun.intensity = 7; } catch(e){} _lastP = sp; }
-    }
-    requestAnimationFrame(drive);
-  })();
+  for (var i = 0; i < COUNT; i++){
+    (function(i){
+      var im = new Image(); im.decoding = 'async';
+      im.onload = function(){ if (i === 0){ sizeCanvas(); ready = true; draw(0); } };
+      im.src = 'assets/frames/f' + pad(i) + '.webp';
+      frames[i] = im;
+    })(i);
+  }
+  window.addEventListener('resize', sizeCanvas, { passive: true });
+  requestAnimationFrame(tick);
 })();
 </script>
 
