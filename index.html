@@ -957,7 +957,7 @@
   var mod = document.createElement('script'); mod.type = 'module'; mod.src = 'assets/spline-viewer.js'; document.head.appendChild(mod);
 
   var app = null, pending = 42, sun = null, tries = 0;
-  function apply(){ if (app) { try { app.setVariable('sessionProgress', pending); if (sun) sun.intensity = 7; } catch(e){} } }
+  function apply(){ if (app) { try { app.setVariable('sessionProgress', pending); } catch(e){} } }
   var iv = setInterval(function(){
     if (++tries > 150) clearInterval(iv);
     if (!app && viewer._spline && typeof viewer._spline.setVariable === 'function') app = viewer._spline;
@@ -969,12 +969,10 @@
       }
     }
   }, 200);
-  window.cascadeSetProgress = function(v){ if (isMobile) v = Math.round(v); if (v !== pending) { pending = v; apply(); } };
-  // Push sessionProgress only when it changes (idle scene won't re-render) — FPS win.
-  // Desktop asserts EVERY frame so the scene never idles/resets (no jump-to-start on resume, light stays on);
-  // mobile asserts only on change (keeps it light/smooth).
+  window.cascadeSetProgress = function(v){ if (isMobile) v = Math.round(v); pending = v; apply(); };
+  // Desktop: assert every frame (continuous, like it worked before). Mobile: only on change (keeps it smooth).
   var _lastP = -999;
-  (function drive(){ if (app) { if (!isMobile || pending !== _lastP) { try { app.setVariable('sessionProgress', pending); if (sun) sun.intensity = 7; } catch(e){} _lastP = pending; } } requestAnimationFrame(drive); })();
+  (function drive(){ if (app) { if (!isMobile || pending !== _lastP) { try { app.setVariable('sessionProgress', pending); } catch(e){} _lastP = pending; } } requestAnimationFrame(drive); })();
 })();
 </script>
 
@@ -1007,7 +1005,7 @@ window.addEventListener('load',function(){
   window.__cascadeGsapDriving = true;
   var proxy = { p:42 };  // start high enough that the sun never dips behind the peak (no disappear on scroll-up)
   var heroTL = gsap.timeline({
-    scrollTrigger:{ trigger:'.hero', start:'top top', end:'+=45%', scrub:true },
+    scrollTrigger:{ trigger:'.hero', start:'top top', end:'+=45%', scrub:0.2 },
     onUpdate:function(){ if(window.cascadeSetProgress) window.cascadeSetProgress(proxy.p); }
   });
   heroTL.to(proxy, { p:8, ease:'none' }, 0);
