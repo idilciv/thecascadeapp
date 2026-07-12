@@ -98,7 +98,8 @@
   /* ---------- HERO ---------- */
   .hero{position:relative;padding:104px 0 72px;overflow:hidden;min-height:100vh;min-height:100svh}
   /* App's Spline 3D mountain-sun scene, self-hosted exactly like the app (local runtime + scene, no CDN). */
-  #cascade-hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:radial-gradient(120% 92% at 50% 60%,#0a1c1d 0%,#08080b 72%)}
+  #cascade-hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:radial-gradient(120% 92% at 50% 55%,#101014 0%,#08080b 70%)}
+  #cascade-hero-bg::after{content:'';position:absolute;left:0;right:0;bottom:0;height:200px;background:linear-gradient(180deg,transparent,#08080b);pointer-events:none;z-index:1}
   #cascade-spline{position:absolute;inset:0}
   /* Scene renders at a FIXED 1600x1000; JS (fitScene) scales it via transform to cover the hero. Fixed resolution = the sun looks identical at every window size. */
   #cascade-hero-bg spline-viewer{position:absolute;top:0;left:0;width:1600px;height:1000px;transform-origin:0 0;display:block;pointer-events:none}
