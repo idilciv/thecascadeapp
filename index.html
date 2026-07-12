@@ -970,9 +970,9 @@
     var cw = canvas.width, ch = canvas.height;
     ctx.fillStyle = '#08080b'; ctx.fillRect(0, 0, cw, ch);   // dark backdrop
     if (mob.matches){                            // phone: zoom into mountain+sun (crop sides + top sky) so it's BIG; sit it just above the phone
-      var K = 0.56, SY = 150, SH = FH - SY;      // K = fraction of width shown (smaller = bigger); SY = top sky cropped away
+      var K = 0.48, SY = 150, SH = FH - SY;      // K = fraction of width shown (smaller = bigger/more zoom); SY = top sky cropped away
       var s = cw / (FW * K), dw = FW * s, dh = SH * s;
-      ctx.drawImage(img, 0, SY, FW, SH, (cw - dw) / 2, phoneOff * dpr - dh - 8 * dpr, dw, dh);
+      ctx.drawImage(img, 0, SY, FW, SH, (cw - dw) / 2, phoneOff * dpr - dh + 55 * dpr, dw, dh);  // bottom ~55px behind the phone top
     } else {                                      // wide (desktop): cover the hero
       var s2 = Math.max(cw / FW, ch / FH);
       ctx.drawImage(img, (cw - FW * s2) / 2, (ch - FH * s2) / 2, FW * s2, FH * s2);
