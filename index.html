@@ -185,15 +185,14 @@
   .spanel .mini .fitem b{font-size:14.5px}
   .story-dots{display:none}
   @media(max-width:860px){
-    /* Mobile: modes live in their OWN 100svh scroll box with CSS snap. scroll-snap-stop:always = exactly one mode per swipe. Only THIS box snaps; the rest of the page scrolls freely. */
+    /* Mobile: each mode is a plain full-screen (100svh) section in normal page flow. No snap, no scroll box — the whole page scrolls 100% freely; you just pass one full-screen mode at a time. */
     .story{padding:0}
     .story-grid{display:block}
     .story-phone{display:none}
-    /* The modes get their OWN scroll container. Snap lives inside this box only — the page (html/body) has NO snap, so the rest scrolls totally freely. */
-    .story-panels{height:100svh;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;overscroll-behavior-y:auto;scrollbar-width:none;margin:0}
-    .story-panels::-webkit-scrollbar{display:none}
+    /* No snap, no scroll box, no trap anywhere — the page scrolls 100% freely. Each mode is simply a full-screen section, so you pass them one screen at a time as you scroll. */
+    .story-panels{display:block;margin:0}
     .spanel{
-      height:100svh;scroll-snap-align:start;scroll-snap-stop:always;
+      min-height:100svh;
       display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
       margin:0;padding:0 26px;text-align:left;position:relative;
     }
@@ -953,7 +952,7 @@
     document.querySelectorAll('.spanel').forEach(p=>stObs.observe(p));
   }
 
-  // Mobile modes: fade each mode in as it snaps into view + drive the dots. (One-per-swipe is handled by native CSS scroll-snap-stop.)
+  // Mobile modes: gently fade each mode in as it scrolls into view + drive the dots. (No scroll restriction — plain full-screen sections.)
   (function(){
     const cards=[].slice.call(document.querySelectorAll('.story .spanel'));
     const section=document.getElementById('modes');
@@ -1067,7 +1066,7 @@ window.addEventListener('load',function(){
   if(reduce || !window.gsap || !window.ScrollTrigger) return;   // graceful: keep the static hero/site
   gsap.registerPlugin(ScrollTrigger);
 
-  // Smooth scroll (Lenis) — desktop only. On phones native scroll is used so the modes' CSS scroll-snap works reliably.
+  // Smooth scroll (Lenis) — desktop only. On phones we use plain native scroll (no smooth-scroll library, no snap) so scrolling stays completely free.
   if(window.Lenis && !window.matchMedia('(max-width: 860px)').matches){
     var lenis = new Lenis({ lerp:0.1 });
     lenis.on('scroll', ScrollTrigger.update);
