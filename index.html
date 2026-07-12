@@ -60,7 +60,7 @@
   }
   a{color:inherit;text-decoration:none}
   ::selection{background:rgba(20,216,154,.28)}
-  .wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+  .wrap{max-width:1320px;margin:0 auto;padding:0 24px}
   .eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
   h1,h2,h3{letter-spacing:-.02em;font-weight:800;line-height:1.08}
   .grad-text{background:linear-gradient(100deg,#fff 10%,var(--zen) 55%,var(--vault) 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -92,7 +92,7 @@
   [dir="rtl"] .lang-select::after{right:auto;left:12px}
 
   /* ---------- HERO ---------- */
-  .hero{position:relative;padding:150px 0 90px;overflow:hidden;min-height:100vh;min-height:100svh}
+  .hero{position:relative;padding:104px 0 72px;overflow:hidden;min-height:100vh;min-height:100svh}
   /* App's Spline 3D mountain-sun scene, self-hosted exactly like the app (local runtime + scene, no CDN). */
   #cascade-hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:radial-gradient(120% 92% at 50% 60%,#0a1c1d 0%,#08080b 72%)}
   #cascade-spline{position:absolute;inset:0}
@@ -974,7 +974,7 @@
       var p = Math.min(1, Math.max(0, (-r.top) / (hh * 0.45)));   // 0 at top -> 1 after scrolling ~45% of the hero
       var sp = 42 + (8 - 42) * p;                                 // sun rises 42 -> 8
       if (isMobile) sp = Math.round(sp);
-      if (!isMobile || sp !== _lastP) { try { app.setVariable('sessionProgress', sp); } catch(e){} _lastP = sp; }
+      if (!isMobile || sp !== _lastP) { try { app.setVariable('sessionProgress', sp); if (sun) sun.intensity = 7; } catch(e){} _lastP = sp; }
     }
     requestAnimationFrame(drive);
   })();
