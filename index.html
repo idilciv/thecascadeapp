@@ -971,8 +971,8 @@
   }, 200);
   window.cascadeSetProgress = function(v){ if (isMobile) v = Math.round(v); if (v !== pending) { pending = v; apply(); } };
   // Push sessionProgress only when it changes (idle scene won't re-render) — FPS win.
-  var _lastP = -999, _lastT = 0;
-  (function drive(t){ if (app) { t = t || 0; if (pending !== _lastP || t - _lastT > 500) { try { app.setVariable('sessionProgress', pending); } catch(e){} _lastP = pending; _lastT = t; } } requestAnimationFrame(drive); })();
+  var _lastP = -999;
+  (function drive(){ if (app && pending !== _lastP) { try { app.setVariable('sessionProgress', pending); } catch(e){} _lastP = pending; } requestAnimationFrame(drive); })();
 })();
 </script>
 
@@ -1005,7 +1005,7 @@ window.addEventListener('load',function(){
   window.__cascadeGsapDriving = true;
   var proxy = { p:42 };  // start high enough that the sun never dips behind the peak (no disappear on scroll-up)
   var heroTL = gsap.timeline({
-    scrollTrigger:{ trigger:'.hero', start:'top top', end:'+=45%', scrub:0.2 },
+    scrollTrigger:{ trigger:'.hero', start:'top top', end:'+=45%', scrub:true },
     onUpdate:function(){ if(window.cascadeSetProgress) window.cascadeSetProgress(proxy.p); }
   });
   heroTL.to(proxy, { p:8, ease:'none' }, 0);
