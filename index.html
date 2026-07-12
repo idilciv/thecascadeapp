@@ -99,7 +99,7 @@
   #cascade-hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#08080b}
   /* Pre-rendered mountain-sunrise frame sequence (scroll-scrubbed on a canvas) — the same 3D scene, but ~0 GPU cost, instant load, identical sun at every size. */
   #cascade-frames{position:absolute;inset:0;width:100%;height:100%;display:block}
-  @media(max-width:760px){.hero{padding:92px 0 56px}.phone-stage{margin-top:calc(120vw + 8px)}}
+  @media(max-width:760px){.hero{padding:92px 0 56px}.phone-stage{margin-top:calc(66vw + 8px)}}
   /* readability scrim: darkens the scene behind the headline (below content, above the 3D scene) */
   .hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(105deg,rgba(8,8,11,.82) 0%,rgba(8,8,11,.46) 32%,rgba(8,8,11,.06) 56%,transparent 66%)}
   @media(min-width:761px) and (max-width:860px){.hero::after{background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(to bottom,rgba(8,8,11,.74) 0%,rgba(8,8,11,.34) 42%,transparent 66%)}}
@@ -972,9 +972,9 @@
     var img = frames[i]; if (!img || !img.complete || !img.naturalWidth) return;
     var cw = canvas.width, ch = canvas.height;
     ctx.fillStyle = '#08080b'; ctx.fillRect(0, 0, cw, ch);   // dark backdrop
-    if (IS_M){                                    // phone: pre-cropped single-peak frame, filled to full width, sitting just above the phone
+    if (IS_M){                                    // phone: pre-cropped single-peak frame, full width, sitting BEHIND the phone (sun+peak above, base behind the phone)
       var s = cw / FW, dh = FH * s;
-      ctx.drawImage(img, 0, phoneOff * dpr - dh + 40 * dpr, cw, dh);   // bottom ~40px behind the phone top
+      ctx.drawImage(img, 0, phoneOff * dpr - dh * 0.5, cw, dh);   // band center ~ phone top: upper half (sun+peak) shows above, lower half sits behind the phone
     } else {                                      // wide (desktop): cover the hero
       var s2 = Math.max(cw / FW, ch / FH);
       ctx.drawImage(img, (cw - FW * s2) / 2, (ch - FH * s2) / 2, FW * s2, FH * s2);
