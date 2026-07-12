@@ -957,7 +957,7 @@
   var COUNT = 72;
   var IS_M = mob.matches;                        // phone loads a pre-cropped single-peak set; desktop loads the wide scene
   var PREFIX = IS_M ? 'm' : 'f';
-  var FW = IS_M ? 860 : 2200, FH = IS_M ? 1116 : 1203;  // source frame size per set (mobile single-peak / desktop wide)
+  var FW = IS_M ? 860 : 1920, FH = IS_M ? 1116 : 1050;  // source frame size per set (mobile single-peak / desktop wide)
   var frames = new Array(COUNT), ready = false, cur = -1, phoneOff = 0;
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
