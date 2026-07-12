@@ -99,10 +99,12 @@
   #cascade-hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#08080b}
   /* Pre-rendered mountain-sunrise frame sequence (scroll-scrubbed on a canvas) — the same 3D scene, but ~0 GPU cost, instant load, identical sun at every size. */
   #cascade-frames{position:absolute;inset:0;width:100%;height:100%;display:block}
-  @media(max-width:760px){.hero{padding:104px 0 64px}}
+  @media(max-width:760px){.hero{padding:calc(56vw + 14px) 0 56px}}
   /* readability scrim: darkens the scene behind the headline (below content, above the 3D scene) */
   .hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(105deg,rgba(8,8,11,.82) 0%,rgba(8,8,11,.46) 32%,rgba(8,8,11,.06) 56%,transparent 66%)}
-  @media(max-width:860px){.hero::after{background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(to bottom,rgba(8,8,11,.74) 0%,rgba(8,8,11,.34) 42%,transparent 66%)}}
+  @media(min-width:761px) and (max-width:860px){.hero::after{background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(to bottom,rgba(8,8,11,.74) 0%,rgba(8,8,11,.34) 42%,transparent 66%)}}
+  /* phone: mountain sits at the top (behind nothing), content flows below over dark — only a soft bottom fade, no top darkening */
+  @media(max-width:760px){.hero::after{background:linear-gradient(to top,#08080b 0%,#08080b 12%,transparent 30%)}}
   .phone-stage{transform-style:preserve-3d;perspective:1000px;will-change:transform,opacity}
   .blobs{position:absolute;inset:0;z-index:0;filter:blur(60px);opacity:.55;pointer-events:none}
   .blob{position:absolute;border-radius:50%}
@@ -951,6 +953,7 @@
   if (!bg || !canvas) return;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var ctx = canvas.getContext('2d', { alpha: false });
+  var mob = window.matchMedia('(max-width: 760px)');
   var COUNT = 72, FW = 1280, FH = 700;          // source frame size (aspect)
   var frames = new Array(COUNT), ready = false, cur = -1;
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -963,8 +966,8 @@
   function draw(i){
     var img = frames[i]; if (!img || !img.complete || !img.naturalWidth) return;
     var cw = canvas.width, ch = canvas.height, s, dx, dy;
-    if (cw / ch < FW / FH){                      // narrow/portrait (mobile): fit WIDTH -> show the whole scene, sharp (no upscale/crop)
-      s = cw / FW; dx = 0; dy = (ch - FH * s) / 2;
+    if (mob.matches){                            // phone: fit WIDTH, anchored to the TOP -> whole mountain+sun, sharp; content flows below it
+      s = cw / FW; dx = 0; dy = 0;
     } else {                                      // wide (desktop): cover the hero
       s = Math.max(cw / FW, ch / FH); dx = (cw - FW * s) / 2; dy = (ch - FH * s) / 2;
     }
