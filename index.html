@@ -947,6 +947,7 @@
   if (!bg) return;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) return;   // reduced-motion: static dark hero, no scene
+  var isMobile = window.matchMedia && window.matchMedia('(max-width: 760px)').matches;
 
   var host = document.getElementById('cascade-spline');
   var viewer = document.createElement('spline-viewer');
@@ -968,14 +969,10 @@
       }
     }
   }, 200);
-  window.cascadeSetProgress = function(v){ v = Math.round(v); if (v !== pending) { pending = v; apply(); } };
+  window.cascadeSetProgress = function(v){ if (isMobile) v = Math.round(v); if (v !== pending) { pending = v; apply(); } };
   // Push sessionProgress only when it changes (idle scene won't re-render) — FPS win.
   var _lastP = -999, _lastT = 0;
   (function drive(t){ if (app) { t = t || 0; if (pending !== _lastP || t - _lastT > 500) { try { app.setVariable('sessionProgress', pending); } catch(e){} _lastP = pending; _lastT = t; } } requestAnimationFrame(drive); })();
-  // Pause the scene's render loop when the hero leaves the viewport → frees the GPU so the rest of the page scrolls smoothly.
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function(es){ es.forEach(function(e){ try { if (app) { if (e.isIntersecting) { if (app.play) app.play(); } else { if (app.stop) app.stop(); } } } catch(err){} }); }, { threshold: 0.01 }).observe(bg);
-  }
 })();
 </script>
 
