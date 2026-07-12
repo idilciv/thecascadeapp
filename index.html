@@ -99,10 +99,10 @@
   .hero{position:relative;padding:104px 0 72px;overflow:hidden;min-height:100vh;min-height:100svh}
   /* App's Spline 3D mountain-sun scene, self-hosted exactly like the app (local runtime + scene, no CDN). */
   #cascade-hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:radial-gradient(120% 92% at 50% 55%,#101014 0%,#08080b 70%)}
-  #cascade-hero-bg::after{content:'';position:absolute;left:0;right:0;bottom:0;height:340px;background:linear-gradient(180deg,transparent 0%,rgba(8,8,11,.55) 40%,#08080b 78%);pointer-events:none;z-index:2}
+  #cascade-hero-bg::after{content:'';position:absolute;left:0;right:0;bottom:0;height:48%;background:linear-gradient(180deg,transparent 0%,rgba(8,8,11,.42) 42%,#08080b 82%);pointer-events:none;z-index:2}
   #cascade-spline{position:absolute;inset:0}
   /* Scene renders at a FIXED 1600x1000; JS (fitScene) scales it via transform to cover the hero. Fixed resolution = the sun looks identical at every window size. */
-  #cascade-hero-bg spline-viewer{position:absolute;top:0;left:0;width:1600px;height:1000px;transform-origin:0 0;display:block;pointer-events:none}
+  #cascade-hero-bg spline-viewer{position:absolute;top:0;left:0;width:1152px;height:720px;transform-origin:0 0;display:block;pointer-events:none}
   /* phones: render the 3D scene at ~60% resolution (CSS-upscaled) so the GPU load drops ~3x — much smoother */
   @media(max-width:760px){.hero{padding:104px 0 64px}#cascade-hero-bg spline-viewer{inset:auto;left:0;top:0;width:38%;height:38%;transform:scale(2.632);transform-origin:0 0}}
   /* readability scrim: darkens the scene behind the headline (below content, above the 3D scene) */
@@ -966,7 +966,7 @@
   // Render the scene at a FIXED internal resolution (1600x1000), then CSS-scale it to cover the hero. Fixed
   // resolution means the sun renders identically at every window size — its colour/glow no longer changes
   // between a small window and full-screen (only its display scale changes with the transform below).
-  var BW = 1600, BH = 1000;
+  var BW = 1152, BH = 720;
   function fitScene(){
     if (isMobile) return;
     var w = bg.clientWidth, h = bg.clientHeight; if (!w || !h) return;
