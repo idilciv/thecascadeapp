@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>Cascade — Sahne Kare Yakalayıcı</title>
+<style>
+  :root{color-scheme:dark}
+  body{margin:0;background:#08080b;color:#f4f5f7;font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:24px}
+  h1{font-size:20px;margin:0 0 6px}
+  p{color:#a7adb8;margin:6px 0}
+  .stage{margin:18px 0;border:1px solid #23232a;border-radius:12px;overflow:hidden;width:700px;max-width:100%;aspect-ratio:16/10;background:#000}
+  spline-viewer{width:100%;height:100%;display:block}
+  button{appearance:none;border:0;border-radius:10px;padding:11px 18px;font-weight:700;font-size:14px;cursor:pointer;margin-right:10px}
+  .go{background:#19d194;color:#04140e}
+  .test{background:#23232a;color:#f4f5f7}
+  button:disabled{opacity:.5;cursor:default}
+  #log{margin-top:14px;font-size:13px;color:#a7adb8;white-space:pre-wrap}
+  #bar{height:8px;background:#1a1a20;border-radius:6px;overflow:hidden;margin:12px 0;max-width:700px}
+  #fill{height:100%;width:0;background:#19d194;transition:width .1s}
+  #preview{margin-top:14px;max-width:340px;border:1px solid #23232a;border-radius:10px;display:none}
+</style>
+</head>
+<body>
+  <h1>Cascade — Sahne Kare Yakalayıcı</h1>
+  <p>Bu sayfa gerçek 3B sahneyi render edip güneş-yükselişini <b>72 kare</b> olarak yakalar ve <b>frames.zip</b> indirir. Sahne yüklenince önce <b>“Tek kare test”</b>e bas — küçük önizleme <b>siyah değilse</b> yakalama çalışıyor demektir, sonra <b>“Tümünü yakala”</b>ya bas.</p>
+
+  <div class="stage">
+    <spline-viewer id="v" url="./assets/zen_mode.splinecode" background="transparent"></spline-viewer>
+  </div>
+
+  <div>
+    <button class="test" id="btnTest" disabled>Tek kare test</button>
+    <button class="go" id="btnAll" disabled>Tümünü yakala + indir</button>
+  </div>
+  <div id="bar"><div id="fill"></div></div>
+  <div id="log">Sahne yükleniyor… (birkaç saniye sürebilir)</div>
+  <img id="preview" alt="test karesi" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script type="module" src="./assets/spline-viewer.js"></script>
+<script>
+(function(){
+  // ---- AYARLAR ----
+  var START_SP = 34;   // kaydırmanın başındaki güneş değeri (yüksek = daha alçak güneş)
+  var END_SP   = 6;    // kaydırma sonundaki güneş değeri (düşük = daha yüksek güneş)
+  var FRAMES   = 72;   // kare sayısı
+  var OUT_W = 1280, OUT_H = 800;   // çıktı kare boyutu (16:10)
+  // -----------------
+
+  var viewer = document.getElementById('v');
+  var log = document.getElementById('log');
+  var fill = document.getElementById('fill');
+  var btnTest = document.getElementById('btnTest');
+  var btnAll = document.getElementById('btnAll');
+  var preview = document.getElementById('preview');
+  var app = null;
+
+  function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+  function raf(){ return new Promise(function(r){ requestAnimationFrame(function(){ requestAnimationFrame(r); }); }); }
+  function pad(n){ return ('000' + n).slice(-3); }
+  function canvas(){ try { return viewer.shadowRoot.querySelector('canvas'); } catch(e){ return null; } }
+
+  // downscale the live WebGL canvas onto a fixed 2D canvas -> consistent PNG regardless of screen DPI
+  var scratch = document.createElement('canvas'); scratch.width = OUT_W; scratch.height = OUT_H;
+  var sctx = scratch.getContext('2d');
+  function grab(){
+    var c = canvas(); if (!c) return null;
+    sctx.clearRect(0,0,OUT_W,OUT_H);
+    try { sctx.drawImage(c, 0, 0, OUT_W, OUT_H); } catch(e){ return null; }
+    return scratch.toDataURL('image/png');
+  }
+  function isBlank(dataUrl){
+    // quick heuristic: sample center pixels; if fully black/transparent -> blank
+    var img = sctx.getImageData(OUT_W/2-20, OUT_H/2-20, 40, 40).data;
+    var sum = 0; for (var i=0;i<img.length;i+=4){ sum += img[i]+img[i+1]+img[i+2]; }
+    return sum < 200;
+  }
+
+  var poll = setInterval(function(){
+    if (viewer._spline && typeof viewer._spline.setVariable === 'function'){
+      app = viewer._spline;
+      clearInterval(poll);
+      try { app.setVariable('sessionProgress', START_SP); } catch(e){}
+      log.textContent = 'Sahne hazır. Önce “Tek kare test”e bas.';
+      btnTest.disabled = false; btnAll.disabled = false;
+    }
+  }, 250);
+
+  btnTest.onclick = async function(){
+    if (!app) return;
+    log.textContent = 'Test karesi yakalanıyor…';
+    try { app.setVariable('sessionProgress', 20); } catch(e){}
+    await sleep(200); await raf();
+    var url = grab();
+    if (!url){ log.textContent = '⚠️ Canvas bulunamadı.'; return; }
+    var blank = isBlank(url);
+    preview.src = url; preview.style.display = 'block';
+    log.textContent = blank
+      ? '⚠️ Önizleme SİYAH görünüyor — bu tarayıcıda doğrudan yakalama çalışmıyor olabilir. Bana söyle, video yöntemine geçelim.'
+      : '✅ Önizleme dolu görünüyor — yakalama çalışıyor. Şimdi “Tümünü yakala”ya basabilirsin.';
+  };
+
+  btnAll.onclick = async function(){
+    if (!app) return;
+    btnTest.disabled = btnAll.disabled = true;
+    var zip = new JSZip();
+    for (var i=0;i<FRAMES;i++){
+      var sp = START_SP + (END_SP - START_SP) * (i/(FRAMES-1));
+      try { app.setVariable('sessionProgress', sp); } catch(e){}
+      await sleep(130); await raf();
+      var url = grab();
+      if (url){ zip.file('frame_' + pad(i) + '.png', url.split(',')[1], {base64:true}); }
+      fill.style.width = Math.round((i+1)/FRAMES*100) + '%';
+      log.textContent = 'Yakalanıyor: ' + (i+1) + ' / ' + FRAMES + '  (sessionProgress ' + sp.toFixed(1) + ')';
+    }
+    log.textContent = 'Zip hazırlanıyor…';
+    var blob = await zip.generateAsync({type:'blob'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'frames.zip'; a.click();
+    log.textContent = '✅ Bitti! frames.zip indirildi (' + FRAMES + ' kare). Dosyayı bana ver.';
+    btnTest.disabled = btnAll.disabled = false;
+  };
+})();
+</script>
+</body>
+</html>

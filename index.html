@@ -106,8 +106,8 @@
   /* phones: render the 3D scene at ~60% resolution (CSS-upscaled) so the GPU load drops ~3x — much smoother */
   @media(max-width:760px){.hero{padding:104px 0 64px}#cascade-hero-bg spline-viewer{inset:auto;left:0;top:0;width:38%;height:38%;transform:scale(2.632);transform-origin:0 0}}
   /* readability scrim: darkens the scene behind the headline (below content, above the 3D scene) */
-  .hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(105deg,rgba(8,8,11,.82) 0%,rgba(8,8,11,.46) 32%,rgba(8,8,11,.06) 56%,transparent 66%)}
-  @media(max-width:860px){.hero::after{background:linear-gradient(to bottom,rgba(8,8,11,.74) 0%,rgba(8,8,11,.34) 42%,transparent 66%)}}
+  .hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(105deg,rgba(8,8,11,.82) 0%,rgba(8,8,11,.46) 32%,rgba(8,8,11,.06) 56%,transparent 66%)}
+  @media(max-width:860px){.hero::after{background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(to bottom,rgba(8,8,11,.74) 0%,rgba(8,8,11,.34) 42%,transparent 66%)}}
   .phone-stage{transform-style:preserve-3d;perspective:1000px;will-change:transform,opacity}
   .blobs{position:absolute;inset:0;z-index:0;filter:blur(60px);opacity:.55;pointer-events:none}
   .blob{position:absolute;border-radius:50%}
