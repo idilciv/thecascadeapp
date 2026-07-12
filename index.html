@@ -184,14 +184,30 @@
   .spanel .mini{display:flex;flex-direction:column;gap:11px}
   .spanel .mini .fitem b{font-size:14.5px}
   @media(max-width:860px){
-    /* Tek sütunda sabit-telefon metinle çakışır → mobilde telefon statik (üstte, Zen ekranı),
-       paneller altında okunur liste. Scroll-ile-değişen efekt masaüstü zevki olarak kalır. */
-    .story-grid{grid-template-columns:1fr;gap:6px}
-    .story-phone{position:static;height:auto;margin:0 auto 6px}
-    .spanel{min-height:auto;padding:20px 0;text-align:center;align-items:center}
-    .spanel p.d{margin-inline:auto}
-    .spanel .mini{align-items:center}
-    .spanel .mini .fitem{text-align:left;max-width:360px}
+    /* Mobile: each mode becomes an airy, colour-accented card that reveals as you scroll — far less text-cramped. */
+    .story{padding:10px 0 4px}
+    .story-grid{grid-template-columns:1fr;gap:0}
+    .story-phone{position:static;height:auto;margin:0 auto 28px}
+    .story-panels{gap:15px}
+    .spanel{
+      min-height:auto;margin:0;padding:22px 20px;text-align:left;align-items:stretch;justify-content:flex-start;
+      border:1px solid color-mix(in srgb,var(--mc) 30%,transparent);border-radius:22px;position:relative;overflow:hidden;
+      background:radial-gradient(130% 90% at 0% 0%,color-mix(in srgb,var(--mc) 13%,transparent),transparent 58%),linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.012));
+    }
+    .spanel .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;color:var(--mc)!important}
+    .spanel .eyebrow::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--mc);box-shadow:0 0 10px var(--mc)}
+    .spanel h2{font-size:22px;margin:11px 0 12px;line-height:1.16}
+    .spanel p.d{margin-inline:0;max-width:none}
+    .spanel .mini{align-items:stretch}
+    .spanel .mini .fitem{text-align:left;max-width:none}
+    .spanel[data-target="s-zen"]{--mc:var(--zen)}
+    .spanel[data-target="s-hard"]{--mc:var(--hard)}
+    .spanel[data-target="s-vault"]{--mc:var(--vault)}
+    .spanel[data-target="s-med"]{--mc:var(--zen)}
+    .spanel[data-target="s-rewire"]{--mc:var(--hard)}
+    /* sequential reveal (enabled by JS via .reveal-on; if JS is off, cards just stay visible) */
+    .reveal-on .spanel{opacity:0;transform:translateY(28px) scale(.985);transition:opacity .6s cubic-bezier(.2,.7,.2,1),transform .6s cubic-bezier(.2,.7,.2,1)}
+    .reveal-on .spanel.in{opacity:1;transform:none}
   }
   /* phone screen states */
   .screen .state{position:absolute;inset:0;opacity:0;transition:opacity .5s ease;pointer-events:none}
@@ -931,6 +947,18 @@
     },{rootMargin:'-48% 0px -48% 0px',threshold:0});
     document.querySelectorAll('.spanel').forEach(p=>stObs.observe(p));
   }
+
+  // Mobile: reveal each mode card as it scrolls into view (staggered, sequential) — desktop is unaffected (reveal CSS is mobile-only).
+  (function(){
+    const story=document.querySelector('.story');
+    const reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!story || reduce || !('IntersectionObserver' in window)) return;
+    story.classList.add('reveal-on');
+    const rio=new IntersectionObserver((es)=>{
+      es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); rio.unobserve(e.target); } });
+    },{threshold:0.12, rootMargin:'0px 0px -8% 0px'});
+    document.querySelectorAll('.story .spanel').forEach(p=>rio.observe(p));
+  })();
 
   // footer: "+16 more" reveals the full localized language list
   const langMore=document.getElementById('langMore');
