@@ -976,17 +976,17 @@
     function yFor(i){ return (grid.getBoundingClientRect().top + window.pageYOffset) + ((i+0.5)/N)*range(); }
     function upd(){
       if(snapping){ show(lastIdx); return; }           // during the snap animation, hold the target (no ahead-flash)
-      const p=prog(), raw=Math.max(0, Math.min(N-1, Math.floor(p*N)));
-      const disp = p<=0 ? 0 : p>=1 ? N-1 : Math.max(lastIdx-1, Math.min(lastIdx+1, raw));
-      show(disp);
+      const raw=Math.max(0, Math.min(N-1, Math.floor(prog()*N)));
+      const disp=Math.max(0, Math.min(N-1, Math.max(lastIdx-1, Math.min(lastIdx+1, raw))));
+      show(disp);                                       // never show more than one past the settled mode
     }
     function settle(){
       if(snapping) return;
       const p=prog();
-      if(p<=0){ lastIdx=0; return; }
-      if(p>=1){ lastIdx=N-1; return; }                 // past the section → allow leaving
+      if(p>=1 && lastIdx>=N-1){ lastIdx=N-1; return; }  // parked at the LAST mode & pushing further → let the page leave
+      if(p<=0 && lastIdx<=0){ lastIdx=0; return; }      // parked at the FIRST mode & pushing up → let it leave
       const raw=Math.max(0, Math.min(N-1, Math.floor(p*N)));
-      const target=Math.max(lastIdx-1, Math.min(lastIdx+1, raw));
+      const target=Math.max(0, Math.min(N-1, Math.max(lastIdx-1, Math.min(lastIdx+1, raw))));  // at most one step from settled
       lastIdx=target;
       const y=yFor(target);
       if(Math.abs(window.pageYOffset - y) < 4){ show(target); return; }
