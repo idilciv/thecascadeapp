@@ -967,16 +967,16 @@
   }
   function draw(i){
     var img = frames[i]; if (!img || !img.complete || !img.naturalWidth) return;
-    var cw = canvas.width, ch = canvas.height, s, dx, dy;
-    if (mob.matches){                            // phone: bigger scene (crop sides ok), sitting just above the phone mockup
-      s = cw / (FW * 0.70);                       // show ~70% of the width -> larger mountain + sun
-      dx = (cw - FW * s) / 2;
-      dy = phoneOff * dpr - FH * s - 8 * dpr;      // bottom of the scene ~8px above the phone
+    var cw = canvas.width, ch = canvas.height;
+    ctx.fillStyle = '#08080b'; ctx.fillRect(0, 0, cw, ch);   // dark backdrop
+    if (mob.matches){                            // phone: zoom into mountain+sun (crop sides + top sky) so it's BIG; sit it just above the phone
+      var K = 0.56, SY = 150, SH = FH - SY;      // K = fraction of width shown (smaller = bigger); SY = top sky cropped away
+      var s = cw / (FW * K), dw = FW * s, dh = SH * s;
+      ctx.drawImage(img, 0, SY, FW, SH, (cw - dw) / 2, phoneOff * dpr - dh - 8 * dpr, dw, dh);
     } else {                                      // wide (desktop): cover the hero
-      s = Math.max(cw / FW, ch / FH); dx = (cw - FW * s) / 2; dy = (ch - FH * s) / 2;
+      var s2 = Math.max(cw / FW, ch / FH);
+      ctx.drawImage(img, (cw - FW * s2) / 2, (ch - FH * s2) / 2, FW * s2, FH * s2);
     }
-    ctx.fillStyle = '#08080b'; ctx.fillRect(0, 0, cw, ch);   // dark backdrop for the letterboxed areas on mobile
-    ctx.drawImage(img, dx, dy, FW * s, FH * s);
     cur = i;
   }
   function progress(){
