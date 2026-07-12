@@ -46,7 +46,9 @@
   var START_SP = 34;   // kaydırmanın başındaki güneş değeri (yüksek = daha alçak güneş)
   var END_SP   = 6;    // kaydırma sonundaki güneş değeri (düşük = daha yüksek güneş)
   var FRAMES   = 72;   // kare sayısı
-  var OUT_W = 1280, OUT_H = 800;   // çıktı kare boyutu (16:10)
+  var OUT_W = 1000, OUT_H = 625;   // çıktı kare boyutu (16:10)
+  var BG = '#08080b';              // hero arka planıyla aynı koyu renk (JPEG şeffaflık tutmaz)
+  var JPEG_Q = 0.85;               // JPEG kalitesi (küçük dosya, koyu sahnede fark yok)
   // -----------------
 
   var viewer = document.getElementById('v');
@@ -67,15 +69,16 @@
   var sctx = scratch.getContext('2d');
   function grab(){
     var c = canvas(); if (!c) return null;
-    sctx.clearRect(0,0,OUT_W,OUT_H);
+    sctx.fillStyle = BG; sctx.fillRect(0,0,OUT_W,OUT_H);   // dark backdrop so JPEG has no black/white fringe
     try { sctx.drawImage(c, 0, 0, OUT_W, OUT_H); } catch(e){ return null; }
-    return scratch.toDataURL('image/png');
+    return scratch.toDataURL('image/jpeg', JPEG_Q);
   }
-  function isBlank(dataUrl){
-    // quick heuristic: sample center pixels; if fully black/transparent -> blank
-    var img = sctx.getImageData(OUT_W/2-20, OUT_H/2-20, 40, 40).data;
-    var sum = 0; for (var i=0;i<img.length;i+=4){ sum += img[i]+img[i+1]+img[i+2]; }
-    return sum < 200;
+  function isBlank(){
+    // scene renders a bright orange sun -> some pixels have high R. If nothing is brighter than the
+    // dark backdrop, the WebGL capture failed (blank).
+    var d = sctx.getImageData(0,0,OUT_W,OUT_H).data;
+    var mx = 0; for (var i=0;i<d.length;i+=40){ if (d[i] > mx) mx = d[i]; }
+    return mx < 45;
   }
 
   var poll = setInterval(function(){
@@ -95,7 +98,7 @@
     await sleep(200); await raf();
     var url = grab();
     if (!url){ log.textContent = '⚠️ Canvas bulunamadı.'; return; }
-    var blank = isBlank(url);
+    var blank = isBlank();
     preview.src = url; preview.style.display = 'block';
     log.textContent = blank
       ? '⚠️ Önizleme SİYAH görünüyor — bu tarayıcıda doğrudan yakalama çalışmıyor olabilir. Bana söyle, video yöntemine geçelim.'
@@ -111,7 +114,7 @@
       try { app.setVariable('sessionProgress', sp); } catch(e){}
       await sleep(130); await raf();
       var url = grab();
-      if (url){ zip.file('frame_' + pad(i) + '.png', url.split(',')[1], {base64:true}); }
+      if (url){ zip.file('frame_' + pad(i) + '.jpg', url.split(',')[1], {base64:true}); }
       fill.style.width = Math.round((i+1)/FRAMES*100) + '%';
       log.textContent = 'Yakalanıyor: ' + (i+1) + ' / ' + FRAMES + '  (sessionProgress ' + sp.toFixed(1) + ')';
     }
