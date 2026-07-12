@@ -189,10 +189,11 @@
     .story{padding:0}
     .story-grid{display:block}
     .story-phone{display:none}
-    html{scroll-snap-type:y proximity}                 /* only the mode slides opt in as snap points; rest of the page is free */
-    .story-panels{display:block;margin:0}
+    /* The modes get their OWN scroll container. Snap lives inside this box only — the page (html/body) has NO snap, so the rest scrolls totally freely. */
+    .story-panels{height:100svh;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;overscroll-behavior-y:auto;scrollbar-width:none;margin:0}
+    .story-panels::-webkit-scrollbar{display:none}
     .spanel{
-      min-height:100svh;scroll-snap-align:center;scroll-snap-stop:always;
+      height:100svh;scroll-snap-align:start;scroll-snap-stop:always;
       display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
       margin:0;padding:0 26px;text-align:left;position:relative;
     }
