@@ -185,19 +185,21 @@
   .spanel .mini .fitem b{font-size:14.5px}
   .story-dots{display:none}
   @media(max-width:860px){
-    /* Mobile: a pinned area where scrolling down CROSS-FADES one mode out and the next one in (one at a time, same spot). */
-    .story{padding:8px 0 0}
-    .story-grid{display:block;position:relative}            /* becomes a scroll track; its height is set by JS from the mode count */
+    /* Mobile: each mode is a full-screen scroll-snap slide. scroll-snap-stop:always = exactly ONE mode per swipe (native, no skips). */
+    html{scroll-snap-type:y proximity}
+    .story{padding:0}
+    .story-grid{display:block}
     .story-phone{display:none}
-    .story-panels{position:sticky;top:0;height:100svh;display:block;padding:0;margin:0;overflow:visible}
+    .story-panels{display:block;margin:0}
     .spanel{
-      position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
-      min-height:0;margin:0;padding:0 26px 10vh;text-align:left;
-      opacity:0;transform:translateY(20px) scale(.99);transition:opacity .5s ease,transform .5s ease;pointer-events:none;
+      min-height:100svh;scroll-snap-align:center;scroll-snap-stop:always;
+      display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
+      margin:0;padding:0 26px;text-align:left;position:relative;
+      opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease;
     }
-    .spanel.active{opacity:1;transform:none;pointer-events:auto}
-    .spanel::before{content:'';position:absolute;top:18%;left:-8%;width:78%;height:46%;border-radius:50%;
-      background:radial-gradient(circle,color-mix(in srgb,var(--mc) 32%,transparent),transparent 68%);filter:blur(48px);opacity:.55;pointer-events:none}
+    .spanel.in{opacity:1;transform:none}
+    .spanel::before{content:'';position:absolute;top:16%;left:-8%;width:80%;height:46%;border-radius:50%;
+      background:radial-gradient(circle,color-mix(in srgb,var(--mc) 32%,transparent),transparent 68%);filter:blur(48px);opacity:.5;pointer-events:none}
     .spanel .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;color:var(--mc)!important}
     .spanel .eyebrow::before{content:'';width:9px;height:9px;border-radius:50%;background:var(--mc);box-shadow:0 0 12px var(--mc)}
     .spanel h2{font-size:30px;margin:14px 0 15px;line-height:1.12}
@@ -208,8 +210,9 @@
     .spanel[data-target="s-vault"]{--mc:var(--vault)}
     .spanel[data-target="s-med"]{--mc:var(--zen)}
     .spanel[data-target="s-rewire"]{--mc:var(--hard)}
-    .story-dots{display:flex;position:absolute;left:0;right:0;bottom:9vh;justify-content:center;gap:8px;z-index:3}
-    .story-dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.24);transition:width .3s,background .3s}
+    .story-dots{display:flex;position:fixed;left:0;right:0;bottom:14px;justify-content:center;gap:8px;z-index:40;pointer-events:none;opacity:0;transition:opacity .3s}
+    .story-dots.show{opacity:1}
+    .story-dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.3);transition:width .3s,background .3s}
     .story-dots i.on{width:24px;border-radius:6px}
   }
   /* phone screen states */
@@ -951,66 +954,31 @@
     document.querySelectorAll('.spanel').forEach(p=>stObs.observe(p));
   }
 
-  // Mobile modes: pinned cross-fade, ONE mode per swipe. The visible mode is clamped to (last settled ±1); when the
-  // scroll settles it snaps onto that mode. So however hard you flick you advance exactly one — yet you can still leave.
+  // Mobile modes: fade each full-screen mode in as it snaps into view + drive the dots. (One-per-swipe = native CSS scroll-snap-stop.)
   (function(){
-    const grid=document.querySelector('.story-grid');
-    const panels=document.querySelector('.story-panels');
     const cards=[].slice.call(document.querySelectorAll('.story .spanel'));
-    if(!grid || !panels || cards.length<2) return;
-    const N=cards.length;
-    const mq=window.matchMedia('(max-width: 860px)');
+    const section=document.getElementById('modes');
+    if(cards.length<2) return;
+    const col={'s-zen':'var(--zen)','s-hard':'var(--hard)','s-vault':'var(--vault)','s-med':'var(--zen)','s-rewire':'var(--hard)'};
     const dots=document.createElement('div'); dots.className='story-dots';
     cards.forEach(()=>dots.appendChild(document.createElement('i')));
-    panels.appendChild(dots);
+    document.body.appendChild(dots);
     const dEls=[].slice.call(dots.children);
-    const col={'s-zen':'var(--zen)','s-hard':'var(--hard)','s-vault':'var(--vault)','s-med':'var(--zen)','s-rewire':'var(--hard)'};
-    let onScroll=null, settleT=null, lastIdx=0, shown=-1, snapping=false, snapTimer=null;
-    function range(){ return Math.max(1, grid.offsetHeight - panels.offsetHeight); }
-    function prog(){ return (-grid.getBoundingClientRect().top) / range(); }   // <0 above · 0..1 inside · >1 past
-    function show(i){
-      if(i===shown) return; shown=i;
-      cards.forEach((c,k)=>c.classList.toggle('active', k===i));
-      dEls.forEach((d,k)=>{ const on=k===i; d.classList.toggle('on',on); d.style.background=on?(col[cards[k].getAttribute('data-target')]||'#fff'):''; });
+    if(!('IntersectionObserver' in window)){ cards.forEach(c=>c.classList.add('in')); return; }
+    const io=new IntersectionObserver((es)=>{
+      es.forEach(e=>{
+        if(e.isIntersecting && e.intersectionRatio>=0.55){
+          const i=cards.indexOf(e.target);
+          e.target.classList.add('in');
+          dEls.forEach((d,k)=>{ const on=k===i; d.classList.toggle('on',on); d.style.background=on?(col[cards[k].getAttribute('data-target')]||'#fff'):''; });
+        }
+      });
+    },{threshold:[0.55]});
+    cards.forEach(c=>io.observe(c));
+    if(section){
+      const sio=new IntersectionObserver((es)=>{ es.forEach(e=>dots.classList.toggle('show', e.isIntersecting)); },{threshold:0});
+      sio.observe(section);
     }
-    function yFor(i){ return (grid.getBoundingClientRect().top + window.pageYOffset) + ((i+0.5)/N)*range(); }
-    function upd(){
-      if(snapping){ show(lastIdx); return; }           // during the snap animation, hold the target (no ahead-flash)
-      const raw=Math.max(0, Math.min(N-1, Math.floor(prog()*N)));
-      const disp=Math.max(0, Math.min(N-1, Math.max(lastIdx-1, Math.min(lastIdx+1, raw))));
-      show(disp);                                       // never show more than one past the settled mode
-    }
-    function settle(){
-      if(snapping) return;
-      const p=prog();
-      if(p>=1 && lastIdx>=N-1){ lastIdx=N-1; return; }  // parked at the LAST mode & pushing further → let the page leave
-      if(p<=0 && lastIdx<=0){ lastIdx=0; return; }      // parked at the FIRST mode & pushing up → let it leave
-      const raw=Math.max(0, Math.min(N-1, Math.floor(p*N)));
-      const target=Math.max(0, Math.min(N-1, Math.max(lastIdx-1, Math.min(lastIdx+1, raw))));  // at most one step from settled
-      lastIdx=target;
-      const y=yFor(target);
-      if(Math.abs(window.pageYOffset - y) < 4){ show(target); return; }
-      snapping=true; show(target);                     // lock the view to the target while we scroll onto it
-      const done=()=>{ snapping=false; };
-      const L=window.cascadeLenis;
-      if(L) L.scrollTo(y,{duration:0.5, onComplete:done}); else { window.scrollTo({top:y,behavior:'smooth'}); }
-      clearTimeout(snapTimer); snapTimer=setTimeout(done, 700);
-    }
-    function onS(){ requestAnimationFrame(upd); clearTimeout(settleT); settleT=setTimeout(settle, 140); }
-    function setup(){
-      if(mq.matches){
-        grid.style.height=(N*72)+'vh';
-        if(!onScroll){ onScroll=onS; window.addEventListener('scroll',onScroll,{passive:true}); }
-        shown=-1; upd();
-      } else {
-        grid.style.height='';
-        cards.forEach(c=>c.classList.remove('active'));
-        if(onScroll){ window.removeEventListener('scroll',onScroll); onScroll=null; }
-      }
-    }
-    (mq.addEventListener?mq.addEventListener('change',setup):mq.addListener(setup));
-    window.addEventListener('resize', ()=>{ if(mq.matches) upd(); });
-    setup();
   })();
 
   // footer: "+16 more" reveals the full localized language list
@@ -1100,10 +1068,9 @@ window.addEventListener('load',function(){
   if(reduce || !window.gsap || !window.ScrollTrigger) return;   // graceful: keep the static hero/site
   gsap.registerPlugin(ScrollTrigger);
 
-  // Smooth scroll (Lenis), wired into GSAP's ticker
-  if(window.Lenis){
+  // Smooth scroll (Lenis) — desktop only. On phones we use native scroll so CSS scroll-snap (modes pager) works.
+  if(window.Lenis && !window.matchMedia('(max-width: 860px)').matches){
     var lenis = new Lenis({ lerp:0.1 });
-    window.cascadeLenis = lenis;   // exposed so the mobile modes pager can step-scroll
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(function(t){ lenis.raf(t*1000); });
     gsap.ticker.lagSmoothing(0);
