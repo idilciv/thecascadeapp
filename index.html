@@ -99,7 +99,7 @@
   #cascade-hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#08080b}
   /* Pre-rendered mountain-sunrise frame sequence (scroll-scrubbed on a canvas) — the same 3D scene, but ~0 GPU cost, instant load, identical sun at every size. */
   #cascade-frames{position:absolute;inset:0;width:100%;height:100%;display:block}
-  @media(max-width:760px){.hero{padding:92px 0 56px}.phone-stage{margin-top:calc(80vw + 16px)}}
+  @media(max-width:760px){.hero{padding:92px 0 56px}.phone-stage{margin-top:calc(120vw + 8px)}}
   /* readability scrim: darkens the scene behind the headline (below content, above the 3D scene) */
   .hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(105deg,rgba(8,8,11,.82) 0%,rgba(8,8,11,.46) 32%,rgba(8,8,11,.06) 56%,transparent 66%)}
   @media(min-width:761px) and (max-width:860px){.hero::after{background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(to bottom,rgba(8,8,11,.74) 0%,rgba(8,8,11,.34) 42%,transparent 66%)}}
@@ -954,7 +954,10 @@
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var ctx = canvas.getContext('2d', { alpha: false });
   var mob = window.matchMedia('(max-width: 760px)');
-  var COUNT = 72, FW = 1280, FH = 700;          // source frame size (aspect)
+  var COUNT = 72;
+  var IS_M = mob.matches;                        // phone loads a pre-cropped single-peak set; desktop loads the wide scene
+  var PREFIX = IS_M ? 'm' : 'f';
+  var FW = IS_M ? 820 : 1280, FH = IS_M ? 1064 : 700;   // source frame size per set
   var frames = new Array(COUNT), ready = false, cur = -1, phoneOff = 0;
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -969,10 +972,9 @@
     var img = frames[i]; if (!img || !img.complete || !img.naturalWidth) return;
     var cw = canvas.width, ch = canvas.height;
     ctx.fillStyle = '#08080b'; ctx.fillRect(0, 0, cw, ch);   // dark backdrop
-    if (mob.matches){                            // phone: zoom into mountain+sun (crop sides + top sky) so it's BIG; sit it just above the phone
-      var K = 0.48, SY = 150, SH = FH - SY;      // K = fraction of width shown (smaller = bigger/more zoom); SY = top sky cropped away
-      var s = cw / (FW * K), dw = FW * s, dh = SH * s;
-      ctx.drawImage(img, 0, SY, FW, SH, (cw - dw) / 2, phoneOff * dpr - dh + 55 * dpr, dw, dh);  // bottom ~55px behind the phone top
+    if (IS_M){                                    // phone: pre-cropped single-peak frame, filled to full width, sitting just above the phone
+      var s = cw / FW, dh = FH * s;
+      ctx.drawImage(img, 0, phoneOff * dpr - dh + 40 * dpr, cw, dh);   // bottom ~40px behind the phone top
     } else {                                      // wide (desktop): cover the hero
       var s2 = Math.max(cw / FW, ch / FH);
       ctx.drawImage(img, (cw - FW * s2) / 2, (ch - FH * s2) / 2, FW * s2, FH * s2);
@@ -996,7 +998,7 @@
     (function(i){
       var im = new Image(); im.decoding = 'async';
       im.onload = function(){ if (i === 0){ sizeCanvas(); ready = true; draw(0); } };
-      im.src = 'assets/frames/f' + pad(i) + '.webp';
+      im.src = 'assets/frames/' + PREFIX + pad(i) + '.webp';
       frames[i] = im;
     })(i);
   }
