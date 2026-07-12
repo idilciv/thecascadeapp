@@ -956,7 +956,7 @@
   host.appendChild(viewer);
   var mod = document.createElement('script'); mod.type = 'module'; mod.src = 'assets/spline-viewer.js'; document.head.appendChild(mod);
 
-  var app = null, pending = 60, sun = null, tries = 0;
+  var app = null, pending = 42, sun = null, tries = 0;
   function apply(){ if (app) { try { app.setVariable('sessionProgress', pending); } catch(e){} } }
   var iv = setInterval(function(){
     if (++tries > 150) clearInterval(iv);
@@ -1003,7 +1003,7 @@ window.addEventListener('load',function(){
   }
 
   window.__cascadeGsapDriving = true;
-  var proxy = { p:60 };
+  var proxy = { p:42 };  // start high enough that the sun never dips behind the peak (no disappear on scroll-up)
   var heroTL = gsap.timeline({
     scrollTrigger:{ trigger:'.hero', start:'top top', end:'+=45%', scrub:0.2 },
     onUpdate:function(){ if(window.cascadeSetProgress) window.cascadeSetProgress(proxy.p); }
