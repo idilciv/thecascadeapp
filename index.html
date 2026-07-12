@@ -183,38 +183,29 @@
   .spanel p.d{color:var(--muted);font-size:16.5px;margin-bottom:20px;max-width:440px}
   .spanel .mini{display:flex;flex-direction:column;gap:11px}
   .spanel .mini .fitem b{font-size:14.5px}
-  .story-dots{display:none}
   @media(max-width:860px){
-    /* Mobile: each mode is a full-screen scroll-snap slide. scroll-snap-stop:always = exactly ONE mode per swipe (native, no skips). */
-    .story{padding:0}
+    /* Mobile: each mode is an airy, colour-accented card that fades up as it scrolls into view. No snapping, no scroll limits anywhere. */
+    .story{padding:8px 0 4px}
     .story-grid{display:block}
     .story-phone{display:none}
-    /* snap is scoped to THIS box only (not the whole page): the modes are a 100svh scroll window */
-    .story-panels{height:100svh;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0}
-    .story-panels::-webkit-scrollbar{display:none}
+    .story-panels{display:flex;flex-direction:column;gap:16px}
     .spanel{
-      height:100svh;scroll-snap-align:start;scroll-snap-stop:always;
-      display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
-      margin:0;padding:0 26px;text-align:left;position:relative;
-      opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease;
+      min-height:auto;margin:0;padding:24px 22px 26px;text-align:left;align-items:stretch;justify-content:flex-start;position:relative;overflow:hidden;
+      border:1px solid color-mix(in srgb,var(--mc) 30%,transparent);border-radius:22px;
+      background:radial-gradient(130% 90% at 0% 0%,color-mix(in srgb,var(--mc) 13%,transparent),transparent 58%),linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012));
     }
-    .spanel.in{opacity:1;transform:none}
-    .spanel::before{content:'';position:absolute;top:16%;left:-8%;width:80%;height:46%;border-radius:50%;
-      background:radial-gradient(circle,color-mix(in srgb,var(--mc) 32%,transparent),transparent 68%);filter:blur(48px);opacity:.5;pointer-events:none}
-    .spanel .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;color:var(--mc)!important}
-    .spanel .eyebrow::before{content:'';width:9px;height:9px;border-radius:50%;background:var(--mc);box-shadow:0 0 12px var(--mc)}
-    .spanel h2{font-size:30px;margin:14px 0 15px;line-height:1.12}
-    .spanel p.d{display:block!important;font-size:15.5px;margin:0 0 20px;max-width:36ch}
+    .reveal-on .spanel{opacity:0;transform:translateY(26px);transition:opacity .6s cubic-bezier(.2,.7,.2,1),transform .6s cubic-bezier(.2,.7,.2,1)}
+    .reveal-on .spanel.in{opacity:1;transform:none}
+    .spanel .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;color:var(--mc)!important}
+    .spanel .eyebrow::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--mc);box-shadow:0 0 10px var(--mc)}
+    .spanel h2{font-size:23px;margin:11px 0 12px;line-height:1.16}
+    .spanel p.d{display:block!important;font-size:14.5px;margin:0 0 16px;max-width:none}
     .spanel .mini .fitem{text-align:left;max-width:none}
     .spanel[data-target="s-zen"]{--mc:var(--zen)}
     .spanel[data-target="s-hard"]{--mc:var(--hard)}
     .spanel[data-target="s-vault"]{--mc:var(--vault)}
     .spanel[data-target="s-med"]{--mc:var(--zen)}
     .spanel[data-target="s-rewire"]{--mc:var(--hard)}
-    .story-dots{display:flex;position:fixed;left:0;right:0;bottom:14px;justify-content:center;gap:8px;z-index:40;pointer-events:none;opacity:0;transition:opacity .3s}
-    .story-dots.show{opacity:1}
-    .story-dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.3);transition:width .3s,background .3s}
-    .story-dots i.on{width:24px;border-radius:6px}
   }
   /* phone screen states */
   .screen .state{position:absolute;inset:0;opacity:0;transition:opacity .5s ease;pointer-events:none}
@@ -955,31 +946,18 @@
     document.querySelectorAll('.spanel').forEach(p=>stObs.observe(p));
   }
 
-  // Mobile modes: fade each full-screen mode in as it snaps into view + drive the dots. (One-per-swipe = native CSS scroll-snap-stop.)
+  // Mobile modes: reveal each mode card as it scrolls into view (fade + rise). Desktop unaffected (reveal CSS is mobile-only).
   (function(){
+    const story=document.querySelector('.story');
     const cards=[].slice.call(document.querySelectorAll('.story .spanel'));
-    const section=document.getElementById('modes');
-    if(cards.length<2) return;
-    const col={'s-zen':'var(--zen)','s-hard':'var(--hard)','s-vault':'var(--vault)','s-med':'var(--zen)','s-rewire':'var(--hard)'};
-    const dots=document.createElement('div'); dots.className='story-dots';
-    cards.forEach(()=>dots.appendChild(document.createElement('i')));
-    document.body.appendChild(dots);
-    const dEls=[].slice.call(dots.children);
-    if(!('IntersectionObserver' in window)){ cards.forEach(c=>c.classList.add('in')); return; }
+    const reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!story || cards.length<2) return;
+    if(reduce || !('IntersectionObserver' in window)){ cards.forEach(c=>c.classList.add('in')); return; }
+    story.classList.add('reveal-on');
     const io=new IntersectionObserver((es)=>{
-      es.forEach(e=>{
-        if(e.isIntersecting && e.intersectionRatio>=0.55){
-          const i=cards.indexOf(e.target);
-          e.target.classList.add('in');
-          dEls.forEach((d,k)=>{ const on=k===i; d.classList.toggle('on',on); d.style.background=on?(col[cards[k].getAttribute('data-target')]||'#fff'):''; });
-        }
-      });
-    },{threshold:[0.55]});
+      es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    },{threshold:0.16, rootMargin:'0px 0px -8% 0px'});
     cards.forEach(c=>io.observe(c));
-    if(section){
-      const sio=new IntersectionObserver((es)=>{ es.forEach(e=>dots.classList.toggle('show', e.isIntersecting)); },{threshold:0});
-      sio.observe(section);
-    }
   })();
 
   // footer: "+16 more" reveals the full localized language list
@@ -1069,8 +1047,8 @@ window.addEventListener('load',function(){
   if(reduce || !window.gsap || !window.ScrollTrigger) return;   // graceful: keep the static hero/site
   gsap.registerPlugin(ScrollTrigger);
 
-  // Smooth scroll (Lenis) — desktop only. On phones we use native scroll so CSS scroll-snap (modes pager) works.
-  if(window.Lenis && !window.matchMedia('(max-width: 860px)').matches){
+  // Smooth scroll (Lenis), wired into GSAP's ticker
+  if(window.Lenis){
     var lenis = new Lenis({ lerp:0.1 });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(function(t){ lenis.raf(t*1000); });
