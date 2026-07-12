@@ -951,7 +951,8 @@
     document.querySelectorAll('.spanel').forEach(p=>stObs.observe(p));
   }
 
-  // Mobile modes: pinned cross-fade — scroll position picks the active mode (sequential). Scoped to this section; page stays free.
+  // Mobile modes: pinned cross-fade, capped to ONE step per finger gesture. On touchstart we remember the current mode;
+  // during that gesture the view can move at most ±1, and on release it snaps onto that mode. Scoped to this section.
   (function(){
     const grid=document.querySelector('.story-grid');
     const panels=document.querySelector('.story-panels');
@@ -964,23 +965,50 @@
     panels.appendChild(dots);
     const dEls=[].slice.call(dots.children);
     const col={'s-zen':'var(--zen)','s-hard':'var(--hard)','s-vault':'var(--vault)','s-med':'var(--zen)','s-rewire':'var(--hard)'};
-    let onScroll=null, cur=-1;
-    function upd(){
-      const rng=Math.max(1, grid.offsetHeight - panels.offsetHeight);
-      const p=Math.min(1, Math.max(0, (-grid.getBoundingClientRect().top)/rng));
-      const idx=Math.min(N-1, Math.max(0, Math.floor(p*N + 1e-4)));
-      if(idx===cur) return; cur=idx;
-      cards.forEach((c,i)=>c.classList.toggle('active', i===idx));
-      dEls.forEach((d,i)=>{ const on=i===idx; d.classList.toggle('on',on); d.style.background=on?(col[cards[i].getAttribute('data-target')]||'#fff'):''; });
+    let onScroll=null, onTouch=null, settleT=null, snapTimer=null, cur=-1, baseIdx=0, snapping=false;
+    function rng(){ return Math.max(1, grid.offsetHeight - panels.offsetHeight); }
+    function pRaw(){ return (-grid.getBoundingClientRect().top)/rng(); }              // <0 above · 0..1 inside · >1 past
+    function centerY(i){ return (grid.getBoundingClientRect().top + window.pageYOffset) + ((i+0.5)/N)*rng(); }
+    function setActive(i){
+      if(i===cur) return; cur=i;
+      cards.forEach((c,k)=>c.classList.toggle('active', k===i));
+      dEls.forEach((d,k)=>{ const on=k===i; d.classList.toggle('on',on); d.style.background=on?(col[cards[k].getAttribute('data-target')]||'#fff'):''; });
     }
+    function upd(){
+      if(snapping) return;
+      const raw=Math.max(0, Math.min(N-1, Math.floor(pRaw()*N)));
+      setActive(Math.max(0, Math.min(N-1, Math.max(baseIdx-1, Math.min(baseIdx+1, raw)))));   // never more than one from the gesture's start
+    }
+    function settle(){
+      if(snapping) return;
+      const p=pRaw();
+      if(p>=1 && baseIdx>=N-1){ baseIdx=N-1; return; }   // at the last mode, pushing further → let the page leave
+      if(p<=0 && baseIdx<=0){ baseIdx=0; return; }        // at the first mode, pushing up → let it leave
+      const raw=Math.max(0, Math.min(N-1, Math.floor(p*N)));
+      const target=Math.max(0, Math.min(N-1, Math.max(baseIdx-1, Math.min(baseIdx+1, raw))));
+      baseIdx=target;
+      const y=centerY(target);
+      if(Math.abs(window.pageYOffset - y) < 4){ setActive(target); return; }
+      snapping=true; setActive(target);
+      const done=()=>{ snapping=false; };
+      const L=window.cascadeLenis;
+      if(L && L.scrollTo){ L.scrollTo(y,{duration:0.45, onComplete:done}); } else { window.scrollTo(0,y); done(); }
+      clearTimeout(snapTimer); snapTimer=setTimeout(done, 700);
+    }
+    function onScr(){ requestAnimationFrame(upd); clearTimeout(settleT); settleT=setTimeout(settle, 140); }
+    function onTch(){ if(mq.matches && !snapping) baseIdx = cur<0 ? 0 : cur; }   // each new finger gesture resets the ceiling
     function setup(){
       if(mq.matches){
-        grid.style.height=(N*64)+'vh';
-        if(!onScroll){ onScroll=()=>requestAnimationFrame(upd); window.addEventListener('scroll',onScroll,{passive:true}); }
-        cur=-1; upd();
+        grid.style.height=(N*76)+'vh';
+        if(!onScroll){
+          onScroll=onScr; onTouch=onTch;
+          window.addEventListener('scroll',onScroll,{passive:true});
+          window.addEventListener('touchstart',onTouch,{passive:true});
+        }
+        cur=-1; baseIdx=0; upd();
       } else {
         grid.style.height=''; cards.forEach(c=>c.classList.remove('active'));
-        if(onScroll){ window.removeEventListener('scroll',onScroll); onScroll=null; }
+        if(onScroll){ window.removeEventListener('scroll',onScroll); window.removeEventListener('touchstart',onTouch); onScroll=null; }
       }
     }
     (mq.addEventListener?mq.addEventListener('change',setup):mq.addListener(setup));
@@ -1078,6 +1106,7 @@ window.addEventListener('load',function(){
   // Smooth scroll (Lenis), wired into GSAP's ticker
   if(window.Lenis){
     var lenis = new Lenis({ lerp:0.1 });
+    window.cascadeLenis = lenis;   // used by the mobile modes pager to step-snap
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(function(t){ lenis.raf(t*1000); });
     gsap.ticker.lagSmoothing(0);
