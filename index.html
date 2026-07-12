@@ -956,23 +956,28 @@
   host.appendChild(viewer);
   var mod = document.createElement('script'); mod.type = 'module'; mod.src = 'assets/spline-viewer.js'; document.head.appendChild(mod);
 
-  var app = null, pending = 42, sun = null, tries = 0;
-  function apply(){ if (app) { try { app.setVariable('sessionProgress', pending); } catch(e){} } }
+  var app = null, sun = null, tries = 0, _lastP = -999;
   var iv = setInterval(function(){
     if (++tries > 150) clearInterval(iv);
     if (!app && viewer._spline && typeof viewer._spline.setVariable === 'function') app = viewer._spline;
-    if (app) {
-      apply();
-      if (!sun && typeof app.findObjectByName === 'function') {
-        try { var s = app.findObjectByName('sunLight'); if (s) { sun = s; sun.intensity = 7; } } catch(e){}
-        if (sun) clearInterval(iv);
-      }
+    if (app && !sun && typeof app.findObjectByName === 'function') {
+      try { var s = app.findObjectByName('sunLight'); if (s) { sun = s; sun.intensity = 7; } } catch(e){}
+      if (sun) clearInterval(iv);
     }
   }, 200);
-  window.cascadeSetProgress = function(v){ if (isMobile) v = Math.round(v); pending = v; apply(); };
-  // Desktop: assert every frame (continuous, like it worked before). Mobile: only on change (keeps it smooth).
-  var _lastP = -999;
-  (function drive(){ if (app) { if (!isMobile || pending !== _lastP) { try { app.setVariable('sessionProgress', pending); } catch(e){} _lastP = pending; } } requestAnimationFrame(drive); })();
+  // sessionProgress is a PURE function of the hero's scroll position — recomputed every frame, so it can NEVER
+  // desync/teleport on resume: the sun's value always exactly matches where you scrolled to.
+  window.cascadeSetProgress = function(){};   // (kept as a harmless no-op; the sun is driven below, not by GSAP)
+  (function drive(){
+    if (app) {
+      var r = bg.getBoundingClientRect(), hh = r.height || window.innerHeight;
+      var p = Math.min(1, Math.max(0, (-r.top) / (hh * 0.45)));   // 0 at top -> 1 after scrolling ~45% of the hero
+      var sp = 42 + (8 - 42) * p;                                 // sun rises 42 -> 8
+      if (isMobile) sp = Math.round(sp);
+      if (!isMobile || sp !== _lastP) { try { app.setVariable('sessionProgress', sp); } catch(e){} _lastP = sp; }
+    }
+    requestAnimationFrame(drive);
+  })();
 })();
 </script>
 
@@ -1002,16 +1007,11 @@ window.addEventListener('load',function(){
     });
   }
 
-  window.__cascadeGsapDriving = true;
-  var proxy = { p:42 };  // start high enough that the sun never dips behind the peak (no disappear on scroll-up)
-  var heroTL = gsap.timeline({
-    scrollTrigger:{ trigger:'.hero', start:'top top', end:'+=45%', scrub:0.2 },
-    onUpdate:function(){ if(window.cascadeSetProgress) window.cascadeSetProgress(proxy.p); }
-  });
-  heroTL.to(proxy, { p:8, ease:'none' }, 0);
+  // The sun follows scroll DIRECTLY (pure function, in the scene drive loop) — GSAP only does the copy + phone parallax.
   gsap.matchMedia().add('(min-width: 861px)', function(){
-    heroTL.to('.hero-copy', { y:-40, ease:'none' }, 0);
-    if(document.querySelector('.phone-stage')) heroTL.to('.phone-stage', { y:-64, ease:'power1.out' }, 0);
+    var tl = gsap.timeline({ scrollTrigger:{ trigger:'.hero', start:'top top', end:'+=45%', scrub:0.3 } });
+    tl.to('.hero-copy', { y:-40, ease:'none' }, 0);
+    if(document.querySelector('.phone-stage')) tl.to('.phone-stage', { y:-64, ease:'power1.out' }, 0);
   });
 
   ScrollTrigger.refresh();
