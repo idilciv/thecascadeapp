@@ -189,10 +189,11 @@
     .story{padding:0}
     .story-grid{display:block}
     .story-phone{display:none}
-    /* No snap, no scroll box, no trap anywhere — the page scrolls 100% freely. Each mode is simply a full-screen section, so you pass them one screen at a time as you scroll. */
-    .story-panels{display:block;margin:0}
+    /* Rest of the page scrolls FREELY (html/body have no snap). Only the modes get their own scroll box: it snaps exactly one mode per swipe (scroll-snap-stop:always, no skipping) and only captures scroll while you're inside it, so everything outside is untouched. NO opacity trick — every mode is always visible. */
+    .story-panels{height:100svh;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0}
+    .story-panels::-webkit-scrollbar{display:none}
     .spanel{
-      min-height:100svh;
+      height:100svh;scroll-snap-align:start;scroll-snap-stop:always;
       display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
       margin:0;padding:0 26px;text-align:left;position:relative;
     }
@@ -952,31 +953,40 @@
     document.querySelectorAll('.spanel').forEach(p=>stObs.observe(p));
   }
 
-  // Mobile modes: gently fade each mode in as it scrolls into view + drive the dots. (No scroll restriction — plain full-screen sections.)
+  // Mobile modes: the modes live in their own scroll box (CSS scroll-snap-stop = one mode per swipe, scoped to the box; the rest of the page is free). This JS (a) lights the progress dots for the current mode and (b) is a safety net that HARD-guarantees a single swipe never jumps more than one mode (never skips 3-4-5).
   (function(){
+    const box=document.querySelector('.story-panels');
     const cards=[].slice.call(document.querySelectorAll('.story .spanel'));
     const section=document.getElementById('modes');
-    if(cards.length<2) return;
+    if(!box || cards.length<2) return;
+    const mq=window.matchMedia('(max-width:860px)');
     const col={'s-zen':'var(--zen)','s-hard':'var(--hard)','s-vault':'var(--vault)','s-med':'var(--zen)','s-rewire':'var(--hard)'};
     const dots=document.createElement('div'); dots.className='story-dots';
     cards.forEach(()=>dots.appendChild(document.createElement('i')));
     document.body.appendChild(dots);
     const dEls=[].slice.call(dots.children);
-    if(!('IntersectionObserver' in window)){ cards.forEach(c=>c.classList.add('in')); return; }
-    const io=new IntersectionObserver((es)=>{
-      es.forEach(e=>{
-        if(e.isIntersecting && e.intersectionRatio>=0.5){
-          const i=cards.indexOf(e.target);
-          e.target.classList.add('in');
-          dEls.forEach((d,k)=>{ const on=k===i; d.classList.toggle('on',on); d.style.background=on?(col[cards[k].getAttribute('data-target')]||'#fff'):''; });
-        }
-      });
-    },{threshold:[0.5]});
-    cards.forEach(c=>io.observe(c));
-    if(section){
+    function lightDot(i){ dEls.forEach((d,k)=>{ const on=k===i; d.classList.toggle('on',on); d.style.background=on?(col[cards[k].getAttribute('data-target')]||'#fff'):''; }); }
+    if('IntersectionObserver' in window && section){
       const sio=new IntersectionObserver((es)=>{ es.forEach(e=>dots.classList.toggle('show', e.isIntersecting)); },{threshold:0});
       sio.observe(section);
     }
+    // --- one-per-swipe safety net (mobile) ---
+    let lastIdx=0, trail;
+    function panelH(){ return box.clientHeight || window.innerHeight || 1; }
+    box.addEventListener('scroll', function(){
+      if(!mq.matches) return;
+      clearTimeout(trail);
+      trail=setTimeout(function(){
+        const h=panelH();
+        let idx=Math.max(0, Math.min(cards.length-1, Math.round(box.scrollTop/h)));
+        if(Math.abs(idx-lastIdx)>1){
+          lastIdx=lastIdx+(idx>lastIdx?1:-1);          // pull a multi-jump back to exactly one step
+          box.scrollTo({top:lastIdx*h, behavior:'smooth'});
+        } else { lastIdx=idx; }
+        lightDot(lastIdx);
+      }, 80);
+    }, {passive:true});
+    lightDot(0);
   })();
 
   // footer: "+16 more" reveals the full localized language list
