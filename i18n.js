@@ -36,7 +36,10 @@
     var k = el.getAttribute("data-i18n");
     if (!(k in EN)) EN[k] = el.innerHTML;
   });
-  var EN_TITLE = document.title;
+  // On pre-rendered localized pages the DOM is already translated, so use the real
+  // English source from T["en"] (added at build time) rather than the translated DOM.
+  if (T["en"]) { for (var ek in T["en"]) EN[ek] = T["en"][ek]; }
+  var EN_TITLE = (T["en"] && T["en"]["meta.title"]) ? T["en"]["meta.title"] : document.title;
 
   function supported(c) { for (var i = 0; i < LANGS.length; i++) if (LANGS[i].c === c) return true; return false; }
   function isRTL(c) { for (var i = 0; i < LANGS.length; i++) if (LANGS[i].c === c) return !!LANGS[i].rtl; return false; }
@@ -90,7 +93,9 @@
       sel.innerHTML = h;
       sel.addEventListener("change", function () { apply(sel.value); });
     }
-    apply(detect());
+    // A pre-rendered localized page pins its language via window.__CASCADE_LANG.
+    var forced = window.__CASCADE_LANG;
+    apply((forced && supported(forced)) ? forced : detect());
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", build);
