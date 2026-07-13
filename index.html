@@ -189,14 +189,19 @@
     .story{padding:0}
     .story-grid{display:block}
     .story-phone{display:none}
-    /* Rest of the page scrolls FREELY (html/body have no snap). Only the modes get their own scroll box: it snaps exactly one mode per swipe (scroll-snap-stop:always, no skipping) and only captures scroll while you're inside it, so everything outside is untouched. NO opacity trick — every mode is always visible. */
-    .story-panels{height:100svh;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0}
-    .story-panels::-webkit-scrollbar{display:none}
+    /* PINNED CAROUSEL. The page scrolls normally until #modes reaches the top; then JS adds .mob-carousel and pins the page (body:fixed) so scrolling STOPS. Each swipe swaps one mode (1→2→3→4→5); after the last, JS releases and the page scrolls on. Nothing outside this section is touched. Fallback (no JS): plain stacked, all visible. */
     .spanel{
-      height:100svh;scroll-snap-align:start;scroll-snap-stop:always;
       display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
-      margin:0;padding:0 26px;text-align:left;position:relative;
+      margin:0;padding:40px 26px;text-align:left;position:relative;min-height:60svh;
     }
+    #modes.mob-carousel{height:100svh;overflow:hidden;padding:0}
+    #modes.mob-carousel .wrap{height:100%;display:flex;flex-direction:column;padding:0;max-width:none}
+    #modes.mob-carousel .sec-head{flex:0 0 auto;margin:0;padding:22px 26px 2px}
+    #modes.mob-carousel .story-panels{position:relative;flex:1 1 auto;margin:0}
+    #modes.mob-carousel .spanel{position:absolute;inset:0;min-height:0;height:auto;justify-content:center;
+      opacity:0;transform:translateY(28px);transition:opacity .45s ease,transform .45s ease;pointer-events:none}
+    #modes.mob-carousel .spanel.active{opacity:1;transform:none;pointer-events:auto}
+    #modes.mob-carousel .spanel.above{opacity:0;transform:translateY(-28px)}
     .spanel::before{content:'';position:absolute;top:16%;left:-8%;width:80%;height:46%;border-radius:50%;
       background:radial-gradient(circle,color-mix(in srgb,var(--mc) 32%,transparent),transparent 68%);filter:blur(48px);opacity:.5;pointer-events:none}
     .spanel .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;color:var(--mc)!important}
@@ -953,40 +958,80 @@
     document.querySelectorAll('.spanel').forEach(p=>stObs.observe(p));
   }
 
-  // Mobile modes: the modes live in their own scroll box (CSS scroll-snap-stop = one mode per swipe, scoped to the box; the rest of the page is free). This JS (a) lights the progress dots for the current mode and (b) is a safety net that HARD-guarantees a single swipe never jumps more than one mode (never skips 3-4-5).
+  // Mobile modes: PINNED CAROUSEL. The page scrolls normally until #modes reaches the top; then the page LOCKS (body:fixed) and every swipe swaps exactly one mode (1→2→3→4→5). Discrete gesture = one step, so it can NEVER skip 3-4-5. After the last mode a swipe releases the lock and the page scrolls on. Scoped entirely to this section.
   (function(){
-    const box=document.querySelector('.story-panels');
-    const cards=[].slice.call(document.querySelectorAll('.story .spanel'));
     const section=document.getElementById('modes');
-    if(!box || cards.length<2) return;
+    const box=section && section.querySelector('.story-panels');
+    const cards=box ? [].slice.call(box.querySelectorAll('.spanel')) : [];
+    if(!section || cards.length<2) return;
     const mq=window.matchMedia('(max-width:860px)');
     const col={'s-zen':'var(--zen)','s-hard':'var(--hard)','s-vault':'var(--vault)','s-med':'var(--zen)','s-rewire':'var(--hard)'};
+    const LAST=cards.length-1;
+    let idx=0, active=false, animating=false, lockY=0, prevY=window.pageYOffset, startY=null, used=false;
+
     const dots=document.createElement('div'); dots.className='story-dots';
     cards.forEach(()=>dots.appendChild(document.createElement('i')));
     document.body.appendChild(dots);
     const dEls=[].slice.call(dots.children);
-    function lightDot(i){ dEls.forEach((d,k)=>{ const on=k===i; d.classList.toggle('on',on); d.style.background=on?(col[cards[k].getAttribute('data-target')]||'#fff'):''; }); }
-    if('IntersectionObserver' in window && section){
-      const sio=new IntersectionObserver((es)=>{ es.forEach(e=>dots.classList.toggle('show', e.isIntersecting)); },{threshold:0});
-      sio.observe(section);
+    function render(){
+      cards.forEach((c,i)=>{ c.classList.toggle('active',i===idx); c.classList.toggle('above',i<idx); });
+      dEls.forEach((d,k)=>{ const on=k===idx; d.classList.toggle('on',on); d.style.background=on?(col[cards[k].getAttribute('data-target')]||'#fff'):''; });
     }
-    // --- one-per-swipe safety net (mobile) ---
-    let lastIdx=0, trail;
-    function panelH(){ return box.clientHeight || window.innerHeight || 1; }
-    box.addEventListener('scroll', function(){
-      if(!mq.matches) return;
-      clearTimeout(trail);
-      trail=setTimeout(function(){
-        const h=panelH();
-        let idx=Math.max(0, Math.min(cards.length-1, Math.round(box.scrollTop/h)));
-        if(Math.abs(idx-lastIdx)>1){
-          lastIdx=lastIdx+(idx>lastIdx?1:-1);          // pull a multi-jump back to exactly one step
-          box.scrollTo({top:lastIdx*h, behavior:'smooth'});
-        } else { lastIdx=idx; }
-        lightDot(lastIdx);
-      }, 80);
+    function carouselOn(){ if(!section.classList.contains('mob-carousel')){ section.classList.add('mob-carousel'); render(); } }
+    function carouselOff(){ if(active) unlock(0); section.classList.remove('mob-carousel'); dots.classList.remove('show'); }
+
+    function lock(fromTop){
+      idx=fromTop?0:LAST; render();
+      lockY=section.offsetTop;
+      window.scrollTo(0,lockY);
+      const b=document.body.style;
+      b.top=(-lockY)+'px'; b.left='0'; b.right='0'; b.width='100%'; b.position='fixed';
+      active=true; dots.classList.add('show');
+    }
+    function unlock(dir){
+      active=false; dots.classList.remove('show');
+      const b=document.body.style;
+      b.position=''; b.top=''; b.left=''; b.right=''; b.width='';
+      const y=section.offsetTop + (dir>0 ? section.offsetHeight : -Math.round(window.innerHeight*0.18));
+      window.scrollTo(0, Math.max(0,y));
+      prevY=window.pageYOffset;
+    }
+    function step(dir){
+      if(animating) return;
+      const t=idx+dir;
+      if(t<0 || t>LAST){ unlock(dir); return; }
+      idx=t; render(); animating=true; setTimeout(()=>{animating=false;},460);
+    }
+
+    function onScroll(){
+      if(!mq.matches){ if(section.classList.contains('mob-carousel')) carouselOff(); return; }
+      carouselOn();
+      if(active) return;
+      const y=window.pageYOffset, dir=y>=prevY?1:-1; prevY=y;
+      const r=section.getBoundingClientRect(), vh=window.innerHeight;
+      if(dir>0 && r.top<=vh*0.12 && r.top>-vh*0.6) lock(true);
+      else if(dir<0 && r.bottom>=vh*0.88 && r.bottom<vh*1.6) lock(false);
+    }
+    window.addEventListener('scroll', onScroll, {passive:true});
+
+    document.addEventListener('touchstart', e=>{ if(active){ startY=e.touches[0].clientY; used=false; } }, {passive:true});
+    document.addEventListener('touchmove', e=>{
+      if(!active || used || animating || startY==null) return;
+      const dy=startY-e.touches[0].clientY;
+      if(Math.abs(dy)>34){ used=true; step(dy>0?1:-1); }
     }, {passive:true});
-    lightDot(0);
+    document.addEventListener('touchend', ()=>{ if(active){ used=false; startY=null; } }, {passive:true});
+
+    let wl=false;
+    window.addEventListener('wheel', e=>{
+      if(!active) return;
+      e.preventDefault();
+      if(wl || animating || Math.abs(e.deltaY)<6) return;
+      wl=true; setTimeout(()=>{wl=false;},520); step(e.deltaY>0?1:-1);
+    }, {passive:false});
+
+    if(mq.addEventListener) mq.addEventListener('change', ()=>{ if(!mq.matches) carouselOff(); else onScroll(); });
+    onScroll();
   })();
 
   // footer: "+16 more" reveals the full localized language list
