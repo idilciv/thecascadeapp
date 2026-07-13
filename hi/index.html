@@ -103,6 +103,13 @@
     background:var(--bg); color:var(--text); font-family:var(--font);
     -webkit-font-smoothing:antialiased; line-height:1.55; overflow-x:hidden;
   }
+  /* Ambient depth: soft brand glows behind the whole page so sections aren't flat black (Opal-like atmosphere). Fixed, very faint, behind all content. */
+  body::after{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(46% 30% at 84% 20%, rgba(176,131,242,.07), transparent 64%),
+      radial-gradient(52% 34% at 10% 48%, rgba(20,216,154,.055), transparent 66%),
+      radial-gradient(48% 30% at 86% 74%, rgba(38,182,204,.05), transparent 66%),
+      radial-gradient(44% 26% at 16% 96%, rgba(255,176,110,.045), transparent 66%);}
   a{color:inherit;text-decoration:none}
   ::selection{background:rgba(20,216,154,.28)}
   .wrap{max-width:1440px;margin:0 auto;padding:0 24px}
@@ -497,9 +504,8 @@
     .how .step p{font-size:14px}
   }
   @media(max-width:460px){
-    .how .step p{display:none}
-    .how .step{padding:18px 20px}
-    .how .step h3{margin-bottom:0}
+    .how .step{padding:20px 20px}
+    .how .step h3{margin-bottom:7px}
   }
 
   /* ---------- ACCESSIBILITY ---------- */
@@ -1336,10 +1342,10 @@
     ctx.fillStyle = '#08080b'; ctx.fillRect(0, 0, cw, ch);   // dark backdrop
     if (IS_M){                                    // phone: pre-cropped single-peak frame, full width, sitting BEHIND the phone (sun+peak above, base behind the phone)
       var s = cw / FW, dh = FH * s;
-      ctx.drawImage(img, 0, phoneOff * dpr - dh * 0.5, cw, dh);   // band center ~ phone top: upper half (sun+peak) shows above, lower half sits behind the phone
-    } else {                                      // wide (desktop): cover the hero
+      ctx.drawImage(img, 0, phoneOff * dpr - dh * 0.33, cw, dh);   // band pushed down so the rising sun clears the hero chips, sitting behind the phone
+    } else {                                      // wide (desktop): cover the hero, biased right so the sun clears the left-aligned copy
       var s2 = Math.max(cw / FW, ch / FH);
-      ctx.drawImage(img, (cw - FW * s2) / 2, (ch - FH * s2) / 2, FW * s2, FH * s2);
+      ctx.drawImage(img, (cw - FW * s2) / 2 + cw * 0.15, (ch - FH * s2) / 2, FW * s2, FH * s2);
     }
     cur = i;
   }
