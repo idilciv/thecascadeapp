@@ -194,12 +194,12 @@
       display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
       margin:0;padding:40px 26px;text-align:left;position:relative;min-height:60svh;
     }
-    #modes.mob-carousel{height:100svh;overflow:hidden;padding:0}
-    #modes.mob-carousel .wrap{height:100%;padding:0;max-width:none}
+    #modes.mob-carousel{height:100svh;overflow:hidden;padding:0;position:relative}
+    #modes.mob-carousel .wrap{height:100svh;padding:0;max-width:none;position:static}
     #modes.mob-carousel .sec-head{display:none}
-    #modes.mob-carousel .story-grid{height:100%}
-    #modes.mob-carousel .story-panels{position:relative;height:100%;margin:0}
-    #modes.mob-carousel .spanel{position:absolute;inset:0;min-height:0;height:auto;justify-content:center;
+    #modes.mob-carousel .story-grid{height:100svh}
+    #modes.mob-carousel .story-panels{position:absolute;inset:0;height:100svh;margin:0}
+    #modes.mob-carousel .spanel{position:absolute;inset:0;min-height:0;height:100svh;justify-content:center;
       opacity:0;transform:translateY(28px);transition:opacity .45s ease,transform .45s ease;pointer-events:none}
     #modes.mob-carousel .spanel.active{opacity:1;transform:none;pointer-events:auto}
     #modes.mob-carousel .spanel.above{opacity:0;transform:translateY(-28px)}
@@ -968,7 +968,7 @@
     const mq=window.matchMedia('(max-width:860px)');
     const col={'s-zen':'var(--zen)','s-hard':'var(--hard)','s-vault':'var(--vault)','s-med':'var(--zen)','s-rewire':'var(--hard)'};
     const LAST=cards.length-1;
-    let idx=0, active=false, animating=false, lockY=0, prevY=window.pageYOffset, startY=null, used=false, cooldown=false;
+    let idx=0, active=false, animating=false, lockY=0, prevY=window.pageYOffset, startY=null, used=false, cooldown=false, cdT=null;
 
     const dots=document.createElement('div'); dots.className='story-dots';
     cards.forEach(()=>dots.appendChild(document.createElement('i')));
@@ -990,12 +990,15 @@
       active=true; dots.classList.add('show');
     }
     function unlock(dir){
-      active=false; cooldown=true; dots.classList.remove('show');
+      active=false; dots.classList.remove('show');
       const b=document.body.style;
       b.position=''; b.top=''; b.left=''; b.right=''; b.width='';
-      const y=section.offsetTop + (dir>0 ? section.offsetHeight+2 : -Math.round(window.innerHeight*0.9));
-      window.scrollTo(0, Math.max(0,y));
+      // drop the page well clear of the section in the exit direction, then block re-lock for a moment
+      const y=Math.max(0, section.offsetTop + (dir>0 ? section.offsetHeight+4 : -Math.round(window.innerHeight*0.9)));
+      window.scrollTo(0, y);
+      requestAnimationFrame(()=>{ window.scrollTo(0, y); prevY=window.pageYOffset; });   // iOS sometimes ignores the first scrollTo right after unfixing body
       prevY=window.pageYOffset;
+      cooldown=true; clearTimeout(cdT); cdT=setTimeout(()=>{cooldown=false;}, 900);
     }
     function step(dir){
       if(animating) return;
@@ -1010,8 +1013,7 @@
       if(active) return;
       const y=window.pageYOffset, dir=y>=prevY?1:-1; prevY=y;
       const r=section.getBoundingClientRect(), vh=window.innerHeight;
-      // after a release, don't re-lock until the section has fully left the screen
-      if(cooldown){ if(r.bottom<=vh*0.05 || r.top>=vh*0.95) cooldown=false; else return; }
+      if(cooldown) return;   // just released — let the page scroll away before it can re-lock
       if(dir>0 && r.top<=vh*0.12 && r.top>-vh*0.45) lock(true);
       else if(dir<0 && r.bottom>=vh*0.88 && r.bottom<vh*1.45) lock(false);
     }
