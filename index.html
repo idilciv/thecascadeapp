@@ -185,7 +185,8 @@
   .spanel .mini .fitem b{font-size:14.5px}
   .story-dots{display:none}
   @media(max-width:860px){
-    /* Mobile: each mode is a plain full-screen (100svh) section in normal page flow. No snap, no scroll box — the whole page scrolls 100% freely; you just pass one full-screen mode at a time. */
+    /* Mobile: the modes become a pinned carousel (JS adds .mob-carousel). */
+    html,body{overscroll-behavior-y:contain}   /* stop iOS pull-to-refresh (the reload spinner) when the carousel releases at the top */
     .story{padding:0}
     .story-grid{display:block}
     .story-phone{display:none}
@@ -993,12 +994,12 @@
       active=false; dots.classList.remove('show');
       const b=document.body.style;
       b.position=''; b.top=''; b.left=''; b.right=''; b.width='';
-      // drop the page well clear of the section in the exit direction, then block re-lock for a moment
-      const y=Math.max(0, section.offsetTop + (dir>0 ? section.offsetHeight+4 : -Math.round(window.innerHeight*0.9)));
-      window.scrollTo(0, y);
-      requestAnimationFrame(()=>{ window.scrollTo(0, y); prevY=window.pageYOffset; });   // iOS sometimes ignores the first scrollTo right after unfixing body
-      prevY=window.pageYOffset;
-      cooldown=true; clearTimeout(cdT); cdT=setTimeout(()=>{cooldown=false;}, 900);
+      window.scrollTo(0, lockY);                      // restore to the pinned position first, so unfixing body doesn't snap to the top
+      const vh=window.innerHeight;
+      const target=Math.max(0, lockY + (dir>0 ? Math.round(vh*0.85) : -Math.round(vh*0.85)));
+      requestAnimationFrame(()=>{ window.scrollTo({top:target, behavior:'smooth'}); prevY=target; });  // then glide gently out of the section (no abrupt full-screen jump)
+      prevY=lockY;
+      cooldown=true; clearTimeout(cdT); cdT=setTimeout(()=>{cooldown=false;}, 1100);
     }
     function step(dir){
       if(animating) return;
