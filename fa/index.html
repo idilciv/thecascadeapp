@@ -233,6 +233,7 @@
   .story-phone .phone{margin:0}
   .story-panels{display:flex;flex-direction:column}
   .spanel{min-height:86vh;display:flex;flex-direction:column;justify-content:center;padding:18px 0}
+  .spanel-shot{display:none}  /* desktop shows the live sticky phone; the static shot is mobile-only */
   .spanel h2{font-size:clamp(27px,3.3vw,40px);margin:13px 0 15px;letter-spacing:-.02em;font-weight:800;line-height:1.1}
   .spanel p.d{color:var(--muted);font-size:16.5px;margin-bottom:20px;max-width:440px}
   .spanel .mini{display:flex;flex-direction:column;gap:11px}
@@ -246,8 +247,9 @@
     .story-panels{margin:0}
     .spanel{
       display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
-      margin:0;padding:54px 26px;text-align:left;position:relative;min-height:46svh;
+      margin:0;padding:48px 26px;text-align:left;position:relative;min-height:auto;
     }
+    .spanel-shot{display:block;align-self:center;width:100%;max-width:250px;height:auto;margin:24px auto 4px;filter:drop-shadow(0 24px 60px rgba(0,0,0,.5))}
     .spanel + .spanel{border-top:1px solid rgba(255,255,255,.06)}
     .spanel::before{content:'';position:absolute;top:16%;left:-8%;width:80%;height:46%;border-radius:50%;
       background:radial-gradient(circle,color-mix(in srgb,var(--mc) 32%,transparent),transparent 68%);filter:blur(48px);opacity:.5;pointer-events:none}
@@ -842,6 +844,7 @@
         <div class="spanel" data-target="s-zen">
           <span class="eyebrow" style="color:var(--zen)" data-i18n="p1.ey">Zen · آرام شروع کن</span>
           <h2 data-i18n="p1.h2">هیاهو را مسدود کن. طلوعِ خورشید را تماشا کن.</h2>
+          <img class="spanel-shot" src="/assets/mode-zen.webp" alt="Cascade Zen mode screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p1.d">اپ‌هایت را انتخاب کن و اینکه چقدر می‌خواهی تمرکز کنی. هرچه بیشتر پایش بمانی، خورشید بالاتر بر فرازِ کوه می‌آید، تصویری آرام از پیشرفتت. می‌خواهی زودتر تمام کنی؟ اشکالی ندارد، بی هیچ حسِ گناهی.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(20,216,154,.14);color:var(--zen)">✓</span><b data-i18n="p1.fi">برای همیشه رایگان<span>آسان‌ترین راهِ شروع. بی تعهد، بی حساب.</span></b></div>
@@ -850,6 +853,7 @@
         <div class="spanel" data-target="s-hard">
           <span class="eyebrow" style="color:var(--hard)" data-i18n="p2.ey">Hardcore · جدی‌تر پایبند شو</span>
           <h2 data-i18n="p2.h2">ترک‌کردن را به تصمیمی واقعی بدل کن.</h2>
+          <img class="spanel-shot" src="/assets/mode-hardcore.webp" alt="Cascade Hardcore mode screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p2.d">با شمارِ محدودی مجوزِ بازگشایی مسدود کن. هر بار که کوتاه می‌آیی، یکی را خرج می‌کنی، پس آن جرعهٔ آسانِ دوپامین بالاخره بهایی پیدا می‌کند. ساخته‌شده برای اپ‌هایی که به‌راستی نمی‌توانی زمینشان بگذاری.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(176,131,242,.14);color:var(--hard)">⚡</span><b data-i18n="p2.fi">مجوزهای بازگشاییِ محدود<span>یکی را برای نگاهی دزدکی خرج کن، یا تمامشان کن و قفل بمان.</span></b></div>
@@ -858,6 +862,7 @@
         <div class="spanel" data-target="s-vault">
           <span class="eyebrow" style="color:var(--vault)" data-i18n="p3.ey">Vault · بی‌راهِ فرار</span>
           <h2 data-i18n="p3.h2">قفلش کن. هیچ راهِ گریزی نیست.</h2>
+          <img class="spanel-shot" src="/assets/mode-vault.webp" alt="Cascade Vault mode screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p3.d">هر هفته شمارِ مشخصی مجوز می‌گیری. همین که Vault بسته شود، هیچ‌چیز پیش از پایانِ شمارشِ معکوس بازش نمی‌کند، حتی خودت. برای لحظه‌هایی ساخته شده که اراده‌ات کوتاه می‌آید.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(38,182,204,.14);color:var(--vault)">🔒</span><b data-i18n="p3.fi">صفر بازگشایی<span>تنظیمش کن و تا پایانِ زمان پابرجا می‌ماند. بی استثنا.</span></b></div>
@@ -866,6 +871,7 @@
         <div class="spanel" id="meditation" data-target="s-med">
           <span class="eyebrow" style="color:var(--zen)" data-i18n="p4.ey">مراقبه · بر میل سوار شو</span>
           <h2 data-i18n="p4.h2">با آرامش به پیشوازِ هوس برو.</h2>
+          <img class="spanel-shot" src="/assets/mode-meditation.webp" alt="Cascade Meditation urge-surfing screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p4.d">همان لحظه که دست به‌سوی اپی مسدود می‌بری، Cascade صحنه‌ای آرام و سینمایی می‌گشاید و کنارت می‌ماند: نفس بکش، اوجِ میل را ببین، و بگذار بگذرد. بیشترشان در کمتر از 90 ثانیه فرو می‌نشینند.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(20,216,154,.14);color:var(--zen)">≈</span><b data-i18n="p4.fi">تنفسِ هدایت‌شده &amp; موج‌سواری بر میل<span>ریتمِ صوتیِ آهسته‌ای که کمک می‌کند بدنت آرام بگیرد.</span></b></div>
@@ -874,6 +880,7 @@
         <div class="spanel" id="rewire" data-target="s-rewire">
           <span class="eyebrow" style="color:var(--hard)" data-i18n="p5.ey">بازآفرینی · کسی تازه شو</span>
           <h2 data-i18n="p5.h2">هر جلسه یک رأی است.</h2>
+          <img class="spanel-shot" src="/assets/mode-rewire.webp" alt="Cascade Rewire reflection screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p5.d">پیش از شروع، تعیین کن که چه کسی داری می‌شوی و چرا. پس از آن، لحظه‌ای برای تأمل بگذار. کم‌کم همان انتخاب‌های کوچک همان کسی می‌شوند که واقعاً هستی.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(176,131,242,.14);color:var(--hard)">✓</span><b data-i18n="p5.fi">هویت &amp; نیت‌ها<span>«دارم کسی می‌شوم که از تمرکزش محافظت می‌کند.»</span></b></div>

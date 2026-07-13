@@ -233,6 +233,7 @@
   .story-phone .phone{margin:0}
   .story-panels{display:flex;flex-direction:column}
   .spanel{min-height:86vh;display:flex;flex-direction:column;justify-content:center;padding:18px 0}
+  .spanel-shot{display:none}  /* desktop shows the live sticky phone; the static shot is mobile-only */
   .spanel h2{font-size:clamp(27px,3.3vw,40px);margin:13px 0 15px;letter-spacing:-.02em;font-weight:800;line-height:1.1}
   .spanel p.d{color:var(--muted);font-size:16.5px;margin-bottom:20px;max-width:440px}
   .spanel .mini{display:flex;flex-direction:column;gap:11px}
@@ -246,8 +247,9 @@
     .story-panels{margin:0}
     .spanel{
       display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
-      margin:0;padding:54px 26px;text-align:left;position:relative;min-height:46svh;
+      margin:0;padding:48px 26px;text-align:left;position:relative;min-height:auto;
     }
+    .spanel-shot{display:block;align-self:center;width:100%;max-width:250px;height:auto;margin:24px auto 4px;filter:drop-shadow(0 24px 60px rgba(0,0,0,.5))}
     .spanel + .spanel{border-top:1px solid rgba(255,255,255,.06)}
     .spanel::before{content:'';position:absolute;top:16%;left:-8%;width:80%;height:46%;border-radius:50%;
       background:radial-gradient(circle,color-mix(in srgb,var(--mc) 32%,transparent),transparent 68%);filter:blur(48px);opacity:.5;pointer-events:none}
@@ -842,6 +844,7 @@
         <div class="spanel" data-target="s-zen">
           <span class="eyebrow" style="color:var(--zen)" data-i18n="p1.ey">Zen · 가볍게 시작</span>
           <h2 data-i18n="p1.h2">소음을 끊고, 해가 뜨는 걸 지켜보세요.</h2>
+          <img class="spanel-shot" src="/assets/mode-zen.webp" alt="Cascade Zen mode screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p1.d">앱을 고르고 집중할 시간을 정하세요. 오래 이어갈수록 산 위로 해가 더 높이 떠오릅니다. 당신의 진척을 담은 고요한 풍경이죠. 일찍 멈추고 싶다면? 괜찮아요, 죄책감 가질 것 없어요.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(20,216,154,.14);color:var(--zen)">✓</span><b data-i18n="p1.fi">영원히 무료<span>가장 쉽게 시작하는 방법. 약정도 계정도 필요 없어요.</span></b></div>
@@ -850,6 +853,7 @@
         <div class="spanel" data-target="s-hard">
           <span class="eyebrow" style="color:var(--hard)" data-i18n="p2.ey">Hardcore · 더 단단한 결심</span>
           <h2 data-i18n="p2.h2">그만두는 걸, 진짜 결정으로.</h2>
+          <img class="spanel-shot" src="/assets/mode-hardcore.webp" alt="Cascade Hardcore mode screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p2.d">해제 패스를 정해진 개수만 두고 차단하세요. 무너질 때마다 하나씩 쓰게 되니, 손쉽던 도파민에 마침내 대가가 생깁니다. 도저히 내려놓지 못하는 앱을 위해 만들었어요.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(176,131,242,.14);color:var(--hard)">⚡</span><b data-i18n="p2.fi">한정된 해제 패스<span>하나 써서 잠깐 열어보거나, 다 쓰면 그대로 잠깁니다.</span></b></div>
@@ -858,6 +862,7 @@
         <div class="spanel" data-target="s-vault">
           <span class="eyebrow" style="color:var(--vault)" data-i18n="p3.ey">Vault · 빠져나갈 곳 없음</span>
           <h2 data-i18n="p3.h2">완전히 봉인. 빠져나갈 길은 없어요.</h2>
+          <img class="spanel-shot" src="/assets/mode-vault.webp" alt="Cascade Vault mode screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p3.d">매주 정해진 개수의 패스가 주어집니다. Vault가 한번 닫히면 타이머가 끝나기 전엔 그 무엇도 열 수 없어요. 당신조차도요. 의지력이 흔들리는 순간을 위해 만들었습니다.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(38,182,204,.14);color:var(--vault)">🔒</span><b data-i18n="p3.fi">해제 0회<span>설정해두면 시간이 끝날 때까지 그대로 유지됩니다. 예외 없어요.</span></b></div>
@@ -866,6 +871,7 @@
         <div class="spanel" id="meditation" data-target="s-med">
           <span class="eyebrow" style="color:var(--zen)" data-i18n="p4.ey">명상 · 충동을 흘려보내기</span>
           <h2 data-i18n="p4.h2">갈망을, 고요함으로 마주하세요.</h2>
+          <img class="spanel-shot" src="/assets/mode-meditation.webp" alt="Cascade Meditation urge-surfing screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p4.d">차단된 앱에 손을 뻗는 순간, Cascade가 고요하고 영화 같은 장면을 열고 곁에 머뭅니다. 숨을 쉬고, 충동이 정점에 이르는 걸 지켜보고, 지나가게 두세요. 대부분은 90초도 안 돼 사라집니다.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(20,216,154,.14);color:var(--zen)">≈</span><b data-i18n="p4.fi">가이드 호흡 &amp; 충동 흘려보내기<span>느린 오디오 페이스가 몸을 다시 가라앉게 도와줍니다.</span></b></div>
@@ -874,6 +880,7 @@
         <div class="spanel" id="rewire" data-target="s-rewire">
           <span class="eyebrow" style="color:var(--hard)" data-i18n="p5.ey">나 다시 쓰기 · 새로운 내가 되기</span>
           <h2 data-i18n="p5.h2">모든 세션이, 한 표입니다.</h2>
+          <img class="spanel-shot" src="/assets/mode-rewire.webp" alt="Cascade Rewire reflection screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p5.d">시작하기 전에 되고 싶은 나와 그 이유를 정하세요. 끝난 뒤엔 잠시 돌아보고요. 그렇게 조금씩, 그 작은 선택들이 실제 당신이라는 사람이 됩니다.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(176,131,242,.14);color:var(--hard)">✓</span><b data-i18n="p5.fi">정체성 &amp; 의도<span>"나는 내 집중을 지키는 사람이 되어갑니다."</span></b></div>

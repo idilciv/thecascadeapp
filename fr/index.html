@@ -233,6 +233,7 @@
   .story-phone .phone{margin:0}
   .story-panels{display:flex;flex-direction:column}
   .spanel{min-height:86vh;display:flex;flex-direction:column;justify-content:center;padding:18px 0}
+  .spanel-shot{display:none}  /* desktop shows the live sticky phone; the static shot is mobile-only */
   .spanel h2{font-size:clamp(27px,3.3vw,40px);margin:13px 0 15px;letter-spacing:-.02em;font-weight:800;line-height:1.1}
   .spanel p.d{color:var(--muted);font-size:16.5px;margin-bottom:20px;max-width:440px}
   .spanel .mini{display:flex;flex-direction:column;gap:11px}
@@ -246,8 +247,9 @@
     .story-panels{margin:0}
     .spanel{
       display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
-      margin:0;padding:54px 26px;text-align:left;position:relative;min-height:46svh;
+      margin:0;padding:48px 26px;text-align:left;position:relative;min-height:auto;
     }
+    .spanel-shot{display:block;align-self:center;width:100%;max-width:250px;height:auto;margin:24px auto 4px;filter:drop-shadow(0 24px 60px rgba(0,0,0,.5))}
     .spanel + .spanel{border-top:1px solid rgba(255,255,255,.06)}
     .spanel::before{content:'';position:absolute;top:16%;left:-8%;width:80%;height:46%;border-radius:50%;
       background:radial-gradient(circle,color-mix(in srgb,var(--mc) 32%,transparent),transparent 68%);filter:blur(48px);opacity:.5;pointer-events:none}
@@ -842,6 +844,7 @@
         <div class="spanel" data-target="s-zen">
           <span class="eyebrow" style="color:var(--zen)" data-i18n="p1.ey">Zen · en douceur</span>
           <h2 data-i18n="p1.h2">Coupez le bruit. Regardez le soleil se lever.</h2>
+          <img class="spanel-shot" src="/assets/mode-zen.webp" alt="Cascade Zen mode screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p1.d">Choisissez vos apps et le temps que vous voulez consacrer à la concentration. Plus vous tenez, plus le soleil grimpe au-dessus de la montagne, une image paisible de votre progression. Envie d'arrêter plus tôt ? Aucun souci, sans culpabilité.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(20,216,154,.14);color:var(--zen)">✓</span><b data-i18n="p1.fi">Gratuit à vie<span>La façon la plus simple de commencer. Sans engagement, sans compte.</span></b></div>
@@ -850,6 +853,7 @@
         <div class="spanel" data-target="s-hard">
           <span class="eyebrow" style="color:var(--hard)" data-i18n="p2.ey">Hardcore · engagez-vous davantage</span>
           <h2 data-i18n="p2.h2">Faites d'arrêter une vraie décision.</h2>
+          <img class="spanel-shot" src="/assets/mode-hardcore.webp" alt="Cascade Hardcore mode screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p2.d">Bloquez avec un nombre limité de passes de déverrouillage. Chaque fois que vous craquez, vous en dépensez un, alors cette dose facile de dopamine finit par vous coûter quelque chose. Pensé pour les apps que vous n'arrivez vraiment pas à lâcher.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(176,131,242,.14);color:var(--hard)">⚡</span><b data-i18n="p2.fi">Passes de déverrouillage limités<span>Dépensez-en un pour jeter un œil, ou épuisez-les et restez verrouillé.</span></b></div>
@@ -858,6 +862,7 @@
         <div class="spanel" data-target="s-vault">
           <span class="eyebrow" style="color:var(--vault)" data-i18n="p3.ey">Vault · aucune issue</span>
           <h2 data-i18n="p3.h2">Verrouillez tout. Aucune issue.</h2>
+          <img class="spanel-shot" src="/assets/mode-vault.webp" alt="Cascade Vault mode screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p3.d">Vous disposez d'un nombre fixe de passes chaque semaine. Une fois le Vault fermé, rien ne l'ouvre avant la fin du minuteur, pas même vous. Conçu pour les moments où votre volonté ne l'est pas.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(38,182,204,.14);color:var(--vault)">🔒</span><b data-i18n="p3.fi">Zéro déverrouillage<span>Réglez-le, il tient jusqu'à la fin du temps. Sans exception.</span></b></div>
@@ -866,6 +871,7 @@
         <div class="spanel" id="meditation" data-target="s-med">
           <span class="eyebrow" style="color:var(--zen)" data-i18n="p4.ey">Méditation · laissez l'envie passer</span>
           <h2 data-i18n="p4.h2">Accueillez l'envie avec calme.</h2>
+          <img class="spanel-shot" src="/assets/mode-meditation.webp" alt="Cascade Meditation urge-surfing screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p4.d">À l'instant où vous tendez la main vers une app bloquée, Cascade ouvre une scène calme et cinématographique et reste avec vous : respirez, regardez l'envie culminer, laissez-la passer. La plupart s'estompent en moins de 90 secondes.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(20,216,154,.14);color:var(--zen)">≈</span><b data-i18n="p4.fi">Respiration guidée &amp; surf sur l'envie<span>Un rythme audio lent qui aide votre corps à s'apaiser.</span></b></div>
@@ -874,6 +880,7 @@
         <div class="spanel" id="rewire" data-target="s-rewire">
           <span class="eyebrow" style="color:var(--hard)" data-i18n="p5.ey">Reprogrammer · devenez quelqu'un de nouveau</span>
           <h2 data-i18n="p5.h2">Chaque session est un vote.</h2>
+          <img class="spanel-shot" src="/assets/mode-rewire.webp" alt="Cascade Rewire reflection screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p5.d">Avant de commencer, définissez qui vous devenez et pourquoi. Ensuite, prenez un moment pour réfléchir. Petit à petit, ces petits choix deviennent la personne que vous êtes vraiment.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(176,131,242,.14);color:var(--hard)">✓</span><b data-i18n="p5.fi">Identité &amp; intentions<span>"Je deviens quelqu'un qui protège sa concentration."</span></b></div>
