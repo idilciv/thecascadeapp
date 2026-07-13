@@ -151,7 +151,7 @@
   .hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(105deg,rgba(8,8,11,.82) 0%,rgba(8,8,11,.46) 32%,rgba(8,8,11,.06) 56%,transparent 66%)}
   @media(min-width:761px) and (max-width:860px){.hero::after{background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(to bottom,rgba(8,8,11,.74) 0%,rgba(8,8,11,.34) 42%,transparent 66%)}}
   /* phone: mountain sits at the top (behind nothing), content flows below over dark, only a soft bottom fade, no top darkening */
-  @media(max-width:760px){.hero::after{background:linear-gradient(to top,#08080b 0%,#08080b 12%,transparent 30%)}}
+  @media(max-width:760px){.hero::after{background:linear-gradient(180deg,rgba(8,8,11,.82) 0%,rgba(8,8,11,.52) 22%,rgba(8,8,11,.1) 46%,transparent 56%),linear-gradient(to top,#08080b 0%,#08080b 12%,transparent 32%)}}
   .phone-stage{transform-style:preserve-3d;perspective:1000px;will-change:transform,opacity}
   .blobs{position:absolute;inset:0;z-index:0;filter:blur(60px);opacity:.55;pointer-events:none}
   .blob{position:absolute;border-radius:50%}
@@ -530,6 +530,8 @@
   .hero-chips li{font-size:12.5px;color:var(--muted);border:1px solid rgba(255,255,255,.12);border-radius:100px;padding:5px 12px;background:rgba(255,255,255,.03)}
   /* problem band note */
   .prob-note{text-align:center;font-size:12.5px;color:var(--faint);margin:16px auto 0;max-width:46ch}
+  #problem .band{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:560px){#problem .band{grid-template-columns:1fr}}
   .band .n.zen{color:var(--zen)} .band .n.hard{color:var(--hard)} .band .n.vault{color:var(--vault)}
 
   /* ---- display typeface for headings ---- */
@@ -672,8 +674,6 @@
         <li data-i18n="hero.chip1">由 Apple Screen Time 驅動</li>
         <li data-i18n="hero.chip2">私密 · 在裝置本機</li>
       </ul>
-      <!-- PLACEHOLDER rating, replace 4.8 / count with real App Store numbers -->
-      <div class="rate-badge"><span class="s">★</span> <b>4.8</b> · <span data-i18n="hero.ratings">1,200+ App Store 評分</span></div>
     </div>
 
     <div class="phone-stage">
@@ -724,8 +724,7 @@
     <div class="band reveal">
       <div class="b"><div class="n zen" data-i18n="prob.n1">3–4 小時</div><div class="k" data-i18n="prob.s1">平均每天花在手機上的時間</div></div>
       <div class="b"><div class="n hard" data-i18n="prob.n2">58+</div><div class="k" data-i18n="prob.s2">我們每天伸手拿手機的次數</div></div>
-      <div class="b"><div class="n vault" data-i18n="prob.n3">約 23 分鐘</div><div class="k" data-i18n="prob.s3">每次分心後重新專注所需的時間</div></div>
-      <div class="b"><div class="n" data-i18n="prob.n4">約 90 秒</div><div class="k" data-i18n="prob.s4">多數衝動會先攀上頂點，然後消退</div></div>
+      <div class="b"><div class="n vault" data-i18n="prob.n4">約 90 秒</div><div class="k" data-i18n="prob.s4">多數衝動會先攀上頂點，然後消退</div></div>
     </div>
     <p class="prob-note reveal" data-i18n="prob.note">來自廣受引用的注意力研究的一般數據，並非 Cascade 使用者資料。</p>
   </div>
