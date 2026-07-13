@@ -969,7 +969,7 @@
     const mq=window.matchMedia('(max-width:860px)');
     const col={'s-zen':'var(--zen)','s-hard':'var(--hard)','s-vault':'var(--vault)','s-med':'var(--zen)','s-rewire':'var(--hard)'};
     const LAST=cards.length-1;
-    let idx=0, active=false, animating=false, lockY=0, prevY=window.pageYOffset, startY=null, used=false, cooldown=false, cdT=null;
+    let idx=0, active=false, animating=false, lockY=0, prevY=window.pageYOffset, startY=null, used=false, cooldown=false, cdT=null, gliding=false;
 
     const dots=document.createElement('div'); dots.className='story-dots';
     cards.forEach(()=>dots.appendChild(document.createElement('i')));
@@ -980,26 +980,40 @@
       dEls.forEach((d,k)=>{ const on=k===idx; d.classList.toggle('on',on); d.style.background=on?(col[cards[k].getAttribute('data-target')]||'#fff'):''; });
     }
     function carouselOn(){ if(!section.classList.contains('mob-carousel')){ section.classList.add('mob-carousel'); render(); } }
-    function carouselOff(){ if(active) unlock(0); section.classList.remove('mob-carousel'); dots.classList.remove('show'); }
+    function carouselOff(){ active=false; const b=document.body.style; b.position=''; b.top=''; b.left=''; b.right=''; b.width=''; section.classList.remove('mob-carousel'); dots.classList.remove('show'); }
 
-    function lock(fromTop){
-      idx=fromTop?0:LAST; render();
-      lockY=section.offsetTop;
-      window.scrollTo(0,lockY);
+    // manual smooth scroll (rAF + easeInOut) — reliable everywhere, unlike iOS's flaky native behavior:'smooth'
+    function glide(to, dur, cb){
+      gliding=true;
+      const from=window.pageYOffset, dist=to-from, t0=performance.now();
+      (function frame(now){
+        const p = dur<=0 ? 1 : Math.min(1,(now-t0)/dur);
+        const e = p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2;   // easeInOutQuad
+        window.scrollTo(0, Math.round(from+dist*e));
+        if(p<1) requestAnimationFrame(frame);
+        else { gliding=false; prevY=window.pageYOffset; if(cb) cb(); }
+      })(performance.now());
+    }
+    function fixBody(){
       const b=document.body.style;
       b.top=(-lockY)+'px'; b.left='0'; b.right='0'; b.width='100%'; b.position='fixed';
-      active=true; dots.classList.add('show');
     }
+    // ENTER: smoothly glide the section up to the top, THEN lock (so arrival decelerates gently instead of snapping)
+    function lock(fromTop){
+      idx=fromTop?0:LAST; render(); dots.classList.add('show');
+      lockY=section.offsetTop;
+      glide(lockY, 500, ()=>{ if(mq.matches){ fixBody(); active=true; } });
+    }
+    // EXIT: unfix, then smoothly glide one screen out of the section (no abrupt jump)
     function unlock(dir){
       active=false; dots.classList.remove('show');
       const b=document.body.style;
       b.position=''; b.top=''; b.left=''; b.right=''; b.width='';
-      window.scrollTo(0, lockY);                      // restore to the pinned position first, so unfixing body doesn't snap to the top
+      window.scrollTo(0, lockY);                        // restore pinned position instantly (invisible) before animating out
+      cooldown=true; clearTimeout(cdT);
       const vh=window.innerHeight;
-      const target=Math.max(0, lockY + (dir>0 ? Math.round(vh*0.85) : -Math.round(vh*0.85)));
-      requestAnimationFrame(()=>{ window.scrollTo({top:target, behavior:'smooth'}); prevY=target; });  // then glide gently out of the section (no abrupt full-screen jump)
-      prevY=lockY;
-      cooldown=true; clearTimeout(cdT); cdT=setTimeout(()=>{cooldown=false;}, 1100);
+      const target=Math.max(0, lockY + (dir>0 ? vh : -vh));
+      glide(target, 560, ()=>{ cdT=setTimeout(()=>{cooldown=false;}, 120); });
     }
     function step(dir){
       if(animating) return;
@@ -1011,12 +1025,12 @@
     function onScroll(){
       if(!mq.matches){ if(section.classList.contains('mob-carousel')) carouselOff(); return; }
       carouselOn();
-      if(active) return;
+      if(active || gliding || cooldown){ prevY=window.pageYOffset; return; }
       const y=window.pageYOffset, dir=y>=prevY?1:-1; prevY=y;
       const r=section.getBoundingClientRect(), vh=window.innerHeight;
-      if(cooldown) return;   // just released — let the page scroll away before it can re-lock
-      if(dir>0 && r.top<=vh*0.12 && r.top>-vh*0.45) lock(true);
-      else if(dir<0 && r.bottom>=vh*0.88 && r.bottom<vh*1.45) lock(false);
+      // trigger a touch early (section ~half on screen) so the glide has room to pull it in smoothly
+      if(dir>0 && r.top<=vh*0.5 && r.top>-vh*0.4) lock(true);
+      else if(dir<0 && r.bottom>=vh*0.5 && r.bottom<vh*1.5) lock(false);
     }
     window.addEventListener('scroll', onScroll, {passive:true});
 
