@@ -195,9 +195,10 @@
       margin:0;padding:40px 26px;text-align:left;position:relative;min-height:60svh;
     }
     #modes.mob-carousel{height:100svh;overflow:hidden;padding:0}
-    #modes.mob-carousel .wrap{height:100%;display:flex;flex-direction:column;padding:0;max-width:none}
-    #modes.mob-carousel .sec-head{flex:0 0 auto;margin:0;padding:22px 26px 2px}
-    #modes.mob-carousel .story-panels{position:relative;flex:1 1 auto;margin:0}
+    #modes.mob-carousel .wrap{height:100%;padding:0;max-width:none}
+    #modes.mob-carousel .sec-head{display:none}
+    #modes.mob-carousel .story-grid{height:100%}
+    #modes.mob-carousel .story-panels{position:relative;height:100%;margin:0}
     #modes.mob-carousel .spanel{position:absolute;inset:0;min-height:0;height:auto;justify-content:center;
       opacity:0;transform:translateY(28px);transition:opacity .45s ease,transform .45s ease;pointer-events:none}
     #modes.mob-carousel .spanel.active{opacity:1;transform:none;pointer-events:auto}
@@ -967,7 +968,7 @@
     const mq=window.matchMedia('(max-width:860px)');
     const col={'s-zen':'var(--zen)','s-hard':'var(--hard)','s-vault':'var(--vault)','s-med':'var(--zen)','s-rewire':'var(--hard)'};
     const LAST=cards.length-1;
-    let idx=0, active=false, animating=false, lockY=0, prevY=window.pageYOffset, startY=null, used=false;
+    let idx=0, active=false, animating=false, lockY=0, prevY=window.pageYOffset, startY=null, used=false, cooldown=false;
 
     const dots=document.createElement('div'); dots.className='story-dots';
     cards.forEach(()=>dots.appendChild(document.createElement('i')));
@@ -989,10 +990,10 @@
       active=true; dots.classList.add('show');
     }
     function unlock(dir){
-      active=false; dots.classList.remove('show');
+      active=false; cooldown=true; dots.classList.remove('show');
       const b=document.body.style;
       b.position=''; b.top=''; b.left=''; b.right=''; b.width='';
-      const y=section.offsetTop + (dir>0 ? section.offsetHeight : -Math.round(window.innerHeight*0.18));
+      const y=section.offsetTop + (dir>0 ? section.offsetHeight+2 : -Math.round(window.innerHeight*0.9));
       window.scrollTo(0, Math.max(0,y));
       prevY=window.pageYOffset;
     }
@@ -1009,8 +1010,10 @@
       if(active) return;
       const y=window.pageYOffset, dir=y>=prevY?1:-1; prevY=y;
       const r=section.getBoundingClientRect(), vh=window.innerHeight;
-      if(dir>0 && r.top<=vh*0.12 && r.top>-vh*0.6) lock(true);
-      else if(dir<0 && r.bottom>=vh*0.88 && r.bottom<vh*1.6) lock(false);
+      // after a release, don't re-lock until the section has fully left the screen
+      if(cooldown){ if(r.bottom<=vh*0.05 || r.top>=vh*0.95) cooldown=false; else return; }
+      if(dir>0 && r.top<=vh*0.12 && r.top>-vh*0.45) lock(true);
+      else if(dir<0 && r.bottom>=vh*0.88 && r.bottom<vh*1.45) lock(false);
     }
     window.addEventListener('scroll', onScroll, {passive:true});
 
