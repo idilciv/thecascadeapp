@@ -490,6 +490,22 @@
   h1,h2,h3,.plan .amt,.band .b .n,.step .num{font-family:"Space Grotesk",var(--font)}
   /* ---- section rhythm: subtly tint a few sections so the page isn't one flat dark wall ---- */
   .prob,.sci,.safe{background:var(--bg2);border-block:1px solid var(--border2)}
+  /* safe grid: 2×2 on desktop/tablet so the 4th card isn't stranded alone */
+  #safe .fg{grid-template-columns:repeat(2,1fr);max-width:860px;margin-inline:auto}
+  @media(max-width:600px){#safe .fg{grid-template-columns:1fr}}
+  /* keep the price from clipping its last digit with the wider display font */
+  .plan .amt{font-size:clamp(28px,2.5vw,34px);letter-spacing:-.03em}
+  /* ---- weekly letter preview card ---- */
+  .letter-card{border:1px solid var(--border);border-radius:22px;background:linear-gradient(180deg,rgba(255,196,120,.09),var(--panel));padding:24px;box-shadow:0 22px 55px rgba(0,0,0,.34);max-width:430px;margin-left:auto}
+  .lc-top{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--faint);margin-bottom:14px}
+  .lc-from{font-weight:800;color:var(--text);letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+  .lc-from .dot{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,#ffcf87,#ff8a63);display:grid;place-items:center;color:#231204;font-size:12px}
+  .lc-hi{font-size:19px;font-weight:800;font-family:"Space Grotesk",var(--font);margin-bottom:14px}
+  .lc-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid var(--border2);font-size:14.5px;color:var(--muted)}
+  .lc-row:first-of-type{border-top:none}
+  .lc-row b{color:var(--text);font-size:16px;font-family:"Space Grotesk",var(--font);font-weight:600}
+  .lc-note{margin-top:16px;padding:13px 16px;border-radius:14px;background:rgba(255,190,110,.1);border:1px solid rgba(255,190,110,.22);font-size:14px;color:var(--text);line-height:1.5}
+  @media(max-width:860px){.letter-card{max-width:none;margin:0}}
   /* ---- warm 'sunrise' moment on the closing CTA (ties to the mountain-sunrise brand) ---- */
   .cta{border-color:rgba(255,178,96,.24);
     background:radial-gradient(120% 150% at 50% -12%,rgba(255,196,120,.26),rgba(255,132,92,.12) 34%,rgba(20,216,154,.05) 60%,rgba(8,8,11,.25) 78%)}
@@ -612,10 +628,10 @@
       <p data-i18n="prob.sub">Feeds are engineered to be endless, and your brain learns to reach for them on autopilot. It isn't a willpower problem — it's a design problem. Cascade puts the design back on your side.</p>
     </div>
     <div class="band reveal">
-      <div class="b"><div class="n zen">3–4h</div><div class="k" data-i18n="prob.s1">the average day spent on a phone</div></div>
-      <div class="b"><div class="n hard">58+</div><div class="k" data-i18n="prob.s2">times a day we reach for it</div></div>
-      <div class="b"><div class="n vault">~23m</div><div class="k" data-i18n="prob.s3">to refocus after each distraction</div></div>
-      <div class="b"><div class="n">~90s</div><div class="k" data-i18n="prob.s4">and most urges peak, then fade</div></div>
+      <div class="b"><div class="n zen" data-i18n="prob.n1">3–4h</div><div class="k" data-i18n="prob.s1">the average day spent on a phone</div></div>
+      <div class="b"><div class="n hard" data-i18n="prob.n2">58+</div><div class="k" data-i18n="prob.s2">times a day we reach for it</div></div>
+      <div class="b"><div class="n vault" data-i18n="prob.n3">~23m</div><div class="k" data-i18n="prob.s3">to refocus after each distraction</div></div>
+      <div class="b"><div class="n" data-i18n="prob.n4">~90s</div><div class="k" data-i18n="prob.s4">and most urges peak, then fade</div></div>
     </div>
     <p class="prob-note reveal" data-i18n="prob.note">General figures from widely-cited attention research — not Cascade user data.</p>
   </div>
@@ -807,10 +823,39 @@
       <p data-i18n="stats.sub">Every focused minute counts toward your streak and your totals. Add friends to keep each other honest, and see who's locked in right now.</p>
     </div>
     <div class="band reveal">
-      <div class="b"><div class="n zen">3h 20m</div><div class="k" data-i18n="stats.focused_today">Focused today</div></div>
+      <div class="b"><div class="n zen" data-i18n="stats.n1">3h 20m</div><div class="k" data-i18n="stats.focused_today">Focused today</div></div>
       <div class="b"><div class="n hard">14</div><div class="k" data-i18n="ui.day_streak">Day streak</div></div>
-      <div class="b"><div class="n vault">62h</div><div class="k" data-i18n="stats.this_month">This month</div></div>
+      <div class="b"><div class="n vault" data-i18n="stats.n3">62h</div><div class="k" data-i18n="stats.this_month">This month</div></div>
       <div class="b"><div class="n">#2</div><div class="k" data-i18n="stats.among_friends">Among friends</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WEEKLY LETTER · real feature: a weekly recap email -->
+<section id="letter" class="letter">
+  <div class="wrap">
+    <div class="split">
+      <div class="txt reveal">
+        <span class="eyebrow" data-i18n="ltr.eyebrow">A letter every week</span>
+        <h2 data-i18n="ltr.h2">A calm weekly recap, in your inbox.</h2>
+        <p class="d" data-i18n="ltr.p">Once a week, Cascade sends you a short, personal letter — the hours you focused, your streak, your longest session and the apps you didn't reach for, with a gentle note on where you're heading.</p>
+        <div class="flist">
+          <div class="fitem"><span class="c" style="background:rgba(255,190,110,.14);color:#ffbe6e"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><div><b data-i18n="ltr.f1t">Your week, at a glance</b><span data-i18n="ltr.f1p">Focus hours, day streak and longest session, all in one place.</span></div></div>
+          <div class="fitem"><span class="c" style="background:rgba(255,190,110,.14);color:#ffbe6e"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><div><b data-i18n="ltr.f2t">What you rose above</b><span data-i18n="ltr.f2p">See the apps you stepped away from — and the time you got back.</span></div></div>
+          <div class="fitem"><span class="c" style="background:rgba(255,190,110,.14);color:#ffbe6e"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><div><b data-i18n="ltr.f3t">A nudge forward</b><span data-i18n="ltr.f3p">A warm, honest line on your progress and who you're becoming.</span></div></div>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:.08s">
+        <div class="letter-card">
+          <div class="lc-top"><span class="lc-from"><span class="dot">☀</span>Cascade</span><span data-i18n="ltr.card_date">This week</span></div>
+          <div class="lc-hi" data-i18n="ltr.card_hi">Here's your week</div>
+          <div class="lc-row"><span data-i18n="ltr.card_r1">Focused</span><b data-i18n="ltr.card_v1">8h 40m</b></div>
+          <div class="lc-row"><span data-i18n="ltr.card_r2">Day streak</span><b data-i18n="ltr.card_v2">6</b></div>
+          <div class="lc-row"><span data-i18n="ltr.card_r3">Longest session</span><b data-i18n="ltr.card_v3">52m</b></div>
+          <div class="lc-row"><span data-i18n="ltr.card_r4">Apps avoided</span><b data-i18n="ltr.card_v4">14</b></div>
+          <div class="lc-note" data-i18n="ltr.card_note">"Three days longer than last week — the sun's climbing."</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
