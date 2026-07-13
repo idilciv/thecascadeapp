@@ -185,25 +185,16 @@
   .spanel .mini .fitem b{font-size:14.5px}
   .story-dots{display:none}
   @media(max-width:860px){
-    /* Mobile: the modes become a pinned carousel (JS adds .mob-carousel). */
-    html,body{overscroll-behavior-y:contain}   /* stop iOS pull-to-refresh (the reload spinner) when the carousel releases at the top */
-    .story{padding:0}
+    /* Mobile: modes are plain, roomy, normal-flow sections. Each mode gets its own generous, breathable space so nothing feels cramped, and the whole page scrolls normally. */
+    .story{padding:40px 0}
     .story-grid{display:block}
     .story-phone{display:none}
-    /* PINNED CAROUSEL. The page scrolls normally until #modes reaches the top; then JS adds .mob-carousel and pins the page (body:fixed) so scrolling STOPS. Each swipe swaps one mode (1→2→3→4→5); after the last, JS releases and the page scrolls on. Nothing outside this section is touched. Fallback (no JS): plain stacked, all visible. */
+    .story-panels{margin:0}
     .spanel{
       display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
-      margin:0;padding:40px 26px;text-align:left;position:relative;min-height:60svh;
+      margin:0;padding:60px 26px;text-align:left;position:relative;min-height:78svh;
     }
-    #modes.mob-carousel{height:100svh;overflow:hidden;padding:0;position:relative}
-    #modes.mob-carousel .wrap{height:100svh;padding:0;max-width:none;position:static}
-    #modes.mob-carousel .sec-head{display:none}
-    #modes.mob-carousel .story-grid{height:100svh}
-    #modes.mob-carousel .story-panels{position:absolute;inset:0;height:100svh;margin:0}
-    #modes.mob-carousel .spanel{position:absolute;inset:0;min-height:0;height:100svh;justify-content:center;
-      opacity:0;transform:translateY(28px);transition:opacity .45s ease,transform .45s ease;pointer-events:none}
-    #modes.mob-carousel .spanel.active{opacity:1;transform:none;pointer-events:auto}
-    #modes.mob-carousel .spanel.above{opacity:0;transform:translateY(-28px)}
+    .spanel + .spanel{border-top:1px solid rgba(255,255,255,.06)}
     .spanel::before{content:'';position:absolute;top:16%;left:-8%;width:80%;height:46%;border-radius:50%;
       background:radial-gradient(circle,color-mix(in srgb,var(--mc) 32%,transparent),transparent 68%);filter:blur(48px);opacity:.5;pointer-events:none}
     .spanel .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;color:var(--mc)!important}
@@ -216,10 +207,7 @@
     .spanel[data-target="s-vault"]{--mc:var(--vault)}
     .spanel[data-target="s-med"]{--mc:var(--zen)}
     .spanel[data-target="s-rewire"]{--mc:var(--hard)}
-    .story-dots{display:flex;position:fixed;left:0;right:0;bottom:14px;justify-content:center;gap:8px;z-index:40;pointer-events:none;opacity:0;transition:opacity .3s}
-    .story-dots.show{opacity:1}
-    .story-dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.3);transition:width .3s,background .3s}
-    .story-dots i.on{width:24px;border-radius:6px}
+    .story-dots{display:none}
   }
   /* phone screen states */
   .screen .state{position:absolute;inset:0;opacity:0;transition:opacity .5s ease;pointer-events:none}
@@ -960,110 +948,7 @@
     document.querySelectorAll('.spanel').forEach(p=>stObs.observe(p));
   }
 
-  // Mobile modes: PINNED CAROUSEL. The page scrolls normally until #modes reaches the top; then the page LOCKS (body:fixed) and every swipe swaps exactly one mode (1→2→3→4→5). Discrete gesture = one step, so it can NEVER skip 3-4-5. After the last mode a swipe releases the lock and the page scrolls on. Scoped entirely to this section.
-  (function(){
-    const section=document.getElementById('modes');
-    const box=section && section.querySelector('.story-panels');
-    const cards=box ? [].slice.call(box.querySelectorAll('.spanel')) : [];
-    if(!section || cards.length<2) return;
-    const mq=window.matchMedia('(max-width:860px)');
-    const col={'s-zen':'var(--zen)','s-hard':'var(--hard)','s-vault':'var(--vault)','s-med':'var(--zen)','s-rewire':'var(--hard)'};
-    const LAST=cards.length-1;
-    let idx=0, active=false, animating=false, lockY=0, prevY=window.pageYOffset, startY=null, used=false, cooldown=false, cdT=null, gliding=false;
-
-    const dots=document.createElement('div'); dots.className='story-dots';
-    cards.forEach(()=>dots.appendChild(document.createElement('i')));
-    document.body.appendChild(dots);
-    const dEls=[].slice.call(dots.children);
-    function render(){
-      cards.forEach((c,i)=>{ c.classList.toggle('active',i===idx); c.classList.toggle('above',i<idx); });
-      dEls.forEach((d,k)=>{ const on=k===idx; d.classList.toggle('on',on); d.style.background=on?(col[cards[k].getAttribute('data-target')]||'#fff'):''; });
-    }
-    function carouselOn(){ if(!section.classList.contains('mob-carousel')){ section.classList.add('mob-carousel'); render(); } }
-    function carouselOff(){ active=false; const b=document.body.style; b.position=''; b.top=''; b.left=''; b.right=''; b.width=''; section.classList.remove('mob-carousel'); dots.classList.remove('show'); }
-
-    // manual smooth scroll (rAF + easeInOut) — reliable everywhere, unlike iOS's flaky native behavior:'smooth'
-    function glide(to, dur, cb){
-      gliding=true;
-      const from=window.pageYOffset, dist=to-from, t0=performance.now();
-      (function frame(now){
-        const p = dur<=0 ? 1 : Math.min(1,(now-t0)/dur);
-        const e = p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2;   // easeInOutQuad
-        window.scrollTo(0, Math.round(from+dist*e));
-        if(p<1) requestAnimationFrame(frame);
-        else { gliding=false; prevY=window.pageYOffset; if(cb) cb(); }
-      })(performance.now());
-    }
-    function fixBody(){
-      const b=document.body.style;
-      b.top=(-lockY)+'px'; b.left='0'; b.right='0'; b.width='100%'; b.position='fixed';
-    }
-    // ENTER: smoothly glide the section up to the top, THEN lock (so arrival decelerates gently instead of snapping)
-    function lock(fromTop){
-      idx=fromTop?0:LAST; render(); dots.classList.add('show');
-      lockY=section.offsetTop;
-      glide(lockY, 500, ()=>{ if(mq.matches){ fixBody(); active=true; } });
-    }
-    // EXIT: keep the body pinned and animate it out with transform (compositor-smooth). Only at the very end do we unfix + set the real scroll — in ONE frame — so the page never flashes to scroll 0 / the hero.
-    function unlock(dir){
-      active=false; dots.classList.remove('show');
-      cooldown=true; clearTimeout(cdT); gliding=true;
-      const vh=window.innerHeight;
-      const endScroll=Math.max(0, lockY + (dir>0 ? vh : -vh));
-      const delta=endScroll-lockY;                    // how far the visible content should travel
-      const t0=performance.now(), dur=560;
-      (function frame(now){
-        const p=Math.min(1,(now-t0)/dur);
-        const e=p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2;
-        document.body.style.transform='translateY('+Math.round(-delta*e)+'px)';
-        if(p<1) requestAnimationFrame(frame);
-        else {
-          const b=document.body.style;
-          b.transform=''; b.position=''; b.top=''; b.left=''; b.right=''; b.width='';
-          window.scrollTo(0, endScroll);
-          prevY=endScroll; gliding=false;
-          cdT=setTimeout(()=>{cooldown=false;}, 150);
-        }
-      })(performance.now());
-    }
-    function step(dir){
-      if(animating) return;
-      const t=idx+dir;
-      if(t<0 || t>LAST){ unlock(dir); return; }
-      idx=t; render(); animating=true; setTimeout(()=>{animating=false;},460);
-    }
-
-    function onScroll(){
-      if(!mq.matches){ if(section.classList.contains('mob-carousel')) carouselOff(); return; }
-      carouselOn();
-      if(active || gliding || cooldown){ prevY=window.pageYOffset; return; }
-      const y=window.pageYOffset, dir=y>=prevY?1:-1; prevY=y;
-      const r=section.getBoundingClientRect(), vh=window.innerHeight;
-      // trigger a touch early (section ~half on screen) so the glide has room to pull it in smoothly
-      if(dir>0 && r.top<=vh*0.5 && r.top>-vh*0.4) lock(true);
-      else if(dir<0 && r.bottom>=vh*0.5 && r.bottom<vh*1.5) lock(false);
-    }
-    window.addEventListener('scroll', onScroll, {passive:true});
-
-    document.addEventListener('touchstart', e=>{ if(active){ startY=e.touches[0].clientY; used=false; } }, {passive:true});
-    document.addEventListener('touchmove', e=>{
-      if(!active || used || animating || startY==null) return;
-      const dy=startY-e.touches[0].clientY;
-      if(Math.abs(dy)>34){ used=true; step(dy>0?1:-1); }
-    }, {passive:true});
-    document.addEventListener('touchend', ()=>{ if(active){ used=false; startY=null; } }, {passive:true});
-
-    let wl=false;
-    window.addEventListener('wheel', e=>{
-      if(!active) return;
-      e.preventDefault();
-      if(wl || animating || Math.abs(e.deltaY)<6) return;
-      wl=true; setTimeout(()=>{wl=false;},520); step(e.deltaY>0?1:-1);
-    }, {passive:false});
-
-    if(mq.addEventListener) mq.addEventListener('change', ()=>{ if(!mq.matches) carouselOff(); else onScroll(); });
-    onScroll();
-  })();
+  // (Mobile modes render as plain, roomy, normal-scrolling sections — no carousel/pin.)
 
   // footer: "+16 more" reveals the full localized language list
   const langMore=document.getElementById('langMore');
