@@ -1342,7 +1342,7 @@
     ctx.fillStyle = '#08080b'; ctx.fillRect(0, 0, cw, ch);   // dark backdrop
     if (IS_M){                                    // phone: pre-cropped single-peak frame, full width, sitting BEHIND the phone (sun+peak above, base behind the phone)
       var s = cw / FW, dh = FH * s;
-      ctx.drawImage(img, 0, phoneOff * dpr - dh * 0.33, cw, dh);   // band pushed down so the rising sun clears the hero chips, sitting behind the phone
+      ctx.drawImage(img, 0, phoneOff * dpr - dh * 0.38, cw, dh);   // band height tuned so peaks rise above the phone while the sun still clears the hero chips
     } else {                                      // wide (desktop): cover the hero, biased right so the sun clears the left-aligned copy
       var s2 = Math.max(cw / FW, ch / FH);
       ctx.drawImage(img, (cw - FW * s2) / 2 + cw * 0.15, (ch - FH * s2) / 2, FW * s2, FH * s2);
