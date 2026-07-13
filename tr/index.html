@@ -908,16 +908,9 @@
         <p data-i18n="sci.c3p">Bitirdiğin her seans, dönüştüğün kişi için küçük bir oydur. Zamanla yeni alışkanlığı kalıcı kılan şey ham irade değil, bu oylardır.</p>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- RESEARCH · real, independent studies (honest, cited) -->
-<section id="research" class="research">
-  <div class="wrap">
-    <div class="sec-head center reveal">
+    <div class="sec-head center reveal" style="margin-top:48px;margin-bottom:26px">
       <span class="eyebrow" data-i18n="research.eyebrow">Bağımsız araştırmalara dayanıyor</span>
-      <h2 data-i18n="research.h2">Bunu biz icat etmedik, üstüne kurduk.</h2>
-      <p data-i18n="research.sub">Cascade'in yaklaşımı, köklü dikkat ve alışkanlık araştırmalarına dayanır. Bunlar bizim değil, bağımsız çalışmalar.</p>
+      <p data-i18n="research.sub" style="margin-top:10px">Cascade'in yaklaşımı, köklü dikkat ve alışkanlık araştırmalarına dayanır. Bunlar bizim değil, bağımsız çalışmalar.</p>
     </div>
     <div class="cites">
       <div class="cite reveal">
@@ -951,17 +944,6 @@
       <div class="b"><div class="n hard">14</div><div class="k" data-i18n="ui.day_streak">Günlük seri</div></div>
       <div class="b"><div class="n vault" data-i18n="stats.n3">62sa</div><div class="k" data-i18n="stats.this_month">Bu ay</div></div>
       <div class="b"><div class="n">#2</div><div class="k" data-i18n="stats.among_friends">Arkadaşlar arasında</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- IMPACT COUNTER · PLACEHOLDER total, swap for real community numbers at launch -->
-<section id="impact" class="impact">
-  <div class="wrap">
-    <div class="reveal">
-      <div class="n">1,200,000</div>
-      <div class="impact-k" data-i18n="impact.k">Cascade ile geri kazanılan odak dakikası</div>
-      <div class="ph-note" data-i18n="impact.note">Örnek rakam, yayına çıkınca gerçek topluluk toplamını gösterecek.</div>
     </div>
   </div>
 </section>
@@ -1303,7 +1285,7 @@
       })(performance.now());
     }
     const io=new IntersectionObserver((es)=>{es.forEach(e=>{ if(e.isIntersecting){ e.target.querySelectorAll('.n').forEach(animate); io.unobserve(e.target); } })},{threshold:.4});
-    document.querySelectorAll('.band, #impact').forEach(b=>io.observe(b));
+    document.querySelectorAll('.band').forEach(b=>io.observe(b));
   })();
 
   // sticky story: the phone stays put, only its screen changes as each panel scrolls to center

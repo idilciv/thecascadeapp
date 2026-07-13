@@ -908,16 +908,9 @@
         <p data-i18n="sci.c3p">やり終えたセッションはどれも、なりたい自分への小さな一票だ。時間とともに、新しい習慣を根づかせるのは、剥き出しの意志力ではなく、その一票の積み重ねになる。</p>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- RESEARCH · real, independent studies (honest, cited) -->
-<section id="research" class="research">
-  <div class="wrap">
-    <div class="sec-head center reveal">
+    <div class="sec-head center reveal" style="margin-top:48px;margin-bottom:26px">
       <span class="eyebrow" data-i18n="research.eyebrow">独立した研究に裏づけられて</span>
-      <h2 data-i18n="research.h2">私たちが発明したのではない, その上に築いただけだ。</h2>
-      <p data-i18n="research.sub">Cascadeのアプローチは、確立された注意と習慣の研究に基づいている。これらは私たち自身のものではなく、独立した研究だ。</p>
+      <p data-i18n="research.sub" style="margin-top:10px">Cascadeのアプローチは、確立された注意と習慣の研究に基づいている。これらは私たち自身のものではなく、独立した研究だ。</p>
     </div>
     <div class="cites">
       <div class="cite reveal">
@@ -951,17 +944,6 @@
       <div class="b"><div class="n hard">14</div><div class="k" data-i18n="ui.day_streak">連続日数</div></div>
       <div class="b"><div class="n vault" data-i18n="stats.n3">62時間</div><div class="k" data-i18n="stats.this_month">今月</div></div>
       <div class="b"><div class="n">#2</div><div class="k" data-i18n="stats.among_friends">仲間の中で</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- IMPACT COUNTER · PLACEHOLDER total, swap for real community numbers at launch -->
-<section id="impact" class="impact">
-  <div class="wrap">
-    <div class="reveal">
-      <div class="n">1,200,000</div>
-      <div class="impact-k" data-i18n="impact.k">Cascadeで取り戻した集中の分数</div>
-      <div class="ph-note" data-i18n="impact.note">サンプルの数値です, ローンチ後、実際のコミュニティ合計を表示します。</div>
     </div>
   </div>
 </section>
@@ -1303,7 +1285,7 @@
       })(performance.now());
     }
     const io=new IntersectionObserver((es)=>{es.forEach(e=>{ if(e.isIntersecting){ e.target.querySelectorAll('.n').forEach(animate); io.unobserve(e.target); } })},{threshold:.4});
-    document.querySelectorAll('.band, #impact').forEach(b=>io.observe(b));
+    document.querySelectorAll('.band').forEach(b=>io.observe(b));
   })();
 
   // sticky story: the phone stays put, only its screen changes as each panel scrolls to center

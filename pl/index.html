@@ -908,16 +908,9 @@
         <p data-i18n="sci.c3p">Każda ukończona sesja to jeden mały głos na osobę, którą się stajesz. Z czasem to właśnie te głosy, a nie sama silna wola, sprawiają, że nowy nawyk się utrwala.</p>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- RESEARCH · real, independent studies (honest, cited) -->
-<section id="research" class="research">
-  <div class="wrap">
-    <div class="sec-head center reveal">
+    <div class="sec-head center reveal" style="margin-top:48px;margin-bottom:26px">
       <span class="eyebrow" data-i18n="research.eyebrow">Oparte na niezależnych badaniach</span>
-      <h2 data-i18n="research.h2">Nie wymyśliliśmy tego, zbudowaliśmy wokół tego.</h2>
-      <p data-i18n="research.sub">Podejście Cascade opiera się na ugruntowanych badaniach nad uwagą i nawykami. To niezależne badania, nie nasze własne.</p>
+      <p data-i18n="research.sub" style="margin-top:10px">Podejście Cascade opiera się na ugruntowanych badaniach nad uwagą i nawykami. To niezależne badania, nie nasze własne.</p>
     </div>
     <div class="cites">
       <div class="cite reveal">
@@ -951,17 +944,6 @@
       <div class="b"><div class="n hard">14</div><div class="k" data-i18n="ui.day_streak">Dni z rzędu</div></div>
       <div class="b"><div class="n vault" data-i18n="stats.n3">62 godz</div><div class="k" data-i18n="stats.this_month">W tym miesiącu</div></div>
       <div class="b"><div class="n">#2</div><div class="k" data-i18n="stats.among_friends">Wśród znajomych</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- IMPACT COUNTER · PLACEHOLDER total, swap for real community numbers at launch -->
-<section id="impact" class="impact">
-  <div class="wrap">
-    <div class="reveal">
-      <div class="n">1,200,000</div>
-      <div class="impact-k" data-i18n="impact.k">minut skupienia odzyskanych z Cascade</div>
-      <div class="ph-note" data-i18n="impact.note">Przykładowa liczba, pokaże realną sumę społeczności po starcie.</div>
     </div>
   </div>
 </section>
@@ -1303,7 +1285,7 @@
       })(performance.now());
     }
     const io=new IntersectionObserver((es)=>{es.forEach(e=>{ if(e.isIntersecting){ e.target.querySelectorAll('.n').forEach(animate); io.unobserve(e.target); } })},{threshold:.4});
-    document.querySelectorAll('.band, #impact').forEach(b=>io.observe(b));
+    document.querySelectorAll('.band').forEach(b=>io.observe(b));
   })();
 
   // sticky story: the phone stays put, only its screen changes as each panel scrolls to center
