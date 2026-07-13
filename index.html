@@ -1004,16 +1004,27 @@
       lockY=section.offsetTop;
       glide(lockY, 500, ()=>{ if(mq.matches){ fixBody(); active=true; } });
     }
-    // EXIT: unfix, then smoothly glide one screen out of the section (no abrupt jump)
+    // EXIT: keep the body pinned and animate it out with transform (compositor-smooth). Only at the very end do we unfix + set the real scroll — in ONE frame — so the page never flashes to scroll 0 / the hero.
     function unlock(dir){
       active=false; dots.classList.remove('show');
-      const b=document.body.style;
-      b.position=''; b.top=''; b.left=''; b.right=''; b.width='';
-      window.scrollTo(0, lockY);                        // restore pinned position instantly (invisible) before animating out
-      cooldown=true; clearTimeout(cdT);
+      cooldown=true; clearTimeout(cdT); gliding=true;
       const vh=window.innerHeight;
-      const target=Math.max(0, lockY + (dir>0 ? vh : -vh));
-      glide(target, 560, ()=>{ cdT=setTimeout(()=>{cooldown=false;}, 120); });
+      const endScroll=Math.max(0, lockY + (dir>0 ? vh : -vh));
+      const delta=endScroll-lockY;                    // how far the visible content should travel
+      const t0=performance.now(), dur=560;
+      (function frame(now){
+        const p=Math.min(1,(now-t0)/dur);
+        const e=p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2;
+        document.body.style.transform='translateY('+Math.round(-delta*e)+'px)';
+        if(p<1) requestAnimationFrame(frame);
+        else {
+          const b=document.body.style;
+          b.transform=''; b.position=''; b.top=''; b.left=''; b.right=''; b.width='';
+          window.scrollTo(0, endScroll);
+          prevY=endScroll; gliding=false;
+          cdT=setTimeout(()=>{cooldown=false;}, 150);
+        }
+      })(performance.now());
     }
     function step(dir){
       if(animating) return;
