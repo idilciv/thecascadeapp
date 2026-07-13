@@ -29,6 +29,7 @@
 <link rel="alternate" hreflang="ar" href="https://thecascadeapp.com/ar/">
 <link rel="alternate" hreflang="fa" href="https://thecascadeapp.com/fa/">
 <meta name="description" content="जिन ऐप्स को आप बिना सोचे बार-बार खोल लेते हैं, Cascade उन्हें रोक देता है। जब चेक करने की तलब उठे, यह आपको सिर्फ़ &quot;नहीं&quot; कहने पर मजबूर नहीं करता, बल्कि उसे" />
+<meta name="google-site-verification" content="PX_TVN0ojTHXvobWHFxEmU1V8yWhX5hLm374Ag3-YxM" />
 <meta name="theme-color" content="#08080b" />
 <!-- Open Graph / social share preview -->
 <meta property="og:type" content="website" />
@@ -40,7 +41,7 @@
 <meta property="og:image" content="https://thecascadeapp.com/assets/og-cover.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="Cascade — Break the scroll. Rebuild your focus." />
+<meta property="og:image:alt" content="Cascade, Break the scroll. Rebuild your focus." />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Cascade · स्क्रॉल करना छोड़ें। अपना फ़ोकस फिर से बनाएँ।" />
 <meta name="twitter:description" content="जिन ऐप्स को आप बिना सोचे बार-बार खोल लेते हैं, Cascade उन्हें रोक देता है। जब चेक करने की तलब उठे, यह आपको सिर्फ़ &quot;नहीं&quot; कहने पर मजबूर नहीं करता, बल्कि उसे" />
@@ -105,7 +106,7 @@
   a{color:inherit;text-decoration:none}
   ::selection{background:rgba(20,216,154,.28)}
   .wrap{max-width:1440px;margin:0 auto;padding:0 24px}
-  /* Scale the ENTIRE site up on large monitors so it fills the screen — header, text, images and phone all grow together. */
+  /* Scale the ENTIRE site up on large monitors so it fills the screen, header, text, images and phone all grow together. */
   @media(min-width:1600px){ .wrap{max-width:1480px} }
   @media(min-width:1900px){ .wrap{max-width:1600px} }
   @media(min-width:2300px){ .wrap{max-width:1780px} }
@@ -143,13 +144,13 @@
   .hero{position:relative;padding:104px 0 72px;overflow:hidden;min-height:100vh;min-height:100svh}
   /* App's Spline 3D mountain-sun scene, self-hosted exactly like the app (local runtime + scene, no CDN). */
   #cascade-hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#08080b}
-  /* Pre-rendered mountain-sunrise frame sequence (scroll-scrubbed on a canvas) — the same 3D scene, but ~0 GPU cost, instant load, identical sun at every size. */
+  /* Pre-rendered mountain-sunrise frame sequence (scroll-scrubbed on a canvas), the same 3D scene, but ~0 GPU cost, instant load, identical sun at every size. */
   #cascade-frames{position:absolute;inset:0;width:100%;height:100%;display:block}
   @media(max-width:760px){.hero{padding:92px 0 56px}.phone-stage{margin-top:calc(66vw + 8px)}}
   /* readability scrim: darkens the scene behind the headline (below content, above the 3D scene) */
   .hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(105deg,rgba(8,8,11,.82) 0%,rgba(8,8,11,.46) 32%,rgba(8,8,11,.06) 56%,transparent 66%)}
   @media(min-width:761px) and (max-width:860px){.hero::after{background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(to bottom,rgba(8,8,11,.74) 0%,rgba(8,8,11,.34) 42%,transparent 66%)}}
-  /* phone: mountain sits at the top (behind nothing), content flows below over dark — only a soft bottom fade, no top darkening */
+  /* phone: mountain sits at the top (behind nothing), content flows below over dark, only a soft bottom fade, no top darkening */
   @media(max-width:760px){.hero::after{background:linear-gradient(to top,#08080b 0%,#08080b 12%,transparent 30%)}}
   .phone-stage{transform-style:preserve-3d;perspective:1000px;will-change:transform,opacity}
   .blobs{position:absolute;inset:0;z-index:0;filter:blur(60px);opacity:.55;pointer-events:none}
@@ -205,7 +206,7 @@
   .la .bar i{display:block;height:100%;width:48%;background:linear-gradient(90deg,var(--vault-deep),var(--vault))}
   @media(max-width:520px){.la{display:none}}
 
-  /* ---------- MOUNTAIN (real app render — mountain.png) ---------- */
+  /* ---------- MOUNTAIN (real app render, mountain.png) ---------- */
   .mtn{position:relative;height:152px;overflow:hidden;border-radius:42px 42px 0 0;--sc:var(--sun)}
   .mtn.vaultsun{--sc:var(--vault-sun)}
   .mtn .pic{position:absolute;inset:0;background-image:url('/assets/mountain.jpg');background-image:-webkit-image-set(url('/assets/mountain.webp') type('image/webp'),url('/assets/mountain.jpg') type('image/jpeg'));background-image:image-set(url('/assets/mountain.webp') type('image/webp'),url('/assets/mountain.jpg') type('image/jpeg'));background-position:center 24%;background-size:cover;background-repeat:no-repeat}
@@ -571,11 +572,11 @@
     .nav-mobile{top:60px}
   }
 
-  /* ratings badge (hero) — PLACEHOLDER numbers, swap for real */
+  /* ratings badge (hero), PLACEHOLDER numbers, swap for real */
   .rate-badge{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:13px;color:var(--muted);border:1px solid var(--border);background:var(--panel);border-radius:100px;padding:7px 14px}
   .rate-badge b{color:var(--text);font-weight:800}
   .rate-badge .s{color:#f5c451;letter-spacing:1px}
-  /* featured-in strip — GENERIC placeholders (swap for real press logos) */
+  /* featured-in strip, GENERIC placeholders (swap for real press logos) */
   .press-wrap{border-block:1px solid var(--border2);background:var(--bg2);padding:24px 0}
   .press-label{display:block;text-align:center;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:16px}
   .press{display:flex;flex-wrap:wrap;justify-content:center;gap:16px 30px;align-items:center;opacity:.7}
@@ -588,7 +589,7 @@
   .cite p{color:var(--muted);font-size:14px;margin-bottom:12px}
   .cite a{font-size:12.5px;color:var(--muted);border-bottom:1px solid var(--border);padding-bottom:1px;transition:.2s}
   .cite a:hover{color:var(--text)}
-  /* impact counter — PLACEHOLDER total */
+  /* impact counter, PLACEHOLDER total */
   .impact{text-align:center}
   .impact .n{font-family:"Space Grotesk",var(--font);font-weight:700;font-size:clamp(42px,8vw,78px);letter-spacing:-.02em;line-height:1;background:linear-gradient(100deg,#fff,var(--zen) 58%,var(--vault));-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
   .impact-k{color:var(--muted);font-size:17px;margin-top:10px}
@@ -663,7 +664,7 @@
         <li data-i18n="hero.chip2">निजी · डिवाइस पर ही</li>
         <li data-i18n="hero.chip3">22 भाषाएँ</li>
       </ul>
-      <!-- PLACEHOLDER rating — replace 4.8 / count with real App Store numbers -->
+      <!-- PLACEHOLDER rating, replace 4.8 / count with real App Store numbers -->
       <div class="rate-badge"><span class="s">★</span> <b>4.8</b> · <span data-i18n="hero.ratings">1,200+ App Store रेटिंग</span></div>
     </div>
 
@@ -704,7 +705,7 @@
   </div>
 </header>
 
-<!-- FEATURED IN · GENERIC placeholders — swap for real press/award logos when you have them -->
+<!-- FEATURED IN · GENERIC placeholders, swap for real press/award logos when you have them -->
 <div class="press-wrap">
   <div class="wrap">
     <span class="press-label" data-i18n="press.label">यहाँ फ़ीचर हुआ</span>
@@ -728,7 +729,7 @@
       <div class="b"><div class="n vault" data-i18n="prob.n3">~23 मि.</div><div class="k" data-i18n="prob.s3">हर बार ध्यान भटकने के बाद फिर फ़ोकस करने में लगने वाला समय</div></div>
       <div class="b"><div class="n" data-i18n="prob.n4">~90 से.</div><div class="k" data-i18n="prob.s4">और ज़्यादातर तलब चरम पर पहुँचकर ढल जाती है</div></div>
     </div>
-    <p class="prob-note reveal" data-i18n="prob.note">व्यापक रूप से उद्धृत अटेंशन रिसर्च के सामान्य आँकड़े — Cascade यूज़र डेटा नहीं।</p>
+    <p class="prob-note reveal" data-i18n="prob.note">व्यापक रूप से उद्धृत अटेंशन रिसर्च के सामान्य आँकड़े, Cascade यूज़र डेटा नहीं।</p>
   </div>
 </section>
 
@@ -888,13 +889,13 @@
     <div class="sec-head center reveal">
       <span class="eyebrow" data-i18n="sci.eyebrow">यह क्यों काम करता है</span>
       <h2 data-i18n="sci.h2">इस पर बना कि आदतें असल में कैसे टूटती हैं।</h2>
-      <p data-i18n="sci.sub">हर अनजाने में की गई चेकिंग वही लूप चलाती है: एक ट्रिगर, एक तलब, स्क्रॉल, और राहत का एक झोंका। Cascade इस लूप के हर मोड़ पर दख़ल देता है — ताकि यह पैटर्न धीरे-धीरे अपनी पकड़ खो दे।</p>
+      <p data-i18n="sci.sub">हर अनजाने में की गई चेकिंग वही लूप चलाती है: एक ट्रिगर, एक तलब, स्क्रॉल, और राहत का एक झोंका। Cascade इस लूप के हर मोड़ पर दख़ल देता है, ताकि यह पैटर्न धीरे-धीरे अपनी पकड़ खो दे।</p>
     </div>
     <div class="fg">
       <div class="card reveal">
         <div class="ic" style="color:var(--hard)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.9 4.9l2.9 2.9M16.2 16.2l2.9 2.9M2 12h4M18 12h4M4.9 19.1l2.9-2.9M16.2 7.8l2.9-2.9"/></svg></div>
         <h3 data-i18n="sci.c1t">ट्रिगर को तोड़ें</h3>
-        <p data-i18n="sci.c1p">जिस पल आप किसी ब्लॉक किए ऐप को अनजाने में खोलते हैं, Cascade फ़ीड के बजाय एक शांत ठहराव से आपको थाम लेता है — इतनी-सी जगह कि आप सोच-समझकर चुन सकें।</p>
+        <p data-i18n="sci.c1p">जिस पल आप किसी ब्लॉक किए ऐप को अनजाने में खोलते हैं, Cascade फ़ीड के बजाय एक शांत ठहराव से आपको थाम लेता है, इतनी-सी जगह कि आप सोच-समझकर चुन सकें।</p>
       </div>
       <div class="card reveal" style="transition-delay:.06s">
         <div class="ic" style="color:var(--zen)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12c2-4 4-4 6 0s4 4 6 0 4-4 6 0"/></svg></div>
@@ -904,7 +905,7 @@
       <div class="card reveal" style="transition-delay:.12s">
         <div class="ic" style="color:var(--vault)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></div>
         <h3 data-i18n="sci.c3t">पहचान का कायापलट</h3>
-        <p data-i18n="sci.c3p">आपका पूरा किया हर सेशन, आप जो बन रहे हैं उसके लिए एक छोटा वोट है। वक़्त के साथ नई आदत को टिकाने वाले यही वोट होते हैं — कोरी इच्छाशक्ति नहीं।</p>
+        <p data-i18n="sci.c3p">आपका पूरा किया हर सेशन, आप जो बन रहे हैं उसके लिए एक छोटा वोट है। वक़्त के साथ नई आदत को टिकाने वाले यही वोट होते हैं, कोरी इच्छाशक्ति नहीं।</p>
       </div>
     </div>
   </div>
@@ -915,23 +916,23 @@
   <div class="wrap">
     <div class="sec-head center reveal">
       <span class="eyebrow" data-i18n="research.eyebrow">स्वतंत्र शोध पर आधारित</span>
-      <h2 data-i18n="research.h2">यह हमने ईजाद नहीं किया — हमने बस इसके इर्द-गिर्द बनाया।</h2>
+      <h2 data-i18n="research.h2">यह हमने ईजाद नहीं किया, हमने बस इसके इर्द-गिर्द बनाया।</h2>
       <p data-i18n="research.sub">Cascade का तरीका जमी-जमाई अटेंशन और हैबिट रिसर्च पर टिका है। ये स्वतंत्र अध्ययन हैं, हमारे अपने नहीं।</p>
     </div>
     <div class="cites">
       <div class="cite reveal">
-        <div class="cn">~23 min</div>
+        <div class="cn" data-i18n="research.c1n">~23 मिनट</div>
         <p data-i18n="research.c1">एक ही बार के व्यवधान के बाद पूरी तरह फिर से फ़ोकस करने में लगने वाला समय।</p>
         <a href="https://ics.uci.edu/~gmark/chi08-mark.pdf" target="_blank" rel="noopener" data-i18n="research.c1s">Mark et al., UC Irvine</a>
       </div>
       <div class="cite reveal" style="transition-delay:.06s">
         <div class="cn" data-i18n="research.c2n">दिमाग़ी रिसाव</div>
-        <p data-i18n="research.c2">बस फ़ोन का नज़र के सामने होना ही आपके उपलब्ध फ़ोकस को घटा देता है — भले ही वह बंद हो।</p>
+        <p data-i18n="research.c2">बस फ़ोन का नज़र के सामने होना ही आपके उपलब्ध फ़ोकस को घटा देता है, भले ही वह बंद हो।</p>
         <a href="https://www.journals.uchicago.edu/doi/10.1086/691462" target="_blank" rel="noopener" data-i18n="research.c2s">Ward et al., 2017</a>
       </div>
       <div class="cite reveal" style="transition-delay:.12s">
         <div class="cn" data-i18n="research.c3n">तलब को साधना</div>
-        <p data-i18n="research.c3">अगर आप उन पर अमल न करें, तो तलब लहर की तरह उठती है, चरम पर पहुँचती है और ढल जाती है — यही Cascade के ध्यान के पीछे का विचार है।</p>
+        <p data-i18n="research.c3">अगर आप उन पर अमल न करें, तो तलब लहर की तरह उठती है, चरम पर पहुँचती है और ढल जाती है, यही Cascade के ध्यान के पीछे का विचार है।</p>
         <a href="https://doi.org/10.1037/a0015143" target="_blank" rel="noopener" data-i18n="research.c3s">Bowen &amp; Marlatt, 2009</a>
       </div>
     </div>
@@ -954,13 +955,13 @@
   </div>
 </section>
 
-<!-- IMPACT COUNTER · PLACEHOLDER total — swap for real community numbers at launch -->
+<!-- IMPACT COUNTER · PLACEHOLDER total, swap for real community numbers at launch -->
 <section id="impact" class="impact">
   <div class="wrap">
     <div class="reveal">
       <div class="n">1,200,000</div>
       <div class="impact-k" data-i18n="impact.k">Cascade के साथ वापस पाए फ़ोकस के मिनट</div>
-      <div class="ph-note" data-i18n="impact.note">नमूना आँकड़ा — लॉन्च होते ही यहाँ असली कम्युनिटी कुल दिखेगा।</div>
+      <div class="ph-note" data-i18n="impact.note">नमूना आँकड़ा, लॉन्च होते ही यहाँ असली कम्युनिटी कुल दिखेगा।</div>
     </div>
   </div>
 </section>
@@ -972,10 +973,10 @@
       <div class="txt reveal">
         <span class="eyebrow" data-i18n="ltr.eyebrow">हर हफ़्ते एक ख़त</span>
         <h2 data-i18n="ltr.h2">एक शांत साप्ताहिक सार, आपके इनबॉक्स में।</h2>
-        <p class="d" data-i18n="ltr.p">हफ़्ते में एक बार, Cascade आपको एक छोटा, निजी ख़त भेजता है — आपके फ़ोकस के घंटे, आपकी स्ट्रीक, आपका सबसे लंबा सेशन और वे ऐप्स जिनकी ओर आपने हाथ नहीं बढ़ाया, साथ में एक कोमल पंक्ति कि आप किस ओर बढ़ रहे हैं।</p>
+        <p class="d" data-i18n="ltr.p">हफ़्ते में एक बार, Cascade आपको एक छोटा, निजी ख़त भेजता है, आपके फ़ोकस के घंटे, आपकी स्ट्रीक, आपका सबसे लंबा सेशन और वे ऐप्स जिनकी ओर आपने हाथ नहीं बढ़ाया, साथ में एक कोमल पंक्ति कि आप किस ओर बढ़ रहे हैं।</p>
         <div class="flist">
           <div class="fitem"><span class="c" style="background:rgba(255,190,110,.14);color:#ffbe6e"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><div><b data-i18n="ltr.f1t">आपका हफ़्ता, एक नज़र में</b><span data-i18n="ltr.f1p">फ़ोकस घंटे, डे स्ट्रीक और सबसे लंबा सेशन, सब एक ही जगह।</span></div></div>
-          <div class="fitem"><span class="c" style="background:rgba(255,190,110,.14);color:#ffbe6e"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><div><b data-i18n="ltr.f2t">आप किस से ऊपर उठे</b><span data-i18n="ltr.f2p">वे ऐप्स देखें जिनसे आप दूर हटे — और वह समय जो आपने वापस पाया।</span></div></div>
+          <div class="fitem"><span class="c" style="background:rgba(255,190,110,.14);color:#ffbe6e"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><div><b data-i18n="ltr.f2t">आप किस से ऊपर उठे</b><span data-i18n="ltr.f2p">वे ऐप्स देखें जिनसे आप दूर हटे, और वह समय जो आपने वापस पाया।</span></div></div>
           <div class="fitem"><span class="c" style="background:rgba(255,190,110,.14);color:#ffbe6e"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><div><b data-i18n="ltr.f3t">आगे की ओर एक धक्का</b><span data-i18n="ltr.f3p">आपकी प्रगति और आप जो बन रहे हैं, उस पर एक गर्मजोशी भरी, ईमानदार पंक्ति।</span></div></div>
         </div>
       </div>
@@ -987,7 +988,7 @@
           <div class="lc-row"><span data-i18n="ltr.card_r2">डे स्ट्रीक</span><b data-i18n="ltr.card_v2">6</b></div>
           <div class="lc-row"><span data-i18n="ltr.card_r3">सबसे लंबा सेशन</span><b data-i18n="ltr.card_v3">52 मि.</b></div>
           <div class="lc-row"><span data-i18n="ltr.card_r4">टाले गए ऐप्स</span><b data-i18n="ltr.card_v4">14</b></div>
-          <div class="lc-note" data-i18n="ltr.card_note">"पिछले हफ़्ते से तीन दिन ज़्यादा — सूरज चढ़ रहा है।"</div>
+          <div class="lc-note" data-i18n="ltr.card_note">"पिछले हफ़्ते से तीन दिन ज़्यादा, सूरज चढ़ रहा है।"</div>
         </div>
       </div>
     </div>
@@ -1036,13 +1037,13 @@
   </div>
 </section>
 
-<!-- SOCIAL PROOF · PLACEHOLDER quotes — replace with real App Store reviews before publishing -->
+<!-- SOCIAL PROOF · PLACEHOLDER quotes, replace with real App Store reviews before publishing -->
 <section id="loved" class="tst">
   <div class="wrap">
     <div class="sec-head center reveal">
       <span class="eyebrow" data-i18n="tst.eyebrow">फ़ोकस्ड लोगों का पसंदीदा</span>
       <h2 data-i18n="tst.h2">शुरुआती यूज़र क्या कहते हैं।</h2>
-      <p class="ph-note" data-i18n="tst.sample">नमूना समीक्षाएँ — लॉन्च पर यहाँ असली App Store टिप्पणियाँ आएँगी।</p>
+      <p class="ph-note" data-i18n="tst.sample">नमूना समीक्षाएँ, लॉन्च पर यहाँ असली App Store टिप्पणियाँ आएँगी।</p>
     </div>
     <div class="tgrid">
       <figure class="quote reveal">
@@ -1080,12 +1081,12 @@
       <div class="card reveal" style="transition-delay:.06s">
         <div class="ic" style="color:var(--zen)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.4 2.1L8 9.6a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z"/></svg></div>
         <h3 data-i18n="safe.c2t">कॉल &amp; मैसेज चलते रहते हैं</h3>
-        <p data-i18n="safe.c2p">Cascade सिर्फ़ वही ऐप्स ब्लॉक करता है जो आप चुनते हैं। ज़रूरी चीज़ें — कॉल, मैसेज, मैप्स, आपका अलार्म — सामान्य रूप से चलती रहती हैं।</p>
+        <p data-i18n="safe.c2p">Cascade सिर्फ़ वही ऐप्स ब्लॉक करता है जो आप चुनते हैं। ज़रूरी चीज़ें, कॉल, मैसेज, मैप्स, आपका अलार्म, सामान्य रूप से चलती रहती हैं।</p>
       </div>
       <div class="card reveal" style="transition-delay:.12s">
         <div class="ic" style="color:var(--vault)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></div>
         <h3 data-i18n="safe.c3t">नियम आप बनाते हैं</h3>
-        <p data-i18n="safe.c3p">ऐप्स, हदें, पास और शेड्यूल चुनें — एक हल्के इशारे से लेकर सख़्त ताले तक। जब चाहें बदल दें।</p>
+        <p data-i18n="safe.c3p">ऐप्स, हदें, पास और शेड्यूल चुनें, एक हल्के इशारे से लेकर सख़्त ताले तक। जब चाहें बदल दें।</p>
       </div>
       <div class="card reveal">
         <div class="ic" style="color:var(--hard)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
@@ -1102,15 +1103,15 @@
     <div class="sec-head center reveal">
       <span class="eyebrow" data-i18n="cmp.eyebrow">सिर्फ़ Screen Time क्यों नहीं?</span>
       <h2 data-i18n="cmp.h2">जहाँ सेटिंग्स हार मान लेती हैं, वहीं से Cascade आगे बढ़ता है।</h2>
-      <p data-i18n="cmp.sub">iOS Screen Time हदें तय कर सकता है — पर एक टैप में पार हो जाती हैं। Cascade वह रुकावट, वह शांति और वह रफ़्तार जोड़ता है जो सचमुच आदत बदल देती है।</p>
+      <p data-i18n="cmp.sub">iOS Screen Time हदें तय कर सकता है, पर एक टैप में पार हो जाती हैं। Cascade वह रुकावट, वह शांति और वह रफ़्तार जोड़ता है जो सचमुच आदत बदल देती है।</p>
     </div>
     <div class="cmp reveal">
       <div class="cmp-row head"><span data-i18n="cmp.col1">आपको क्या मिलता है</span><span class="ci hc">Cascade</span><span class="ci" data-i18n="cmp.cols">Screen Time</span></div>
-      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r1">असली रुकावट — अनलॉक पास &amp; सख़्त ताला</span><span class="ci yes">✓</span><span class="ci no">—</span></div>
-      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r2">तलब उठते ही एक गाइडेड ध्यान</span><span class="ci yes">✓</span><span class="ci no">—</span></div>
-      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r3">पहचान &amp; सोच-विचार (कायापलट)</span><span class="ci yes">✓</span><span class="ci no">—</span></div>
-      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r4">स्ट्रीक, आँकड़े &amp; दोस्त जो सच्चा रखें</span><span class="ci yes">✓</span><span class="ci no">—</span></div>
-      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r5">चलते रहने की एक शांत वजह</span><span class="ci yes">✓</span><span class="ci no">—</span></div>
+      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r1">असली रुकावट, अनलॉक पास &amp; सख़्त ताला</span><span class="ci yes">✓</span><span class="ci no">, </span></div>
+      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r2">तलब उठते ही एक गाइडेड ध्यान</span><span class="ci yes">✓</span><span class="ci no">, </span></div>
+      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r3">पहचान &amp; सोच-विचार (कायापलट)</span><span class="ci yes">✓</span><span class="ci no">, </span></div>
+      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r4">स्ट्रीक, आँकड़े &amp; दोस्त जो सच्चा रखें</span><span class="ci yes">✓</span><span class="ci no">, </span></div>
+      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r5">चलते रहने की एक शांत वजह</span><span class="ci yes">✓</span><span class="ci no">, </span></div>
     </div>
   </div>
 </section>
@@ -1201,9 +1202,9 @@
 <section id="why" class="mani">
   <div class="wrap">
     <span class="eyebrow reveal" data-i18n="mani.eyebrow">हमने Cascade क्यों बनाया</span>
-    <p class="reveal" data-i18n="mani.p1">हमें नहीं लगता कि आप कमज़ोर हैं। बात बस इतनी है कि ऐप्स आपको वापस खींचने में बहुत, बहुत माहिर हैं — और "और ज़ोर लगाओ" इस लड़ाई को अकेले कभी नहीं जीत सकता था।</p>
+    <p class="reveal" data-i18n="mani.p1">हमें नहीं लगता कि आप कमज़ोर हैं। बात बस इतनी है कि ऐप्स आपको वापस खींचने में बहुत, बहुत माहिर हैं, और "और ज़ोर लगाओ" इस लड़ाई को अकेले कभी नहीं जीत सकता था।</p>
     <p class="reveal" data-i18n="mani.p2">इसलिए Cascade सज़ा या गिल्ट के बारे में नहीं है। एक दिन चूक गए? कल सूरज फिर भी उगेगा। बात है शांत चुनाव को आसान चुनाव बना देने की, एक बार में एक सेशन।</p>
-    <p class="small reveal" data-i18n="mani.p3">न शर्मिंदगी, न डार्क पैटर्न, न आपका डेटा बेचना — बस एक शांत फ़ोन और आपका थोड़ा और ध्यान, वापस आपके पास।</p>
+    <p class="small reveal" data-i18n="mani.p3">न शर्मिंदगी, न डार्क पैटर्न, न आपका डेटा बेचना, बस एक शांत फ़ोन और आपका थोड़ा और ध्यान, वापस आपके पास।</p>
   </div>
 </section>
 
@@ -1305,7 +1306,7 @@
     document.querySelectorAll('.band, #impact').forEach(b=>io.observe(b));
   })();
 
-  // sticky story: the phone stays put — only its screen changes as each panel scrolls to center
+  // sticky story: the phone stays put, only its screen changes as each panel scrolls to center
   const stStates={}; document.querySelectorAll('.screen .state').forEach(s=>{ if(s.id) stStates[s.id]=s; });
   if(Object.keys(stStates).length && ('IntersectionObserver' in window)){
     const stObs=new IntersectionObserver((es)=>{
@@ -1319,7 +1320,7 @@
     document.querySelectorAll('.spanel').forEach(p=>stObs.observe(p));
   }
 
-  // (Mobile modes render as plain, roomy, normal-scrolling sections — no carousel/pin.)
+  // (Mobile modes render as plain, roomy, normal-scrolling sections, no carousel/pin.)
 
   // footer: "+16 more" reveals the full localized language list
   const langMore=document.getElementById('langMore');
@@ -1408,7 +1409,7 @@ window.addEventListener('load',function(){
   if(reduce || !window.gsap || !window.ScrollTrigger) return;   // graceful: keep the static hero/site
   gsap.registerPlugin(ScrollTrigger);
 
-  // Smooth scroll (Lenis) — desktop only. On phones we use plain native scroll (no smooth-scroll library, no snap) so scrolling stays completely free.
+  // Smooth scroll (Lenis), desktop only. On phones we use plain native scroll (no smooth-scroll library, no snap) so scrolling stays completely free.
   if(window.Lenis && !window.matchMedia('(max-width: 860px)').matches){
     var lenis = new Lenis({ lerp:0.1 });
     lenis.on('scroll', ScrollTrigger.update);
@@ -1424,7 +1425,7 @@ window.addEventListener('load',function(){
     });
   }
 
-  // The sun follows scroll DIRECTLY (pure function, in the scene drive loop) — GSAP only does the copy + phone parallax.
+  // The sun follows scroll DIRECTLY (pure function, in the scene drive loop), GSAP only does the copy + phone parallax.
   gsap.matchMedia().add('(min-width: 861px)', function(){
     var tl = gsap.timeline({ scrollTrigger:{ trigger:'.hero', start:'top top', end:'+=45%', scrub:0.3 } });
     tl.to('.hero-copy', { y:-40, ease:'none' }, 0);

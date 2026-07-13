@@ -29,6 +29,7 @@
 <link rel="alternate" hreflang="ar" href="https://thecascadeapp.com/ar/">
 <link rel="alternate" hreflang="fa" href="https://thecascadeapp.com/fa/">
 <meta name="description" content="Cascade blockerar apparna du öppnar på autopilot. När suget att kolla slår till hjälper det dig surfa vidare i stället för att bara tvinga fram ett nej. Så" />
+<meta name="google-site-verification" content="PX_TVN0ojTHXvobWHFxEmU1V8yWhX5hLm374Ag3-YxM" />
 <meta name="theme-color" content="#08080b" />
 <!-- Open Graph / social share preview -->
 <meta property="og:type" content="website" />
@@ -40,7 +41,7 @@
 <meta property="og:image" content="https://thecascadeapp.com/assets/og-cover.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="Cascade — Break the scroll. Rebuild your focus." />
+<meta property="og:image:alt" content="Cascade, Break the scroll. Rebuild your focus." />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Cascade · Bryt scrollandet. Bygg upp ditt fokus." />
 <meta name="twitter:description" content="Cascade blockerar apparna du öppnar på autopilot. När suget att kolla slår till hjälper det dig surfa vidare i stället för att bara tvinga fram ett nej. Så" />
@@ -105,7 +106,7 @@
   a{color:inherit;text-decoration:none}
   ::selection{background:rgba(20,216,154,.28)}
   .wrap{max-width:1440px;margin:0 auto;padding:0 24px}
-  /* Scale the ENTIRE site up on large monitors so it fills the screen — header, text, images and phone all grow together. */
+  /* Scale the ENTIRE site up on large monitors so it fills the screen, header, text, images and phone all grow together. */
   @media(min-width:1600px){ .wrap{max-width:1480px} }
   @media(min-width:1900px){ .wrap{max-width:1600px} }
   @media(min-width:2300px){ .wrap{max-width:1780px} }
@@ -143,13 +144,13 @@
   .hero{position:relative;padding:104px 0 72px;overflow:hidden;min-height:100vh;min-height:100svh}
   /* App's Spline 3D mountain-sun scene, self-hosted exactly like the app (local runtime + scene, no CDN). */
   #cascade-hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#08080b}
-  /* Pre-rendered mountain-sunrise frame sequence (scroll-scrubbed on a canvas) — the same 3D scene, but ~0 GPU cost, instant load, identical sun at every size. */
+  /* Pre-rendered mountain-sunrise frame sequence (scroll-scrubbed on a canvas), the same 3D scene, but ~0 GPU cost, instant load, identical sun at every size. */
   #cascade-frames{position:absolute;inset:0;width:100%;height:100%;display:block}
   @media(max-width:760px){.hero{padding:92px 0 56px}.phone-stage{margin-top:calc(66vw + 8px)}}
   /* readability scrim: darkens the scene behind the headline (below content, above the 3D scene) */
   .hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(105deg,rgba(8,8,11,.82) 0%,rgba(8,8,11,.46) 32%,rgba(8,8,11,.06) 56%,transparent 66%)}
   @media(min-width:761px) and (max-width:860px){.hero::after{background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(to bottom,rgba(8,8,11,.74) 0%,rgba(8,8,11,.34) 42%,transparent 66%)}}
-  /* phone: mountain sits at the top (behind nothing), content flows below over dark — only a soft bottom fade, no top darkening */
+  /* phone: mountain sits at the top (behind nothing), content flows below over dark, only a soft bottom fade, no top darkening */
   @media(max-width:760px){.hero::after{background:linear-gradient(to top,#08080b 0%,#08080b 12%,transparent 30%)}}
   .phone-stage{transform-style:preserve-3d;perspective:1000px;will-change:transform,opacity}
   .blobs{position:absolute;inset:0;z-index:0;filter:blur(60px);opacity:.55;pointer-events:none}
@@ -205,7 +206,7 @@
   .la .bar i{display:block;height:100%;width:48%;background:linear-gradient(90deg,var(--vault-deep),var(--vault))}
   @media(max-width:520px){.la{display:none}}
 
-  /* ---------- MOUNTAIN (real app render — mountain.png) ---------- */
+  /* ---------- MOUNTAIN (real app render, mountain.png) ---------- */
   .mtn{position:relative;height:152px;overflow:hidden;border-radius:42px 42px 0 0;--sc:var(--sun)}
   .mtn.vaultsun{--sc:var(--vault-sun)}
   .mtn .pic{position:absolute;inset:0;background-image:url('/assets/mountain.jpg');background-image:-webkit-image-set(url('/assets/mountain.webp') type('image/webp'),url('/assets/mountain.jpg') type('image/jpeg'));background-image:image-set(url('/assets/mountain.webp') type('image/webp'),url('/assets/mountain.jpg') type('image/jpeg'));background-position:center 24%;background-size:cover;background-repeat:no-repeat}
@@ -571,11 +572,11 @@
     .nav-mobile{top:60px}
   }
 
-  /* ratings badge (hero) — PLACEHOLDER numbers, swap for real */
+  /* ratings badge (hero), PLACEHOLDER numbers, swap for real */
   .rate-badge{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:13px;color:var(--muted);border:1px solid var(--border);background:var(--panel);border-radius:100px;padding:7px 14px}
   .rate-badge b{color:var(--text);font-weight:800}
   .rate-badge .s{color:#f5c451;letter-spacing:1px}
-  /* featured-in strip — GENERIC placeholders (swap for real press logos) */
+  /* featured-in strip, GENERIC placeholders (swap for real press logos) */
   .press-wrap{border-block:1px solid var(--border2);background:var(--bg2);padding:24px 0}
   .press-label{display:block;text-align:center;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:16px}
   .press{display:flex;flex-wrap:wrap;justify-content:center;gap:16px 30px;align-items:center;opacity:.7}
@@ -588,7 +589,7 @@
   .cite p{color:var(--muted);font-size:14px;margin-bottom:12px}
   .cite a{font-size:12.5px;color:var(--muted);border-bottom:1px solid var(--border);padding-bottom:1px;transition:.2s}
   .cite a:hover{color:var(--text)}
-  /* impact counter — PLACEHOLDER total */
+  /* impact counter, PLACEHOLDER total */
   .impact{text-align:center}
   .impact .n{font-family:"Space Grotesk",var(--font);font-weight:700;font-size:clamp(42px,8vw,78px);letter-spacing:-.02em;line-height:1;background:linear-gradient(100deg,#fff,var(--zen) 58%,var(--vault));-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
   .impact-k{color:var(--muted);font-size:17px;margin-top:10px}
@@ -663,7 +664,7 @@
         <li data-i18n="hero.chip2">Privat · på enheten</li>
         <li data-i18n="hero.chip3">22 språk</li>
       </ul>
-      <!-- PLACEHOLDER rating — replace 4.8 / count with real App Store numbers -->
+      <!-- PLACEHOLDER rating, replace 4.8 / count with real App Store numbers -->
       <div class="rate-badge"><span class="s">★</span> <b>4.8</b> · <span data-i18n="hero.ratings">1 200+ betyg i App Store</span></div>
     </div>
 
@@ -704,7 +705,7 @@
   </div>
 </header>
 
-<!-- FEATURED IN · GENERIC placeholders — swap for real press/award logos when you have them -->
+<!-- FEATURED IN · GENERIC placeholders, swap for real press/award logos when you have them -->
 <div class="press-wrap">
   <div class="wrap">
     <span class="press-label" data-i18n="press.label">Omnämnd i</span>
@@ -720,7 +721,7 @@
     <div class="sec-head center reveal">
       <span class="eyebrow" data-i18n="prob.eyebrow">Varför det är så svårt</span>
       <h2 data-i18n="prob.h2">Scrollandet är byggt för att vinna.</h2>
-      <p data-i18n="prob.sub">Flöden är byggda för att vara oändliga, och din hjärna lär sig att sträcka sig efter dem på autopilot. Det är inte ett viljestyrkeproblem — det är ett designproblem. Cascade sätter designen tillbaka på din sida.</p>
+      <p data-i18n="prob.sub">Flöden är byggda för att vara oändliga, och din hjärna lär sig att sträcka sig efter dem på autopilot. Det är inte ett viljestyrkeproblem, det är ett designproblem. Cascade sätter designen tillbaka på din sida.</p>
     </div>
     <div class="band reveal">
       <div class="b"><div class="n zen" data-i18n="prob.n1">3–4 tim</div><div class="k" data-i18n="prob.s1">en genomsnittlig dag på telefonen</div></div>
@@ -728,7 +729,7 @@
       <div class="b"><div class="n vault" data-i18n="prob.n3">~23 min</div><div class="k" data-i18n="prob.s3">för att fokusera om efter varje störning</div></div>
       <div class="b"><div class="n" data-i18n="prob.n4">~90 s</div><div class="k" data-i18n="prob.s4">och de flesta sug toppar, sedan klingar av</div></div>
     </div>
-    <p class="prob-note reveal" data-i18n="prob.note">Allmänna siffror från ofta citerad uppmärksamhetsforskning — inte data från Cascade-användare.</p>
+    <p class="prob-note reveal" data-i18n="prob.note">Allmänna siffror från ofta citerad uppmärksamhetsforskning, inte data från Cascade-användare.</p>
   </div>
 </section>
 
@@ -888,13 +889,13 @@
     <div class="sec-head center reveal">
       <span class="eyebrow" data-i18n="sci.eyebrow">Varför det funkar</span>
       <h2 data-i18n="sci.h2">Byggt kring hur vanor faktiskt bryts.</h2>
-      <p data-i18n="sci.sub">Varje automatisk koll kör samma loop: en trigger, ett sug, scrollandet, en gnutta lättnad. Cascade kliver in i den loopen vid varje punkt — så att mönstret långsamt tappar sitt grepp.</p>
+      <p data-i18n="sci.sub">Varje automatisk koll kör samma loop: en trigger, ett sug, scrollandet, en gnutta lättnad. Cascade kliver in i den loopen vid varje punkt, så att mönstret långsamt tappar sitt grepp.</p>
     </div>
     <div class="fg">
       <div class="card reveal">
         <div class="ic" style="color:var(--hard)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.9 4.9l2.9 2.9M16.2 16.2l2.9 2.9M2 12h4M18 12h4M4.9 19.1l2.9-2.9M16.2 7.8l2.9-2.9"/></svg></div>
         <h3 data-i18n="sci.c1t">Bryt triggern</h3>
-        <p data-i18n="sci.c1p">I samma stund som du på autopilot öppnar en blockerad app möter Cascade dig med en lugn paus i stället för flödet — precis nog av en lucka för att välja med avsikt.</p>
+        <p data-i18n="sci.c1p">I samma stund som du på autopilot öppnar en blockerad app möter Cascade dig med en lugn paus i stället för flödet, precis nog av en lucka för att välja med avsikt.</p>
       </div>
       <div class="card reveal" style="transition-delay:.06s">
         <div class="ic" style="color:var(--zen)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12c2-4 4-4 6 0s4 4 6 0 4-4 6 0"/></svg></div>
@@ -904,7 +905,7 @@
       <div class="card reveal" style="transition-delay:.12s">
         <div class="ic" style="color:var(--vault)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></div>
         <h3 data-i18n="sci.c3t">Omprogrammera identiteten</h3>
-        <p data-i18n="sci.c3p">Varje pass du avslutar är en liten röst för den du håller på att bli. Med tiden är det de rösterna — inte ren viljestyrka — som får den nya vanan att fastna.</p>
+        <p data-i18n="sci.c3p">Varje pass du avslutar är en liten röst för den du håller på att bli. Med tiden är det de rösterna, inte ren viljestyrka, som får den nya vanan att fastna.</p>
       </div>
     </div>
   </div>
@@ -915,23 +916,23 @@
   <div class="wrap">
     <div class="sec-head center reveal">
       <span class="eyebrow" data-i18n="research.eyebrow">Underbyggt av oberoende forskning</span>
-      <h2 data-i18n="research.h2">Vi uppfann inte det här — vi byggde kring det.</h2>
+      <h2 data-i18n="research.h2">Vi uppfann inte det här, vi byggde kring det.</h2>
       <p data-i18n="research.sub">Cascades metod lutar sig mot väletablerad forskning om uppmärksamhet och vanor. Det här är oberoende studier, inte våra egna.</p>
     </div>
     <div class="cites">
       <div class="cite reveal">
-        <div class="cn">~23 min</div>
+        <div class="cn" data-i18n="research.c1n">~23 min</div>
         <p data-i18n="research.c1">Tiden det tar att fokusera om helt efter en enda störning.</p>
         <a href="https://ics.uci.edu/~gmark/chi08-mark.pdf" target="_blank" rel="noopener" data-i18n="research.c1s">Mark et al., UC Irvine</a>
       </div>
       <div class="cite reveal" style="transition-delay:.06s">
         <div class="cn" data-i18n="research.c2n">Brain drain</div>
-        <p data-i18n="research.c2">Bara att ha telefonen i sikte sänker ditt tillgängliga fokus — även när den är avstängd.</p>
+        <p data-i18n="research.c2">Bara att ha telefonen i sikte sänker ditt tillgängliga fokus, även när den är avstängd.</p>
         <a href="https://www.journals.uchicago.edu/doi/10.1086/691462" target="_blank" rel="noopener" data-i18n="research.c2s">Ward et al., 2017</a>
       </div>
       <div class="cite reveal" style="transition-delay:.12s">
         <div class="cn" data-i18n="research.c3n">Surfa på suget</div>
-        <p data-i18n="research.c3">Sug stiger, toppar och klingar av som en våg om du inte agerar på dem — idén bakom Cascades meditation.</p>
+        <p data-i18n="research.c3">Sug stiger, toppar och klingar av som en våg om du inte agerar på dem, idén bakom Cascades meditation.</p>
         <a href="https://doi.org/10.1037/a0015143" target="_blank" rel="noopener" data-i18n="research.c3s">Bowen &amp; Marlatt, 2009</a>
       </div>
     </div>
@@ -954,13 +955,13 @@
   </div>
 </section>
 
-<!-- IMPACT COUNTER · PLACEHOLDER total — swap for real community numbers at launch -->
+<!-- IMPACT COUNTER · PLACEHOLDER total, swap for real community numbers at launch -->
 <section id="impact" class="impact">
   <div class="wrap">
     <div class="reveal">
       <div class="n">1,200,000</div>
       <div class="impact-k" data-i18n="impact.k">minuter av fokus återtaget med Cascade</div>
-      <div class="ph-note" data-i18n="impact.note">Exempelsiffra — den här visar den riktiga totalen för communityn när vi lanserar.</div>
+      <div class="ph-note" data-i18n="impact.note">Exempelsiffra, den här visar den riktiga totalen för communityn när vi lanserar.</div>
     </div>
   </div>
 </section>
@@ -972,10 +973,10 @@
       <div class="txt reveal">
         <span class="eyebrow" data-i18n="ltr.eyebrow">Ett brev varje vecka</span>
         <h2 data-i18n="ltr.h2">En lugn veckosammanfattning, i din inkorg.</h2>
-        <p class="d" data-i18n="ltr.p">En gång i veckan skickar Cascade ett kort, personligt brev — timmarna du fokuserade, din streak, ditt längsta pass och apparna du inte sträckte dig efter, med en varm rad om vart du är på väg.</p>
+        <p class="d" data-i18n="ltr.p">En gång i veckan skickar Cascade ett kort, personligt brev, timmarna du fokuserade, din streak, ditt längsta pass och apparna du inte sträckte dig efter, med en varm rad om vart du är på väg.</p>
         <div class="flist">
           <div class="fitem"><span class="c" style="background:rgba(255,190,110,.14);color:#ffbe6e"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><div><b data-i18n="ltr.f1t">Din vecka, i ett ögonkast</b><span data-i18n="ltr.f1p">Fokustimmar, dagarsstreak och längsta pass, allt på ett ställe.</span></div></div>
-          <div class="fitem"><span class="c" style="background:rgba(255,190,110,.14);color:#ffbe6e"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><div><b data-i18n="ltr.f2t">Vad du reste dig över</b><span data-i18n="ltr.f2p">Se apparna du klev bort från — och tiden du fick tillbaka.</span></div></div>
+          <div class="fitem"><span class="c" style="background:rgba(255,190,110,.14);color:#ffbe6e"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><div><b data-i18n="ltr.f2t">Vad du reste dig över</b><span data-i18n="ltr.f2p">Se apparna du klev bort från, och tiden du fick tillbaka.</span></div></div>
           <div class="fitem"><span class="c" style="background:rgba(255,190,110,.14);color:#ffbe6e"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><div><b data-i18n="ltr.f3t">En knuff framåt</b><span data-i18n="ltr.f3p">En varm, ärlig rad om dina framsteg och vem du håller på att bli.</span></div></div>
         </div>
       </div>
@@ -987,7 +988,7 @@
           <div class="lc-row"><span data-i18n="ltr.card_r2">Dagarsstreak</span><b data-i18n="ltr.card_v2">6</b></div>
           <div class="lc-row"><span data-i18n="ltr.card_r3">Längsta pass</span><b data-i18n="ltr.card_v3">52 min</b></div>
           <div class="lc-row"><span data-i18n="ltr.card_r4">Undvikna appar</span><b data-i18n="ltr.card_v4">14</b></div>
-          <div class="lc-note" data-i18n="ltr.card_note">"Tre dagar längre än förra veckan — solen klättrar."</div>
+          <div class="lc-note" data-i18n="ltr.card_note">"Tre dagar längre än förra veckan, solen klättrar."</div>
         </div>
       </div>
     </div>
@@ -1036,13 +1037,13 @@
   </div>
 </section>
 
-<!-- SOCIAL PROOF · PLACEHOLDER quotes — replace with real App Store reviews before publishing -->
+<!-- SOCIAL PROOF · PLACEHOLDER quotes, replace with real App Store reviews before publishing -->
 <section id="loved" class="tst">
   <div class="wrap">
     <div class="sec-head center reveal">
       <span class="eyebrow" data-i18n="tst.eyebrow">Älskad av fokuserade människor</span>
       <h2 data-i18n="tst.h2">Vad tidiga användare säger.</h2>
-      <p class="ph-note" data-i18n="tst.sample">Exempelrecensioner — riktiga citat från App Store hamnar här vid lansering.</p>
+      <p class="ph-note" data-i18n="tst.sample">Exempelrecensioner, riktiga citat från App Store hamnar här vid lansering.</p>
     </div>
     <div class="tgrid">
       <figure class="quote reveal">
@@ -1080,12 +1081,12 @@
       <div class="card reveal" style="transition-delay:.06s">
         <div class="ic" style="color:var(--zen)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.4 2.1L8 9.6a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z"/></svg></div>
         <h3 data-i18n="safe.c2t">Samtal och meddelanden funkar fortfarande</h3>
-        <p data-i18n="safe.c2p">Cascade blockerar bara apparna du väljer. Det viktigaste — samtal, sms, kartor, ditt alarm — fortsätter funka som vanligt.</p>
+        <p data-i18n="safe.c2p">Cascade blockerar bara apparna du väljer. Det viktigaste, samtal, sms, kartor, ditt alarm, fortsätter funka som vanligt.</p>
       </div>
       <div class="card reveal" style="transition-delay:.12s">
         <div class="ic" style="color:var(--vault)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></div>
         <h3 data-i18n="safe.c3t">Du sätter reglerna</h3>
-        <p data-i18n="safe.c3p">Välj apparna, gränserna, passen och schemat — från en mild knuff till ett hårt lås. Ändra dem när du vill.</p>
+        <p data-i18n="safe.c3p">Välj apparna, gränserna, passen och schemat, från en mild knuff till ett hårt lås. Ändra dem när du vill.</p>
       </div>
       <div class="card reveal">
         <div class="ic" style="color:var(--hard)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
@@ -1102,15 +1103,15 @@
     <div class="sec-head center reveal">
       <span class="eyebrow" data-i18n="cmp.eyebrow">Varför inte bara Screen Time?</span>
       <h2 data-i18n="cmp.h2">Cascade tar vid där inställningarna ger upp.</h2>
-      <p data-i18n="cmp.sub">iOS Screen Time kan sätta gränser — men en enda tryckning tar sig förbi dem. Cascade lägger till motståndet, lugnet och drivet som faktiskt ändrar vanan.</p>
+      <p data-i18n="cmp.sub">iOS Screen Time kan sätta gränser, men en enda tryckning tar sig förbi dem. Cascade lägger till motståndet, lugnet och drivet som faktiskt ändrar vanan.</p>
     </div>
     <div class="cmp reveal">
       <div class="cmp-row head"><span data-i18n="cmp.col1">Vad du får</span><span class="ci hc">Cascade</span><span class="ci" data-i18n="cmp.cols">Screen Time</span></div>
-      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r1">Verkligt motstånd — upplåsningspass och ett hårt lås</span><span class="ci yes">✓</span><span class="ci no">—</span></div>
-      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r2">En guidad meditation i stunden då suget slår till</span><span class="ci yes">✓</span><span class="ci no">—</span></div>
-      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r3">Identitet och reflektion (Omprogrammering)</span><span class="ci yes">✓</span><span class="ci no">—</span></div>
-      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r4">Streaks, statistik och vänner som håller dig ärlig</span><span class="ci yes">✓</span><span class="ci no">—</span></div>
-      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r5">En lugn anledning att fortsätta</span><span class="ci yes">✓</span><span class="ci no">—</span></div>
+      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r1">Verkligt motstånd, upplåsningspass och ett hårt lås</span><span class="ci yes">✓</span><span class="ci no">, </span></div>
+      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r2">En guidad meditation i stunden då suget slår till</span><span class="ci yes">✓</span><span class="ci no">, </span></div>
+      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r3">Identitet och reflektion (Omprogrammering)</span><span class="ci yes">✓</span><span class="ci no">, </span></div>
+      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r4">Streaks, statistik och vänner som håller dig ärlig</span><span class="ci yes">✓</span><span class="ci no">, </span></div>
+      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r5">En lugn anledning att fortsätta</span><span class="ci yes">✓</span><span class="ci no">, </span></div>
     </div>
   </div>
 </section>
@@ -1201,9 +1202,9 @@
 <section id="why" class="mani">
   <div class="wrap">
     <span class="eyebrow reveal" data-i18n="mani.eyebrow">Varför vi byggde Cascade</span>
-    <p class="reveal" data-i18n="mani.p1">Vi tycker inte att du är svag. Apparna är bara väldigt, väldigt bra på att dra tillbaka dig — och "kämpa hårdare" skulle aldrig vinna den kampen på egen hand.</p>
+    <p class="reveal" data-i18n="mani.p1">Vi tycker inte att du är svag. Apparna är bara väldigt, väldigt bra på att dra tillbaka dig, och "kämpa hårdare" skulle aldrig vinna den kampen på egen hand.</p>
     <p class="reveal" data-i18n="mani.p2">Så Cascade handlar inte om bestraffning eller skuld. Missar du en dag? Solen går ändå upp imorgon. Det handlar om att göra det lugnare valet till det enkla, ett pass i taget.</p>
-    <p class="small reveal" data-i18n="mani.p3">Ingen skam, inga mörka mönster, ingen försäljning av dina data — bara en tystare telefon och lite mer av din uppmärksamhet tillbaka.</p>
+    <p class="small reveal" data-i18n="mani.p3">Ingen skam, inga mörka mönster, ingen försäljning av dina data, bara en tystare telefon och lite mer av din uppmärksamhet tillbaka.</p>
   </div>
 </section>
 
@@ -1305,7 +1306,7 @@
     document.querySelectorAll('.band, #impact').forEach(b=>io.observe(b));
   })();
 
-  // sticky story: the phone stays put — only its screen changes as each panel scrolls to center
+  // sticky story: the phone stays put, only its screen changes as each panel scrolls to center
   const stStates={}; document.querySelectorAll('.screen .state').forEach(s=>{ if(s.id) stStates[s.id]=s; });
   if(Object.keys(stStates).length && ('IntersectionObserver' in window)){
     const stObs=new IntersectionObserver((es)=>{
@@ -1319,7 +1320,7 @@
     document.querySelectorAll('.spanel').forEach(p=>stObs.observe(p));
   }
 
-  // (Mobile modes render as plain, roomy, normal-scrolling sections — no carousel/pin.)
+  // (Mobile modes render as plain, roomy, normal-scrolling sections, no carousel/pin.)
 
   // footer: "+16 more" reveals the full localized language list
   const langMore=document.getElementById('langMore');
@@ -1408,7 +1409,7 @@ window.addEventListener('load',function(){
   if(reduce || !window.gsap || !window.ScrollTrigger) return;   // graceful: keep the static hero/site
   gsap.registerPlugin(ScrollTrigger);
 
-  // Smooth scroll (Lenis) — desktop only. On phones we use plain native scroll (no smooth-scroll library, no snap) so scrolling stays completely free.
+  // Smooth scroll (Lenis), desktop only. On phones we use plain native scroll (no smooth-scroll library, no snap) so scrolling stays completely free.
   if(window.Lenis && !window.matchMedia('(max-width: 860px)').matches){
     var lenis = new Lenis({ lerp:0.1 });
     lenis.on('scroll', ScrollTrigger.update);
@@ -1424,7 +1425,7 @@ window.addEventListener('load',function(){
     });
   }
 
-  // The sun follows scroll DIRECTLY (pure function, in the scene drive loop) — GSAP only does the copy + phone parallax.
+  // The sun follows scroll DIRECTLY (pure function, in the scene drive loop), GSAP only does the copy + phone parallax.
   gsap.matchMedia().add('(min-width: 861px)', function(){
     var tl = gsap.timeline({ scrollTrigger:{ trigger:'.hero', start:'top top', end:'+=45%', scrub:0.3 } });
     tl.to('.hero-copy', { y:-40, ease:'none' }, 0);

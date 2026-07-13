@@ -29,6 +29,7 @@
 <link rel="alternate" hreflang="ar" href="https://thecascadeapp.com/ar/">
 <link rel="alternate" hreflang="fa" href="https://thecascadeapp.com/fa/">
 <meta name="description" content="습관처럼 열어보는 앱, Cascade가 막아줍니다. 확인하고 싶은 충동이 올라올 때 그저 참으라고 하는 대신 그 순간을 넘기도록 도와주죠. 그렇게 조금씩, 그 자극을 아예 찾지 않게 됩니다." />
+<meta name="google-site-verification" content="PX_TVN0ojTHXvobWHFxEmU1V8yWhX5hLm374Ag3-YxM" />
 <meta name="theme-color" content="#08080b" />
 <!-- Open Graph / social share preview -->
 <meta property="og:type" content="website" />
@@ -40,7 +41,7 @@
 <meta property="og:image" content="https://thecascadeapp.com/assets/og-cover.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="Cascade — Break the scroll. Rebuild your focus." />
+<meta property="og:image:alt" content="Cascade, Break the scroll. Rebuild your focus." />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Cascade · 스크롤을 끊고, 집중을 되찾다." />
 <meta name="twitter:description" content="습관처럼 열어보는 앱, Cascade가 막아줍니다. 확인하고 싶은 충동이 올라올 때 그저 참으라고 하는 대신 그 순간을 넘기도록 도와주죠. 그렇게 조금씩, 그 자극을 아예 찾지 않게 됩니다." />
@@ -105,7 +106,7 @@
   a{color:inherit;text-decoration:none}
   ::selection{background:rgba(20,216,154,.28)}
   .wrap{max-width:1440px;margin:0 auto;padding:0 24px}
-  /* Scale the ENTIRE site up on large monitors so it fills the screen — header, text, images and phone all grow together. */
+  /* Scale the ENTIRE site up on large monitors so it fills the screen, header, text, images and phone all grow together. */
   @media(min-width:1600px){ .wrap{max-width:1480px} }
   @media(min-width:1900px){ .wrap{max-width:1600px} }
   @media(min-width:2300px){ .wrap{max-width:1780px} }
@@ -143,13 +144,13 @@
   .hero{position:relative;padding:104px 0 72px;overflow:hidden;min-height:100vh;min-height:100svh}
   /* App's Spline 3D mountain-sun scene, self-hosted exactly like the app (local runtime + scene, no CDN). */
   #cascade-hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#08080b}
-  /* Pre-rendered mountain-sunrise frame sequence (scroll-scrubbed on a canvas) — the same 3D scene, but ~0 GPU cost, instant load, identical sun at every size. */
+  /* Pre-rendered mountain-sunrise frame sequence (scroll-scrubbed on a canvas), the same 3D scene, but ~0 GPU cost, instant load, identical sun at every size. */
   #cascade-frames{position:absolute;inset:0;width:100%;height:100%;display:block}
   @media(max-width:760px){.hero{padding:92px 0 56px}.phone-stage{margin-top:calc(66vw + 8px)}}
   /* readability scrim: darkens the scene behind the headline (below content, above the 3D scene) */
   .hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(105deg,rgba(8,8,11,.82) 0%,rgba(8,8,11,.46) 32%,rgba(8,8,11,.06) 56%,transparent 66%)}
   @media(min-width:761px) and (max-width:860px){.hero::after{background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(to bottom,rgba(8,8,11,.74) 0%,rgba(8,8,11,.34) 42%,transparent 66%)}}
-  /* phone: mountain sits at the top (behind nothing), content flows below over dark — only a soft bottom fade, no top darkening */
+  /* phone: mountain sits at the top (behind nothing), content flows below over dark, only a soft bottom fade, no top darkening */
   @media(max-width:760px){.hero::after{background:linear-gradient(to top,#08080b 0%,#08080b 12%,transparent 30%)}}
   .phone-stage{transform-style:preserve-3d;perspective:1000px;will-change:transform,opacity}
   .blobs{position:absolute;inset:0;z-index:0;filter:blur(60px);opacity:.55;pointer-events:none}
@@ -205,7 +206,7 @@
   .la .bar i{display:block;height:100%;width:48%;background:linear-gradient(90deg,var(--vault-deep),var(--vault))}
   @media(max-width:520px){.la{display:none}}
 
-  /* ---------- MOUNTAIN (real app render — mountain.png) ---------- */
+  /* ---------- MOUNTAIN (real app render, mountain.png) ---------- */
   .mtn{position:relative;height:152px;overflow:hidden;border-radius:42px 42px 0 0;--sc:var(--sun)}
   .mtn.vaultsun{--sc:var(--vault-sun)}
   .mtn .pic{position:absolute;inset:0;background-image:url('/assets/mountain.jpg');background-image:-webkit-image-set(url('/assets/mountain.webp') type('image/webp'),url('/assets/mountain.jpg') type('image/jpeg'));background-image:image-set(url('/assets/mountain.webp') type('image/webp'),url('/assets/mountain.jpg') type('image/jpeg'));background-position:center 24%;background-size:cover;background-repeat:no-repeat}
@@ -571,11 +572,11 @@
     .nav-mobile{top:60px}
   }
 
-  /* ratings badge (hero) — PLACEHOLDER numbers, swap for real */
+  /* ratings badge (hero), PLACEHOLDER numbers, swap for real */
   .rate-badge{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:13px;color:var(--muted);border:1px solid var(--border);background:var(--panel);border-radius:100px;padding:7px 14px}
   .rate-badge b{color:var(--text);font-weight:800}
   .rate-badge .s{color:#f5c451;letter-spacing:1px}
-  /* featured-in strip — GENERIC placeholders (swap for real press logos) */
+  /* featured-in strip, GENERIC placeholders (swap for real press logos) */
   .press-wrap{border-block:1px solid var(--border2);background:var(--bg2);padding:24px 0}
   .press-label{display:block;text-align:center;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:16px}
   .press{display:flex;flex-wrap:wrap;justify-content:center;gap:16px 30px;align-items:center;opacity:.7}
@@ -588,7 +589,7 @@
   .cite p{color:var(--muted);font-size:14px;margin-bottom:12px}
   .cite a{font-size:12.5px;color:var(--muted);border-bottom:1px solid var(--border);padding-bottom:1px;transition:.2s}
   .cite a:hover{color:var(--text)}
-  /* impact counter — PLACEHOLDER total */
+  /* impact counter, PLACEHOLDER total */
   .impact{text-align:center}
   .impact .n{font-family:"Space Grotesk",var(--font);font-weight:700;font-size:clamp(42px,8vw,78px);letter-spacing:-.02em;line-height:1;background:linear-gradient(100deg,#fff,var(--zen) 58%,var(--vault));-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
   .impact-k{color:var(--muted);font-size:17px;margin-top:10px}
@@ -663,7 +664,7 @@
         <li data-i18n="hero.chip2">프라이빗 · 기기 안에서</li>
         <li data-i18n="hero.chip3">22개 언어</li>
       </ul>
-      <!-- PLACEHOLDER rating — replace 4.8 / count with real App Store numbers -->
+      <!-- PLACEHOLDER rating, replace 4.8 / count with real App Store numbers -->
       <div class="rate-badge"><span class="s">★</span> <b>4.8</b> · <span data-i18n="hero.ratings">App Store 평점 1,200개 이상</span></div>
     </div>
 
@@ -704,7 +705,7 @@
   </div>
 </header>
 
-<!-- FEATURED IN · GENERIC placeholders — swap for real press/award logos when you have them -->
+<!-- FEATURED IN · GENERIC placeholders, swap for real press/award logos when you have them -->
 <div class="press-wrap">
   <div class="wrap">
     <span class="press-label" data-i18n="press.label">소개된 곳</span>
@@ -728,7 +729,7 @@
       <div class="b"><div class="n vault" data-i18n="prob.n3">약 23분</div><div class="k" data-i18n="prob.s3">한 번 흐트러진 뒤 다시 집중하기까지</div></div>
       <div class="b"><div class="n" data-i18n="prob.n4">약 90초</div><div class="k" data-i18n="prob.s4">그리고 대부분의 충동은 정점을 찍고 잦아듭니다</div></div>
     </div>
-    <p class="prob-note reveal" data-i18n="prob.note">널리 인용되는 주의력 연구의 일반적인 수치입니다 — Cascade 사용자 데이터가 아닙니다.</p>
+    <p class="prob-note reveal" data-i18n="prob.note">널리 인용되는 주의력 연구의 일반적인 수치입니다, Cascade 사용자 데이터가 아닙니다.</p>
   </div>
 </section>
 
@@ -888,13 +889,13 @@
     <div class="sec-head center reveal">
       <span class="eyebrow" data-i18n="sci.eyebrow">왜 효과가 있을까</span>
       <h2 data-i18n="sci.h2">습관이 실제로 끊기는 방식을 바탕으로 만들었습니다.</h2>
-      <p data-i18n="sci.sub">무의식적인 확인은 모두 같은 고리를 돕니다. 계기, 갈망, 스크롤, 잠깐의 안도. Cascade는 그 고리의 각 지점에 끼어듭니다 — 그렇게 그 패턴은 서서히 힘을 잃어갑니다.</p>
+      <p data-i18n="sci.sub">무의식적인 확인은 모두 같은 고리를 돕니다. 계기, 갈망, 스크롤, 잠깐의 안도. Cascade는 그 고리의 각 지점에 끼어듭니다, 그렇게 그 패턴은 서서히 힘을 잃어갑니다.</p>
     </div>
     <div class="fg">
       <div class="card reveal">
         <div class="ic" style="color:var(--hard)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.9 4.9l2.9 2.9M16.2 16.2l2.9 2.9M2 12h4M18 12h4M4.9 19.1l2.9-2.9M16.2 7.8l2.9-2.9"/></svg></div>
         <h3 data-i18n="sci.c1t">계기를 끊기</h3>
-        <p data-i18n="sci.c1p">습관처럼 차단된 앱을 여는 순간, Cascade는 피드 대신 고요한 멈춤으로 당신을 붙잡습니다 — 의도해서 고를 수 있을 만큼의 틈을.</p>
+        <p data-i18n="sci.c1p">습관처럼 차단된 앱을 여는 순간, Cascade는 피드 대신 고요한 멈춤으로 당신을 붙잡습니다, 의도해서 고를 수 있을 만큼의 틈을.</p>
       </div>
       <div class="card reveal" style="transition-delay:.06s">
         <div class="ic" style="color:var(--zen)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12c2-4 4-4 6 0s4 4 6 0 4-4 6 0"/></svg></div>
@@ -915,12 +916,12 @@
   <div class="wrap">
     <div class="sec-head center reveal">
       <span class="eyebrow" data-i18n="research.eyebrow">독립 연구로 뒷받침됩니다</span>
-      <h2 data-i18n="research.h2">우리가 발명한 게 아닙니다 — 그 위에 지었을 뿐이죠.</h2>
+      <h2 data-i18n="research.h2">우리가 발명한 게 아닙니다, 그 위에 지었을 뿐이죠.</h2>
       <p data-i18n="research.sub">Cascade의 접근은 잘 확립된 주의력·습관 연구에 기댑니다. 이건 우리 것이 아니라 독립적인 연구예요.</p>
     </div>
     <div class="cites">
       <div class="cite reveal">
-        <div class="cn">~23 min</div>
+        <div class="cn" data-i18n="research.c1n">약 23분</div>
         <p data-i18n="research.c1">한 번의 방해 뒤 완전히 다시 집중하기까지 걸리는 시간.</p>
         <a href="https://ics.uci.edu/~gmark/chi08-mark.pdf" target="_blank" rel="noopener" data-i18n="research.c1s">Mark et al., UC Irvine</a>
       </div>
@@ -931,7 +932,7 @@
       </div>
       <div class="cite reveal" style="transition-delay:.12s">
         <div class="cn" data-i18n="research.c3n">충동 흘려보내기</div>
-        <p data-i18n="research.c3">갈망은 당신이 반응하지 않으면 파도처럼 솟아 정점을 지나 잦아듭니다 — Cascade 명상의 바탕이 된 생각이죠.</p>
+        <p data-i18n="research.c3">갈망은 당신이 반응하지 않으면 파도처럼 솟아 정점을 지나 잦아듭니다, Cascade 명상의 바탕이 된 생각이죠.</p>
         <a href="https://doi.org/10.1037/a0015143" target="_blank" rel="noopener" data-i18n="research.c3s">Bowen &amp; Marlatt, 2009</a>
       </div>
     </div>
@@ -954,13 +955,13 @@
   </div>
 </section>
 
-<!-- IMPACT COUNTER · PLACEHOLDER total — swap for real community numbers at launch -->
+<!-- IMPACT COUNTER · PLACEHOLDER total, swap for real community numbers at launch -->
 <section id="impact" class="impact">
   <div class="wrap">
     <div class="reveal">
       <div class="n">1,200,000</div>
       <div class="impact-k" data-i18n="impact.k">Cascade로 되찾은 집중의 분</div>
-      <div class="ph-note" data-i18n="impact.note">예시 수치입니다 — 출시하면 실제 커뮤니티 총합을 보여줍니다.</div>
+      <div class="ph-note" data-i18n="impact.note">예시 수치입니다, 출시하면 실제 커뮤니티 총합을 보여줍니다.</div>
     </div>
   </div>
 </section>
@@ -972,7 +973,7 @@
       <div class="txt reveal">
         <span class="eyebrow" data-i18n="ltr.eyebrow">매주 한 통의 편지</span>
         <h2 data-i18n="ltr.h2">받은편지함에 도착하는 고요한 주간 요약.</h2>
-        <p class="d" data-i18n="ltr.p">일주일에 한 번, Cascade가 짧고 개인적인 편지를 보냅니다 — 집중한 시간, 연속 기록, 가장 길었던 세션, 그리고 손대지 않은 앱들, 당신이 향하는 곳에 대한 다정한 한마디와 함께.</p>
+        <p class="d" data-i18n="ltr.p">일주일에 한 번, Cascade가 짧고 개인적인 편지를 보냅니다, 집중한 시간, 연속 기록, 가장 길었던 세션, 그리고 손대지 않은 앱들, 당신이 향하는 곳에 대한 다정한 한마디와 함께.</p>
         <div class="flist">
           <div class="fitem"><span class="c" style="background:rgba(255,190,110,.14);color:#ffbe6e"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><div><b data-i18n="ltr.f1t">당신의 한 주를, 한눈에</b><span data-i18n="ltr.f1p">집중 시간, 연속 일수, 가장 긴 세션을 한곳에.</span></div></div>
           <div class="fitem"><span class="c" style="background:rgba(255,190,110,.14);color:#ffbe6e"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><div><b data-i18n="ltr.f2t">당신이 넘어선 것들</b><span data-i18n="ltr.f2p">당신이 멀리한 앱들과, 되찾은 시간을 확인하세요.</span></div></div>
@@ -987,7 +988,7 @@
           <div class="lc-row"><span data-i18n="ltr.card_r2">연속 일수</span><b data-i18n="ltr.card_v2">6</b></div>
           <div class="lc-row"><span data-i18n="ltr.card_r3">최장 세션</span><b data-i18n="ltr.card_v3">52분</b></div>
           <div class="lc-row"><span data-i18n="ltr.card_r4">멀리한 앱</span><b data-i18n="ltr.card_v4">14</b></div>
-          <div class="lc-note" data-i18n="ltr.card_note">"지난주보다 사흘 더 길어요 — 해가 떠오르고 있어요."</div>
+          <div class="lc-note" data-i18n="ltr.card_note">"지난주보다 사흘 더 길어요, 해가 떠오르고 있어요."</div>
         </div>
       </div>
     </div>
@@ -1036,13 +1037,13 @@
   </div>
 </section>
 
-<!-- SOCIAL PROOF · PLACEHOLDER quotes — replace with real App Store reviews before publishing -->
+<!-- SOCIAL PROOF · PLACEHOLDER quotes, replace with real App Store reviews before publishing -->
 <section id="loved" class="tst">
   <div class="wrap">
     <div class="sec-head center reveal">
       <span class="eyebrow" data-i18n="tst.eyebrow">집중하는 사람들이 아끼는 앱</span>
       <h2 data-i18n="tst.h2">초기 사용자들의 이야기.</h2>
-      <p class="ph-note" data-i18n="tst.sample">예시 리뷰입니다 — 출시 때 실제 App Store 후기가 여기에 담깁니다.</p>
+      <p class="ph-note" data-i18n="tst.sample">예시 리뷰입니다, 출시 때 실제 App Store 후기가 여기에 담깁니다.</p>
     </div>
     <div class="tgrid">
       <figure class="quote reveal">
@@ -1085,7 +1086,7 @@
       <div class="card reveal" style="transition-delay:.12s">
         <div class="ic" style="color:var(--vault)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></div>
         <h3 data-i18n="safe.c3t">규칙은 당신이 정합니다</h3>
-        <p data-i18n="safe.c3p">앱, 한도, 패스, 일정을 직접 고르세요 — 가벼운 넛지부터 단단한 잠금까지. 언제든 바꿀 수 있어요.</p>
+        <p data-i18n="safe.c3p">앱, 한도, 패스, 일정을 직접 고르세요, 가벼운 넛지부터 단단한 잠금까지. 언제든 바꿀 수 있어요.</p>
       </div>
       <div class="card reveal">
         <div class="ic" style="color:var(--hard)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
@@ -1102,15 +1103,15 @@
     <div class="sec-head center reveal">
       <span class="eyebrow" data-i18n="cmp.eyebrow">그냥 Screen Time으로는 안 될까?</span>
       <h2 data-i18n="cmp.h2">설정이 멈춘 자리에서, Cascade가 이어갑니다.</h2>
-      <p data-i18n="cmp.sub">iOS Screen Time은 한도를 걸 수 있어요 — 하지만 한 번의 탭이면 넘어가죠. Cascade는 습관을 진짜로 바꾸는 마찰과 고요함, 그리고 흐름을 더합니다.</p>
+      <p data-i18n="cmp.sub">iOS Screen Time은 한도를 걸 수 있어요, 하지만 한 번의 탭이면 넘어가죠. Cascade는 습관을 진짜로 바꾸는 마찰과 고요함, 그리고 흐름을 더합니다.</p>
     </div>
     <div class="cmp reveal">
       <div class="cmp-row head"><span data-i18n="cmp.col1">당신이 얻는 것</span><span class="ci hc">Cascade</span><span class="ci" data-i18n="cmp.cols">Screen Time</span></div>
-      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r1">진짜 마찰 — 해제 패스 &amp; 단단한 잠금</span><span class="ci yes">✓</span><span class="ci no">—</span></div>
-      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r2">충동이 밀려오는 순간의 가이드 명상</span><span class="ci yes">✓</span><span class="ci no">—</span></div>
-      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r3">정체성 &amp; 돌아보기 (나 다시 쓰기)</span><span class="ci yes">✓</span><span class="ci no">—</span></div>
-      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r4">연속 기록, 통계 &amp; 서로 다잡아주는 친구</span><span class="ci yes">✓</span><span class="ci no">—</span></div>
-      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r5">계속할, 고요한 이유</span><span class="ci yes">✓</span><span class="ci no">—</span></div>
+      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r1">진짜 마찰, 해제 패스 &amp; 단단한 잠금</span><span class="ci yes">✓</span><span class="ci no">, </span></div>
+      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r2">충동이 밀려오는 순간의 가이드 명상</span><span class="ci yes">✓</span><span class="ci no">, </span></div>
+      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r3">정체성 &amp; 돌아보기 (나 다시 쓰기)</span><span class="ci yes">✓</span><span class="ci no">, </span></div>
+      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r4">연속 기록, 통계 &amp; 서로 다잡아주는 친구</span><span class="ci yes">✓</span><span class="ci no">, </span></div>
+      <div class="cmp-row"><span class="cmp-feat" data-i18n="cmp.r5">계속할, 고요한 이유</span><span class="ci yes">✓</span><span class="ci no">, </span></div>
     </div>
   </div>
 </section>
@@ -1201,9 +1202,9 @@
 <section id="why" class="mani">
   <div class="wrap">
     <span class="eyebrow reveal" data-i18n="mani.eyebrow">우리가 Cascade를 만든 이유</span>
-    <p class="reveal" data-i18n="mani.p1">당신이 약하다고 생각하지 않아요. 앱이 당신을 다시 끌어당기는 데 그저 아주, 아주 능할 뿐이죠 — 그리고 "더 애써봐"만으로는 애초에 그 싸움을 이길 수 없었어요.</p>
+    <p class="reveal" data-i18n="mani.p1">당신이 약하다고 생각하지 않아요. 앱이 당신을 다시 끌어당기는 데 그저 아주, 아주 능할 뿐이죠, 그리고 "더 애써봐"만으로는 애초에 그 싸움을 이길 수 없었어요.</p>
     <p class="reveal" data-i18n="mani.p2">그래서 Cascade는 벌이나 죄책감에 관한 게 아닙니다. 하루 놓쳤다고요? 내일도 해는 뜹니다. 더 고요한 선택을 가장 쉬운 선택으로 만드는 것, 그게 핵심이에요. 한 번에 한 세션씩.</p>
-    <p class="small reveal" data-i18n="mani.p3">부끄럽게 하지 않고, 다크 패턴도 없고, 당신의 데이터를 팔지도 않아요 — 그저 더 조용한 폰과, 조금 더 되찾은 당신의 주의력.</p>
+    <p class="small reveal" data-i18n="mani.p3">부끄럽게 하지 않고, 다크 패턴도 없고, 당신의 데이터를 팔지도 않아요, 그저 더 조용한 폰과, 조금 더 되찾은 당신의 주의력.</p>
   </div>
 </section>
 
@@ -1305,7 +1306,7 @@
     document.querySelectorAll('.band, #impact').forEach(b=>io.observe(b));
   })();
 
-  // sticky story: the phone stays put — only its screen changes as each panel scrolls to center
+  // sticky story: the phone stays put, only its screen changes as each panel scrolls to center
   const stStates={}; document.querySelectorAll('.screen .state').forEach(s=>{ if(s.id) stStates[s.id]=s; });
   if(Object.keys(stStates).length && ('IntersectionObserver' in window)){
     const stObs=new IntersectionObserver((es)=>{
@@ -1319,7 +1320,7 @@
     document.querySelectorAll('.spanel').forEach(p=>stObs.observe(p));
   }
 
-  // (Mobile modes render as plain, roomy, normal-scrolling sections — no carousel/pin.)
+  // (Mobile modes render as plain, roomy, normal-scrolling sections, no carousel/pin.)
 
   // footer: "+16 more" reveals the full localized language list
   const langMore=document.getElementById('langMore');
@@ -1408,7 +1409,7 @@ window.addEventListener('load',function(){
   if(reduce || !window.gsap || !window.ScrollTrigger) return;   // graceful: keep the static hero/site
   gsap.registerPlugin(ScrollTrigger);
 
-  // Smooth scroll (Lenis) — desktop only. On phones we use plain native scroll (no smooth-scroll library, no snap) so scrolling stays completely free.
+  // Smooth scroll (Lenis), desktop only. On phones we use plain native scroll (no smooth-scroll library, no snap) so scrolling stays completely free.
   if(window.Lenis && !window.matchMedia('(max-width: 860px)').matches){
     var lenis = new Lenis({ lerp:0.1 });
     lenis.on('scroll', ScrollTrigger.update);
@@ -1424,7 +1425,7 @@ window.addEventListener('load',function(){
     });
   }
 
-  // The sun follows scroll DIRECTLY (pure function, in the scene drive loop) — GSAP only does the copy + phone parallax.
+  // The sun follows scroll DIRECTLY (pure function, in the scene drive loop), GSAP only does the copy + phone parallax.
   gsap.matchMedia().add('(min-width: 861px)', function(){
     var tl = gsap.timeline({ scrollTrigger:{ trigger:'.hero', start:'top top', end:'+=45%', scrub:0.3 } });
     tl.to('.hero-copy', { y:-40, ease:'none' }, 0);
