@@ -569,8 +569,13 @@
   @media(max-width:820px){
     .nav-burger{display:flex}
     .nav-links .btn-primary{display:none}
+    .nav-in .lang-select{display:none}   /* on mobile the language picker moves into the hamburger menu */
     .nav-mobile{top:60px}
   }
+  .nav-mobile .lang-select{display:flex;width:100%;margin-top:12px}
+  .nav-mobile .lang-select select{width:100%;max-width:none;font-size:15px;padding:12px 30px 12px 34px}
+  .nav-mobile .lang-select .globe{left:12px}
+  .nav-mobile .lang-select::after{right:16px}
 
   /* ratings badge (hero), PLACEHOLDER numbers, swap for real */
   .rate-badge{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:13px;color:var(--muted);border:1px solid var(--border);background:var(--panel);border-radius:100px;padding:7px 14px}
@@ -639,6 +644,10 @@
     <a href="#meditation" data-i18n="nav.meditation">冥想</a>
     <a href="#rewire" data-i18n="nav.rewire">蛻變</a>
     <a href="#pricing" data-i18n="nav.pricing">方案</a>
+    <div class="lang-select lang-mobile">
+      <svg class="globe" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+      <select id="langPickerM" aria-label="Language"></select>
+    </div>
     <a href="https://apps.apple.com/app/id6761320124" target="_blank" rel="noopener" class="btn btn-primary" data-i18n="nav.download">下載</a>
   </div>
 </nav>
@@ -658,11 +667,10 @@
         </a>
         <a href="#modes" class="btn btn-ghost" data-i18n="hero.see">看看它怎麼運作</a>
       </div>
-      <div class="trust"><span class="stars">★★★★★</span><span data-i18n="hero.trust">為想找回專注的人而做 · 22 種語言</span></div>
+      <div class="trust"><span class="stars">★★★★★</span><span data-i18n="hero.trust">為想找回專注的人而做</span></div>
       <ul class="hero-chips" aria-label="Highlights">
         <li data-i18n="hero.chip1">由 Apple Screen Time 驅動</li>
         <li data-i18n="hero.chip2">私密 · 在裝置本機</li>
-        <li data-i18n="hero.chip3">22 種語言</li>
       </ul>
       <!-- PLACEHOLDER rating, replace 4.8 / count with real App Store numbers -->
       <div class="rate-badge"><span class="s">★</span> <b>4.8</b> · <span data-i18n="hero.ratings">1,200+ App Store 評分</span></div>
@@ -704,16 +712,6 @@
     </div>
   </div>
 </header>
-
-<!-- FEATURED IN · GENERIC placeholders, swap for real press/award logos when you have them -->
-<div class="press-wrap">
-  <div class="wrap">
-    <span class="press-label" data-i18n="press.label">曾獲報導於</span>
-    <div class="press" aria-label="Press placeholders">
-      <span>PUBLICATION</span><span>PODCAST</span><span>TECH BLOG</span><span>NEWSLETTER</span><span>REVIEW SITE</span>
-    </div>
-  </div>
-</div>
 
 <!-- THE PROBLEM · honest general context (widely-cited research, NOT Cascade user data) -->
 <section id="problem" class="prob">
@@ -1209,13 +1207,6 @@
     <div class="col lead">
       <a href="#top" class="logo"><span class="mark"><img src="/assets/cascade-icon.png" alt="Cascade logo"></span>Cascade</a>
       <p data-i18n="foot.tagline">封鎖喧囂，撐過衝動，成為一個新的自己。</p>
-      <div class="langwrap">
-        <span class="langhead" data-i18n="foot.langhead">提供 22 種語言</span>
-        <div class="langs" id="langs">
-          <span>English</span><span>Türkçe</span><span>Español</span><span>Deutsch</span><span>Français</span><span>日本語</span>
-          <button type="button" class="langmore" id="langMore" aria-expanded="false" data-i18n="foot.langmore">+16 種</button>
-        </div>
-      </div>
     </div>
     <div class="col"><h4 data-i18n="foot.product">產品</h4><a href="#modes" data-i18n="nav.modes">模式</a><a href="#meditation" data-i18n="nav.meditation">冥想</a><a href="#rewire" data-i18n="nav.rewire">蛻變</a><a href="#pricing" data-i18n="nav.pricing">方案</a></div>
     <div class="col"><h4 data-i18n="foot.company">公司</h4><a href="#how" data-i18n="how.eyebrow">運作方式</a><a href="#faq" data-i18n="foot.faq">常見問題</a><a href="mailto:support@thecascadeapp.com" data-i18n="foot.contact">聯絡我們</a></div>

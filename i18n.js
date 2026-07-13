@@ -81,17 +81,17 @@
     html.setAttribute("lang", lang);
     html.setAttribute("dir", isRTL(lang) ? "rtl" : "ltr");
     try { localStorage.setItem(STORE, lang); } catch (e) {}
-    var sel = document.getElementById("langPicker");
-    if (sel && sel.value !== lang) sel.value = lang;
+    var pickers = document.querySelectorAll(".lang-select select");
+    for (var pi = 0; pi < pickers.length; pi++) if (pickers[pi].value !== lang) pickers[pi].value = lang;
   }
 
   function build() {
-    var sel = document.getElementById("langPicker");
-    if (sel) {
-      var h = "";
-      for (var i = 0; i < LANGS.length; i++) h += '<option value="' + LANGS[i].c + '">' + LANGS[i].n + "</option>";
-      sel.innerHTML = h;
-      sel.addEventListener("change", function () { apply(sel.value); });
+    var h = "";
+    for (var i = 0; i < LANGS.length; i++) h += '<option value="' + LANGS[i].c + '">' + LANGS[i].n + "</option>";
+    var sels = document.querySelectorAll(".lang-select select");
+    for (var si = 0; si < sels.length; si++) {
+      sels[si].innerHTML = h;
+      (function (s) { s.addEventListener("change", function () { apply(s.value); }); })(sels[si]);
     }
     // A pre-rendered localized page pins its language via window.__CASCADE_LANG.
     var forced = window.__CASCADE_LANG;
