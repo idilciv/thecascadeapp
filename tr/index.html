@@ -233,7 +233,6 @@
   .story-phone .phone{margin:0}
   .story-panels{display:flex;flex-direction:column}
   .spanel{min-height:86vh;display:flex;flex-direction:column;justify-content:center;padding:18px 0}
-  .spanel-shot{display:none}  /* desktop shows the live sticky phone; the static shot is mobile-only */
   .spanel h2{font-size:clamp(27px,3.3vw,40px);margin:13px 0 15px;letter-spacing:-.02em;font-weight:800;line-height:1.1}
   .spanel p.d{color:var(--muted);font-size:16.5px;margin-bottom:20px;max-width:440px}
   .spanel .mini{display:flex;flex-direction:column;gap:11px}
@@ -247,9 +246,8 @@
     .story-panels{margin:0}
     .spanel{
       display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
-      margin:0;padding:48px 26px;text-align:left;position:relative;min-height:auto;
+      margin:0;padding:54px 26px;text-align:left;position:relative;min-height:46svh;
     }
-    .spanel-shot{display:block;align-self:center;width:100%;max-width:250px;height:auto;margin:24px auto 4px;filter:drop-shadow(0 24px 60px rgba(0,0,0,.5))}
     .spanel + .spanel{border-top:1px solid rgba(255,255,255,.06)}
     .spanel::before{content:'';position:absolute;top:16%;left:-8%;width:80%;height:46%;border-radius:50%;
       background:radial-gradient(circle,color-mix(in srgb,var(--mc) 32%,transparent),transparent 68%);filter:blur(48px);opacity:.5;pointer-events:none}
@@ -844,7 +842,6 @@
         <div class="spanel" data-target="s-zen">
           <span class="eyebrow" style="color:var(--zen)" data-i18n="p1.ey">Zen · usulca başla</span>
           <h2 data-i18n="p1.h2">Gürültüyü engelle. Güneşin doğuşunu izle.</h2>
-          <img class="spanel-shot" src="/assets/mode-zen.webp" alt="Cascade Zen mode screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p1.d">Uygulamalarını ve ne kadar odaklanacağını seç. Onunla ne kadar kalırsan güneş dağın ardından o kadar yükselir, ilerlemenin sessiz bir tablosu. Erken durmak mı istiyorsun? Sorun değil, vicdan azabı yok.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(20,216,154,.14);color:var(--zen)">✓</span><b data-i18n="p1.fi">Sonsuza dek ücretsiz<span>Başlamanın en kolay yolu. Taahhüt yok, hesap yok.</span></b></div>
@@ -853,7 +850,6 @@
         <div class="spanel" data-target="s-hard">
           <span class="eyebrow" style="color:var(--hard)" data-i18n="p2.ey">Hardcore · daha da kararlı</span>
           <h2 data-i18n="p2.h2">Bırakmayı gerçek bir karara dönüştür.</h2>
-          <img class="spanel-shot" src="/assets/mode-hardcore.webp" alt="Cascade Hardcore mode screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p2.d">Sınırlı sayıda açma hakkıyla engelle. Her pes edişinde bir tanesini harcarsın; böylece o kolay dopamin darbesinin sonunda bir bedeli olur. Bir türlü elinden bırakamadığın uygulamalar için.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(176,131,242,.14);color:var(--hard)">⚡</span><b data-i18n="p2.fi">Sınırlı açma hakları<span>Göz atmak için birini harca; ya da tüket ve kilitli kal.</span></b></div>
@@ -862,7 +858,6 @@
         <div class="spanel" data-target="s-vault">
           <span class="eyebrow" style="color:var(--vault)" data-i18n="p3.ey">Vault · kaçış yok</span>
           <h2 data-i18n="p3.h2">Kilitle. Çıkış yok.</h2>
-          <img class="spanel-shot" src="/assets/mode-vault.webp" alt="Cascade Vault mode screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p3.d">Her hafta belirli sayıda hakkın olur. Vault bir kez kapandığında, süre bitene kadar onu hiçbir şey açamaz, sen bile. İradenin tükendiği anlar için yapıldı.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(38,182,204,.14);color:var(--vault)">🔒</span><b data-i18n="p3.fi">Sıfır açma<span>Kur, süresi dolana dek öyle kalır. İstisnası yok.</span></b></div>
@@ -871,7 +866,6 @@
         <div class="spanel" id="meditation" data-target="s-med">
           <span class="eyebrow" style="color:var(--zen)" data-i18n="p4.ey">Meditasyon · dürtüyü savuştur</span>
           <h2 data-i18n="p4.h2">İstekle sakinlikle buluş.</h2>
-          <img class="spanel-shot" src="/assets/mode-meditation.webp" alt="Cascade Meditation urge-surfing screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p4.d">Engelli bir uygulamaya uzandığın an, Cascade sakin, sinematik bir sahne açar ve yanında kalır: nefes al, dürtünün doruğunu izle, geçmesine izin ver. Çoğu 90 saniyeden kısa sürede kaybolur.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(20,216,154,.14);color:var(--zen)">≈</span><b data-i18n="p4.fi">Rehberli nefes &amp; dürtü savuşturma<span>Bedenini yatıştırmana yardım eden yavaş bir ses temposu.</span></b></div>
@@ -880,7 +874,6 @@
         <div class="spanel" id="rewire" data-target="s-rewire">
           <span class="eyebrow" style="color:var(--hard)" data-i18n="p5.ey">Dönüşüm · yeni biri ol</span>
           <h2 data-i18n="p5.h2">Her seans bir oydur.</h2>
-          <img class="spanel-shot" src="/assets/mode-rewire.webp" alt="Cascade Rewire reflection screen" loading="lazy" width="380" height="780">
           <p class="d" data-i18n="p5.d">Başlamadan önce kime dönüştüğünü ve nedenini belirle. Sonrasında bir an durup düşün. Yavaş yavaş, o küçük seçimler gerçekten olduğun kişiye dönüşür.</p>
           <div class="mini">
             <div class="fitem"><span class="c" style="background:rgba(176,131,242,.14);color:var(--hard)">✓</span><b data-i18n="p5.fi">Kimlik &amp; niyet<span>"Odağını koruyan birine dönüşüyorum."</span></b></div>
