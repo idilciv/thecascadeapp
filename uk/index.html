@@ -103,7 +103,7 @@
     background:var(--bg); color:var(--text); font-family:var(--font);
     -webkit-font-smoothing:antialiased; line-height:1.55; overflow-x:hidden;
   }
-  /* Ambient depth: soft brand glows behind the whole page so sections aren't flat black (Opal-like atmosphere). Fixed, very faint, behind all content. */
+  /* Ambient depth: soft brand glows behind the whole page so sections aren't flat black (soft ambient atmosphere). Fixed, very faint, behind all content. */
   body::after{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
     background:
       radial-gradient(46% 30% at 84% 20%, rgba(176,131,242,.07), transparent 64%),
