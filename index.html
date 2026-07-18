@@ -1380,7 +1380,7 @@
     (function(i){
       var im = new Image(); im.decoding = 'async';
       im.onload = function(){ if (i === 0){ sizeCanvas(); ready = true; draw(0); } };
-      im.src = 'assets/frames/' + PREFIX + pad(i) + '.webp';
+      im.src = 'assets/frames/' + PREFIX + pad(i) + '.webp?v=3';   // sürüm etiketi: eski önbelleklenmiş kareleri (çift-güneş) atlayıp taze çek
       frames[i] = im;
     })(i);
   }
