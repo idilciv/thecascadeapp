@@ -1337,10 +1337,10 @@
     phoneOff = ph ? (ph.getBoundingClientRect().top - bg.getBoundingClientRect().top) : h * 0.72;
     cur = -1;                                    // force a redraw at the new size
   }
-  function draw(i){
-    var img = frames[i]; if (!img || !img.complete || !img.naturalWidth) return;
+  function drawImg(img, alpha){
+    if (!img || !img.complete || !img.naturalWidth) return;
     var cw = canvas.width, ch = canvas.height;
-    ctx.fillStyle = '#08080b'; ctx.fillRect(0, 0, cw, ch);   // dark backdrop
+    ctx.globalAlpha = alpha;
     if (IS_M){                                    // phone: pre-cropped single-peak frame, full width, sitting BEHIND the phone (sun+peak above, base behind the phone)
       var s = cw / FW, dh = FH * s;
       ctx.drawImage(img, 0, phoneOff * dpr - dh * 0.38, cw, dh);   // band height tuned so peaks rise above the phone while the sun still clears the hero chips
@@ -1348,7 +1348,19 @@
       var s2 = Math.max(cw / FW, ch / FH);
       ctx.drawImage(img, (cw - FW * s2) / 2 + cw * 0.15, (ch - FH * s2) / 2, FW * s2, FH * s2);
     }
-    cur = i;
+    ctx.globalAlpha = 1;
+  }
+  // SMOOTH SUN: fractional frame index -> crossfade between the two neighbouring frames.
+  // 72 discrete frames read as steps while scrubbing; blending i and i+1 by the fraction
+  // makes the sun glide continuously. Costs one extra drawImage, no extra downloads.
+  function draw(fi){
+    var i0 = Math.floor(fi), i1 = Math.min(COUNT - 1, i0 + 1), a = fi - i0;
+    var img0 = frames[i0]; if (!img0 || !img0.complete || !img0.naturalWidth) return;
+    var cw = canvas.width, ch = canvas.height;
+    ctx.fillStyle = '#08080b'; ctx.fillRect(0, 0, cw, ch);   // dark backdrop
+    drawImg(img0, 1);
+    if (a > 0.01) drawImg(frames[i1], a);
+    cur = fi;
   }
   function progress(){
     var r = bg.getBoundingClientRect(), hh = r.height || window.innerHeight;
@@ -1356,8 +1368,8 @@
   }
   function tick(){
     if (ready){
-      var idx = Math.round((reduce ? 1 : progress()) * (COUNT - 1));
-      if (idx !== cur) draw(idx);                // draw only when the frame index changes
+      var fi = (reduce ? 1 : progress()) * (COUNT - 1);
+      if (Math.abs(fi - cur) > 0.02) draw(fi);   // fractional index -> crossfade (smooth sun)
     }
     requestAnimationFrame(tick);
   }
