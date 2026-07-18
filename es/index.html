@@ -152,7 +152,9 @@
   /* App's Spline 3D mountain-sun scene, self-hosted exactly like the app (local runtime + scene, no CDN). */
   #cascade-hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#08080b}
   /* Pre-rendered mountain-sunrise frame sequence (scroll-scrubbed on a canvas), the same 3D scene, but ~0 GPU cost, instant load, identical sun at every size. */
-  #cascade-frames{position:absolute;inset:0;width:100%;height:100%;display:block}
+  /* Smooth-scroll (Lenis) sırasında GPU kompozisyonu canvas'ı bazen eski+yeni konumda üst üste gösterip
+     "iki güneş" hayaleti yaratıyordu. Kendi kararlı katmanına sabitle + izole et → tek kopya, görsel aynı. */
+  #cascade-frames{position:absolute;inset:0;width:100%;height:100%;display:block;transform:translateZ(0);backface-visibility:hidden;will-change:transform;contain:paint}
   @media(max-width:760px){.hero{padding:92px 0 56px}.phone-stage{margin-top:calc(66vw + 8px)}}
   /* readability scrim: darkens the scene behind the headline (below content, above the 3D scene) */
   .hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to top,#08080b 0%,#08080b 8%,transparent 32%),linear-gradient(105deg,rgba(8,8,11,.82) 0%,rgba(8,8,11,.46) 32%,rgba(8,8,11,.06) 56%,transparent 66%)}
@@ -1337,10 +1339,10 @@
     phoneOff = ph ? (ph.getBoundingClientRect().top - bg.getBoundingClientRect().top) : h * 0.72;
     cur = -1;                                    // force a redraw at the new size
   }
-  function drawImg(img, alpha){
-    if (!img || !img.complete || !img.naturalWidth) return;
+  function draw(i){
+    var img = frames[i]; if (!img || !img.complete || !img.naturalWidth) return;
     var cw = canvas.width, ch = canvas.height;
-    ctx.globalAlpha = alpha;
+    ctx.fillStyle = '#08080b'; ctx.fillRect(0, 0, cw, ch);   // dark backdrop
     if (IS_M){                                    // phone: pre-cropped single-peak frame, full width, sitting BEHIND the phone (sun+peak above, base behind the phone)
       var s = cw / FW, dh = FH * s;
       ctx.drawImage(img, 0, phoneOff * dpr - dh * 0.38, cw, dh);   // band height tuned so peaks rise above the phone while the sun still clears the hero chips
@@ -1348,19 +1350,7 @@
       var s2 = Math.max(cw / FW, ch / FH);
       ctx.drawImage(img, (cw - FW * s2) / 2 + cw * 0.15, (ch - FH * s2) / 2, FW * s2, FH * s2);
     }
-    ctx.globalAlpha = 1;
-  }
-  // SMOOTH SUN: fractional frame index -> crossfade between the two neighbouring frames.
-  // 72 discrete frames read as steps while scrubbing; blending i and i+1 by the fraction
-  // makes the sun glide continuously. Costs one extra drawImage, no extra downloads.
-  function draw(fi){
-    var i0 = Math.floor(fi), i1 = Math.min(COUNT - 1, i0 + 1), a = fi - i0;
-    var img0 = frames[i0]; if (!img0 || !img0.complete || !img0.naturalWidth) return;
-    var cw = canvas.width, ch = canvas.height;
-    ctx.fillStyle = '#08080b'; ctx.fillRect(0, 0, cw, ch);   // dark backdrop
-    drawImg(img0, 1);
-    if (a > 0.01) drawImg(frames[i1], a);
-    cur = fi;
+    cur = i;
   }
   function progress(){
     var r = bg.getBoundingClientRect(), hh = r.height || window.innerHeight;
@@ -1368,8 +1358,8 @@
   }
   function tick(){
     if (ready){
-      var fi = (reduce ? 1 : progress()) * (COUNT - 1);
-      if (Math.abs(fi - cur) > 0.02) draw(fi);   // fractional index -> crossfade (smooth sun)
+      var idx = Math.round((reduce ? 1 : progress()) * (COUNT - 1));
+      if (idx !== cur) draw(idx);                // draw only when the frame index changes
     }
     requestAnimationFrame(tick);
   }
